@@ -1,0 +1,15 @@
+/** 
+ * 
+ */
+package io.sarl.demos.basic.helloworld.events
+
+/** 
+ * @author 20184738
+ * 
+ */
+event ClearRSU {
+	var name : String
+	new(n : String) {
+		this.name = n
+	}	
+}

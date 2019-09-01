@@ -1,0 +1,85 @@
+package io.sarl.demos.basic.helloworld.Simulations
+
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.DefaultContextInteractions
+import java.util.ArrayList
+import java.util.List
+import io.sarl.demos.basic.helloworld.events.RSUConnect
+import io.sarl.demos.basic.helloworld.events.CameraConnect
+import it.polito.appeal.traci.SumoTraciConnection
+import io.sarl.demos.basic.helloworld.events.WarnRSU
+import io.sarl.demos.basic.helloworld.events.ClearRSU
+import io.sarl.demos.basic.helloworld.events.SendAllDataCamera
+import java.util.HashMap
+import io.sarl.demos.basic.helloworld.RSU
+import io.sarl.demos.basic.helloworld.Camera
+
+@SuppressWarnings("discouraged_occurrence_readonly_use", "unused_agent_capacity", "discouraged_reference")
+agent ControllerRSUWCAM {
+
+	var allRSU : List<RSU> = new ArrayList<RSU>() // all *RSU* that are connected to the *Controller*
+	var allCamera : List<Camera> = new ArrayList<Camera>() // all *Camera* that are connected to the *Controller*
+
+	var conn : SumoTraciConnection
+
+	uses DefaultContextInteractions
+
+	on Initialize {
+		this.conn = occurrence.parameters.get(0) as SumoTraciConnection
+		println("Controller spawned!")
+	}
+
+	on Destroy {
+		println("Controller destroyed")
+	}
+
+	on SendAllDataCamera {
+		// Warning RSU
+		var vehicle_data : HashMap<String, HashMap<String, Object>> = occurrence.veh_info
+		if (vehicle_data.isEmpty()) {
+			emit(new ClearRSU("East"))
+		} else {
+			warningRSU(vehicle_data)
+		}
+	}
+
+	def warningRSU(vehicle_data : HashMap<String, HashMap<String, Object>>) {
+		var bus_flag : boolean = false
+		var def_distance = 32
+
+		for (vehID : vehicle_data.keySet) {
+			var distance = vehicle_data.get(vehID).get("distance") as Double
+			var veh_type = vehicle_data.get(vehID).get("type") as String
+			if (veh_type == "bus") {
+				bus_flag = true
+				if (distance < def_distance) {
+					emit(new WarnRSU("East"))
+				}
+			}
+		}
+		if (bus_flag == false) {
+			emit(new ClearRSU("East"))
+		}
+	}
+
+
+	on RSUConnect {
+		addRSU(occurrence.RSUAgent) 	// Adding the *RSU* that is spawned in the default context
+	}
+
+	on CameraConnect {
+		addCamera(occurrence.CameraAgent) 	// Adding the *Camera* that is spawned in the default context
+	}
+
+
+	def addRSU(element : RSU) {
+		this.allRSU.add(element)
+		println("RSU Connected to the Controller!")
+	}
+
+	def addCamera(element : Camera) {
+		this.allCamera.add(element)
+		println("Camera Connected to the Controller!")
+	}
+}

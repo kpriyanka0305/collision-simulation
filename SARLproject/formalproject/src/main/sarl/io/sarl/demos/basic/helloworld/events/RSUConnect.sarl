@@ -1,0 +1,17 @@
+/** 
+ * 
+ */
+package io.sarl.demos.basic.helloworld.events
+
+import io.sarl.demos.basic.helloworld.RSU
+
+/** 
+ * @author 20184729
+ * 
+ */
+event RSUConnect{
+	var RSUAgent : RSU
+	new (element : RSU) {
+		this.RSUAgent = element
+	}
+}

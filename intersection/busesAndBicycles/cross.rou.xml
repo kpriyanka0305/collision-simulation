@@ -1,0 +1,74 @@
+<routes>
+        <vType id="bus" accel="0.8" decel="4.5" sigma="0.5" length="12" minGap="3" maxSpeed="25" guiShape="bus"/>
+        <vType id="bicycle" accel="0.8" decel="1.5" sigma="0.5" length="1.8" minGap="1" maxSpeed="5.55" guiShape="bicycle"/>
+
+        <!--Only approach the intersection-->
+        <route id="W-to-intersection" edges="1i" />
+        <route id="SW-to-intersection" edges="2i" />
+        <route id="S-to-intersection" edges="3i" />
+        <route id="E-to-intersection" edges="4i" />
+        <route id="NE-to-intersection" edges="5i" />
+        
+        <!--Pass (approach and leave) the intersection-->
+        <route id="W-to-E" edges="1i 4o" />
+        <route id="SW-to-NE" edges="2i 5o" />
+        <route id="S-to-NE" edges="3i 5o" />
+        <route id="E-to-W" edges="4i 1o" />
+        <route id="NE-to-SW" edges="5i 2o" />
+
+        <!--Only leave the intersection-->
+        <route id="intersection-to-W" edges="1o" />
+        <route id="intersection-to-SW" edges="2o" />
+        <route id="intersection-to-E" edges="4o" />
+        <route id="intersection-to-NE" edges="5o" />
+
+        
+        <!-- simulate -->
+        <!-- No bicycles , only buses-->
+        <vehicle id="bus1" type="bus" route="NE-to-SW" depart="0" />
+        <vehicle id="bus2" type="bus" route="S-to-NE" depart="40" />
+        <vehicle id="bus3" type="bus" route="SW-to-NE" depart="80" />
+
+        <!-- Bus entering station and approaching intersection while bicyles are leaving intersection before bus -->
+        <vehicle id="bicycle1" type="bicycle" route="E-to-W" depart="120" />
+        <vehicle id="bus4" type="bus" route="NE-to-SW" depart="140" />
+        
+        <vehicle id="bicycle2" type="bicycle" route="W-to-E" depart="160" />
+        <vehicle id="bus5" type="bus" route="NE-to-SW" depart="180" />
+
+        <!-- Bus entering station and approaching intersection while bicyles are leaving intersection after bus -->
+        <vehicle id="bus6" type="bus" route="NE-to-SW" depart="200" />
+        <vehicle id="bicycle3" type="bicycle" route="E-to-W" depart="220" />
+        
+        <vehicle id="bus7" type="bus" route="NE-to-SW" depart="240" />
+        <vehicle id="bicycle4" type="bicycle" route="W-to-E" depart="260" />
+
+        <!-- Bus leaving station _2 and approaching intersection while bicyles are leaving intersection before bus -->
+        <vehicle id="bicycle5" type="bicycle" route="E-to-W" depart="290" />
+        <vehicle id="bus8" type="bus" route="SW-to-NE" depart="310" />
+        
+        <vehicle id="bicycle6" type="bicycle" route="W-to-E" depart="330" />
+        <vehicle id="bus9" type="bus" route="SW-to-NE" depart="350" />
+
+        <!-- Bus leaving station _2 and approaching intersection while bicyles are leaving intersection after bus -->
+        <vehicle id="bus10" type="bus" route="SW-to-NE" depart="370" />
+        <vehicle id="bicycle7" type="bicycle" route="E-to-W" depart="390" />
+        
+        <vehicle id="bus11" type="bus" route="SW-to-NE" depart="410" />
+        <vehicle id="bicycle8" type="bicycle" route="W-to-E" depart="430" />
+
+        <!-- Bus leaving station _1 and approaching intersection while bicyles are leaving intersection before bus -->
+        <vehicle id="bicycle9" type="bicycle" route="E-to-W" depart="460" />
+        <vehicle id="bus12" type="bus" route="S-to-NE" depart="480" />
+        
+        <vehicle id="bicycle10" type="bicycle" route="W-to-E" depart="500" />
+        <vehicle id="bus13" type="bus" route="S-to-NE" depart="520" />
+
+        <!-- Bus leaving station _1 and approaching intersection while bicyles are leaving intersection after bus -->
+        <vehicle id="bus14" type="bus" route="S-to-NE" depart="540" />
+        <vehicle id="bicycle11" type="bicycle" route="E-to-W" depart="560" />
+        
+        <vehicle id="bus15" type="bus" route="S-to-NE" depart="580" />
+        <vehicle id="bicycle12" type="bicycle" route="W-to-E" depart="600" />
+
+</routes>

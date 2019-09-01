@@ -1,0 +1,18 @@
+/** 
+ * 
+ */
+package io.sarl.demos.basic.helloworld.events
+
+/** 
+ * @author 20184738
+ * 
+ */
+event RSUStatus {
+	var status : Boolean
+	var name : String
+
+	new(name : String, status : Boolean) {
+		this.name = name
+		this.status = status
+	}
+}

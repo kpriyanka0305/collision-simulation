@@ -1,0 +1,74 @@
+package io.sarl.demos.basic.helloworld
+
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.demos.basic.helloworld.events.OBUDisconnect
+import io.sarl.core.Lifecycle
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.demos.basic.helloworld.events.OBUConnect
+import it.polito.appeal.traci.SumoTraciConnection
+import io.sarl.demos.basic.helloworld.events.WarnOBU
+import de.tudresden.sumo.cmd.Vehicle
+import de.tudresden.ws.container.SumoColor
+import io.sarl.demos.basic.helloworld.events.CleanOBU
+import io.sarl.demos.basic.helloworld.events.tempClean
+
+@SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem", "discouraged_reference")
+agent OBU {
+	
+	uses Lifecycle, DefaultContextInteractions
+	
+	//Location of the OBUs
+	var name : String
+	var type : String
+	var conn : SumoTraciConnection
+	
+	on Initialize [occurrence.parameters.size() > 0]{
+		
+		this.name = occurrence.parameters.get(0) as String		
+		this.conn = occurrence.parameters.get(1) as SumoTraciConnection
+		this.type = this.conn.do_job_get(Vehicle.getTypeID(this.name)) as String
+		emit(new OBUConnect(this.name))
+
+	}
+	
+	on OBUDisconnect{		
+		if (occurrence.name.equals(this.name)) {
+			killMe
+		}		
+	}
+	
+	on CleanOBU {
+		if (occurrence.name.equals(this.name)) {
+			goDefaultColor
+		}	
+	}
+	
+	on tempClean{
+		goDefaultColor
+	}
+	
+	on WarnOBU{		
+		if (occurrence.name.equals(this.name)) {
+			goRed
+		}		
+	}
+	
+	def goRed {
+		this.conn.do_job_set(Vehicle.setColor(this.name, new SumoColor(255, 0, 0, 255)))
+		this.conn.do_job_set(Vehicle.setSpeed(this.name, 0.0))		
+	}
+
+	def goDefaultColor {
+		if (type.contains("reckless")) {
+			this.conn.do_job_set(Vehicle.setColor(this.name, new SumoColor(255, 140, 0, 255)))
+		} else {
+			this.conn.do_job_set(Vehicle.setColor(this.name, new SumoColor(255, 255, 0, 255)))
+		}
+		this.conn.do_job_set(Vehicle.setSpeed(this.name, 8.3))
+	}
+
+	on Destroy {
+		println(this.name + " DESTROYED!")	
+	}
+}

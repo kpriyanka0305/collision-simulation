@@ -1,0 +1,40 @@
+package io.sarl.demos.basic.helloworld.Simulations
+
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Schedules
+import it.polito.appeal.traci.SumoTraciConnection
+import kpi.Kpi
+
+/** 
+ * @author 20184729
+ * 
+ */
+agent Chaos {
+	var conn : SumoTraciConnection
+	uses Lifecycle, Schedules
+	var kpis : Kpi
+
+	on Initialize {
+		this.conn = occurrence.parameters.get(0) as SumoTraciConnection
+		this.conn.runServer();
+		this.conn.setOrder(1);
+
+		this.kpis = new Kpi(this.conn)
+				
+		run
+	}
+
+	def run {
+		val task = task("sumo running")
+		task.every(50) [
+
+			this.conn.do_timestep();
+			kpis.checkKPIs();
+		]
+	}
+	
+	on Destroy {		
+	}
+}

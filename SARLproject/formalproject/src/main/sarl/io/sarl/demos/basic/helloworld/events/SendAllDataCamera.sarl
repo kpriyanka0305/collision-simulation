@@ -1,0 +1,18 @@
+/** 
+ * 
+ */
+package io.sarl.demos.basic.helloworld.events
+
+import java.util.HashMap
+
+/** 
+ * @author 20184738
+ * 
+ */
+event SendAllDataCamera {
+	var veh_info : HashMap<String, HashMap<String, Object>>
+	new(veh_info : HashMap<String, HashMap<String, Object>>)
+	{
+		this.veh_info = veh_info
+	}	
+}

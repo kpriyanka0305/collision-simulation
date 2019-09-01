@@ -1,0 +1,176 @@
+package io.sarl.demos.basic.helloworld
+
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.demos.basic.helloworld.events.CameraConnect
+import io.sarl.core.DefaultContextInteractions
+import it.polito.appeal.traci.SumoTraciConnection
+import de.tudresden.ws.container.SumoGeometry
+import de.tudresden.ws.container.SumoPosition2D
+import de.tudresden.sumo.cmd.Polygon
+import de.tudresden.ws.container.SumoColor
+import io.sarl.core.Schedules
+import java.util.List
+import de.tudresden.sumo.cmd.Vehicle
+import de.tudresden.sumo.cmd.Junction
+import io.sarl.demos.basic.helloworld.events.SendAllDataCamera
+import java.util.HashMap
+import math.geom2d.Point2D
+import math.geom2d.polygon.Polygon2D
+import math.geom2d.polygon.SimplePolygon2D
+
+@SuppressWarnings("potential_inefficient_value_conversion", "potential_field_synchronization_problem", "unused_private_member", "unused_agent_capacity", "discouraged_reference")
+agent Camera {
+
+	var name : String
+	var angle : int // 90 - NORTH, 180 - WEST, 270 - SOUTH, 0 - EAST
+	var height : double // Meters
+	var x : double // LOCATION ON THE MAP X
+	var y : double // LOCATION ON THE MAP Y
+	var size : double // Rectangle size
+	var r : int = 14
+	var g : int = 214
+	var b : int = 197
+
+	var fieldOfView : Polygon2D
+
+	// FOR SUMO DRAWING
+	var cameraObject : SumoGeometry = new SumoGeometry()
+	var fovObject : SumoGeometry = new SumoGeometry()
+
+	// FOR COLLISION
+	var center : SumoPosition2D
+	var vehicles : List<String>
+
+	// CONNECTION OF COURSE
+	var conn : SumoTraciConnection
+
+	uses DefaultContextInteractions, Schedules
+
+	on Initialize [occurrence.parameters.size() > 0] {
+
+		// BASE
+		this.name = occurrence.parameters.get(0) as String
+		this.conn = occurrence.parameters.get(1) as SumoTraciConnection
+
+		// THESE ARE FOR CAMERA SQUARE
+		this.x = occurrence.parameters.get(2) as Double
+		this.y = occurrence.parameters.get(3) as Double
+		this.size = occurrence.parameters.get(4) as Double
+
+		// THESE ARE FOR FIELD OF VIEW
+		this.height = occurrence.parameters.get(5) as Double
+		this.angle = occurrence.parameters.get(6) as Integer
+
+		// THESE ARE FOR COLLISION POINT
+		this.center = new SumoPosition2D(2.28, 0.88)
+		drawCamera
+		drawFOV
+
+		// CONNECT TO THE CONTROLLER
+		emit(new CameraConnect(this))
+
+		// FOR OBJECT DETECTION PURPOSE IT WILL RUN EVERY 10ms
+		run
+	}
+
+	def run {
+		val task = task("camera observing")
+		task.every(6) [
+			this.vehicles = this.conn.do_job_get(Vehicle.getIDList()) as List<String>
+
+			var vehicle_data : HashMap<String, HashMap<String, Object>> = newHashMap();
+			for (v : this.vehicles) {
+				var sumoPosition : SumoPosition2D = this.conn.do_job_get(Vehicle.getPosition(v)) as SumoPosition2D
+				var type = this.conn.do_job_get(Vehicle.getTypeID(v)) as String
+				var position : Point2D = new Point2D(sumoPosition.x, sumoPosition.y)
+
+				if (fieldOfView.contains(position)) {
+					vehicle_data.put(v, readData(v, position))
+				}
+			}
+			emit(new SendAllDataCamera(vehicle_data))
+		]
+	}
+
+	def readData(id : String, position : Point2D) {
+
+		var type : String = this.conn.do_job_get(Vehicle.getTypeID(id)) as String
+		var speed : double = this.conn.do_job_get(Vehicle.getSpeed(id)) as Double
+		var length : double = this.conn.do_job_get(Vehicle.getLength(id)) as Double
+		var accel : double = this.conn.do_job_get(Vehicle.getAccel(id)) as Double
+		var cameraLocation : Point2D = new Point2D(this.center.x, this.center.y)
+		var distance : double = cameraLocation.distance(position)
+		var seconds : double
+
+		distance = distance - length / 2
+
+		if (speed > 0) {
+			seconds = distance / speed
+		} else {
+			seconds = 100.0
+		}
+
+		var myMap : HashMap<String, Object> = newHashMap(
+			'type' -> type, 
+			'speed' -> speed, 
+			'accel' -> accel,
+			'length' -> length, 
+			'distance' -> distance, 
+			'seconds' -> seconds
+		)
+		return myMap
+	}
+
+	on Destroy {
+		println("Camera destroyed")
+	}
+
+	// FOR SIMULATION/COLLISION PURPOSES ONLY
+	def drawCamera {
+		this.cameraObject.add(new SumoPosition2D(x + size / 2, y + size / 2))
+		this.cameraObject.add(new SumoPosition2D(x - size / 2, y + size / 2))
+		this.cameraObject.add(new SumoPosition2D(x - size / 2, y - size / 2))
+		this.cameraObject.add(new SumoPosition2D(x + size / 2, y - size / 2))
+
+		this.conn.do_job_set(
+			Polygon.add(this.name, cameraObject, new SumoColor(this.r, this.g, this.b, 255), true, "Square", -2))
+	}
+
+	def drawFOV {
+		var smallRadius : double = size / 2 + 15
+		var bigRadius : double = size / 2 + 15 + (90 * Math.sqrt(this.height))
+
+		var fovAngle : double = 25
+
+		// NECESSARY CALCULATIONS
+		var xSmallOne : double = x + Math.cos(Math.toRadians(angle + fovAngle)) * smallRadius
+		var ySmallOne : double = y + Math.sin(Math.toRadians(angle + fovAngle)) * smallRadius
+
+		var xSmallTwo : double = x + Math.cos(Math.toRadians(angle - fovAngle)) * smallRadius
+		var ySmallTwo : double = y + Math.sin(Math.toRadians(angle - fovAngle)) * smallRadius
+
+		var xBigOne : double = x + Math.cos(Math.toRadians(angle - fovAngle)) * bigRadius
+		var yBigOne : double = y + Math.sin(Math.toRadians(angle - fovAngle)) * bigRadius
+
+		var xBigTwo : double = x + Math.cos(Math.toRadians(angle + fovAngle)) * bigRadius
+		var yBigTwo : double = y + Math.sin(Math.toRadians(angle + fovAngle)) * bigRadius
+
+		// DRAWING OBJECT
+		this.fovObject.add(new SumoPosition2D(xSmallOne, ySmallOne))
+		this.fovObject.add(new SumoPosition2D(xSmallTwo, ySmallTwo))
+		this.fovObject.add(new SumoPosition2D(xBigOne, yBigOne))
+		this.fovObject.add(new SumoPosition2D(xBigTwo, yBigTwo))
+
+		// FOR COLLISION
+		this.fieldOfView = new SimplePolygon2D(
+			new Point2D(xSmallOne, ySmallOne),
+			new Point2D(xSmallTwo, ySmallTwo),
+			new Point2D(xBigOne, yBigOne),
+			new Point2D(xBigTwo, yBigTwo)
+		)
+
+		this.conn.do_job_set(
+			Polygon.add(this.name + "FOV", fovObject, new SumoColor(this.r, this.g, this.b, 64), true, "FOV", -2))
+	}
+}

@@ -1,0 +1,77 @@
+package io.sarl.demos.basic.helloworld
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.demos.basic.helloworld.events.RSUConnect
+import de.tudresden.ws.container.SumoGeometry
+import de.tudresden.ws.container.SumoPosition2D
+import de.tudresden.sumo.cmd.Polygon
+import it.polito.appeal.traci.SumoTraciConnection
+import de.tudresden.ws.container.SumoColor
+import io.sarl.demos.basic.helloworld.events.WarnRSU
+import io.sarl.demos.basic.helloworld.events.ClearRSU
+import io.sarl.demos.basic.helloworld.events.RSUStatus
+
+@SuppressWarnings("discouraged_occurrence_readonly_use", "unused_agent_capacity", "discouraged_reference")
+agent RSU {	
+	var name : String // EAST or WEST
+	var x : double // Location on SUMO (x)
+	var y : double // Location on SUMO (y)
+	var RSUObject : SumoGeometry = new SumoGeometry()
+	var size : double = 5
+	var status = false
+	var conn : SumoTraciConnection
+		
+	uses DefaultContextInteractions
+	
+	on Initialize {		
+		this.name = occurrence.parameters.get(0) as String
+		this.x = occurrence.parameters.get(1) as Double
+		this.y = occurrence.parameters.get(2) as Double
+		this.conn = occurrence.parameters.get(3) as SumoTraciConnection
+
+		drawRSU
+		
+		emit(new RSUConnect(this))
+		println("RSU spawned")
+				
+	}
+
+	on WarnRSU {
+		if (occurrence.name.equals(this.name)) {
+			this.status = true
+			goRed
+			emit(new RSUStatus(this.name, this.status))
+		}
+	}
+
+	on ClearRSU {
+		if (occurrence.name.equals(this.name)) {
+			this.status = false
+			goGreen
+			emit(new RSUStatus(this.name, this.status))
+		}
+	}
+
+	on Destroy {
+		println("RSU destroyed")
+	}	
+	
+	def goRed {
+		this.conn.do_job_set(Polygon.setColor(this.name, new SumoColor(255, 0, 0, 255)))		
+	}
+
+	def goGreen {
+		this.conn.do_job_set(Polygon.setColor(this.name, new SumoColor(0, 255, 0, 255)))
+	}	
+
+	def drawRSU {
+		this.RSUObject.add(new SumoPosition2D(x + size / 2, y + size / 2))
+		this.RSUObject.add(new SumoPosition2D(x - size / 2, y + size / 2))
+		this.RSUObject.add(new SumoPosition2D(x - size / 2, y - size / 2))
+		this.RSUObject.add(new SumoPosition2D(x + size / 2, y - size / 2))
+
+		this.conn.do_job_set(Polygon.add(this.name, RSUObject, new SumoColor(0, 255, 0, 255), true, "Square", -2))
+	}	
+}

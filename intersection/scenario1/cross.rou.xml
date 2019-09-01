@@ -1,0 +1,48 @@
+<routes>
+        <vType id="bus" accel="1" decel="2.8" sigma="0.5" length="12" minGap="2" maxSpeed="8.3" guiShape="bus"/>
+        <!-- Cyclist who stops only when warned -->
+        <vType id="bicycle-distracted" accel="1" decel="5" sigma="0.5" length="1.8" minGap="0.2" maxSpeed="4.2" guiShape="bicycle"/>
+        <!-- Cyclist who doesnt stop even when warned -->
+        <vType id="bicycle-reckless" accel="1" decel="5" sigma="0.5" length="1.8" minGap="0.2" maxSpeed="4.2" guiShape="bicycle" color="1,0,0"/>
+
+        <!--Only approach the intersection-->
+        <route id="W-to-intersection" edges="1i1 1i2" />
+        <route id="SW-to-intersection" edges="2i1 2i2" />
+        <route id="S-to-intersection" edges="3i" />
+        <route id="E-to-intersection" edges="4i1 4i2" />
+        <route id="NE-to-intersection" edges="5i1 5i2" />
+        
+        <!--Pass (approach and leave) the intersection-->
+        <route id="W-to-E" edges="1i1 1i2 4o1 4o2" />
+        <route id="SW-to-NE" edges="2i1 2i2 5o1 5o2" />
+        <route id="S-to-NE" edges="3i 5o1 5o2" />  
+        <route id="E-to-W" edges="4i1 4i2 1o1 1o2" />
+        <route id="NE-to-SW" edges="5i1 5i2 2o1 2o2" />
+
+        <!--Only leave the intersection-->
+        <route id="intersection-to-W" edges="1o1 1o2" />
+        <route id="intersection-to-SW" edges="2o1 2o2" />
+        <route id="intersection-to-E" edges="4o1 4o2 " />
+        <route id="intersection-to-NE" edges="5o1 5o2" />
+
+        
+        <!-- vehicle flow -->
+        <!-- Scenario 1 - bus from NE-SW and cyclist from E-W -->
+
+        <!-- Reckless bicycle doesnt stop as there is no RSU warning, bus doesnt stop as there is no OBU warning -->
+        <vehicle id="bicycle1" type="bicycle-reckless" route="E-to-W" depart="0"/> 
+        <vehicle id="bus1" type="bus" route="NE-to-SW" depart="20" />
+
+        <!--  Distracted bicycle doesnt stops as RSU warning is issued after he crosses the RSU, bus doesnt stop as there is no OBU warning -->
+        <vehicle id="bicycle2" type="bicycle-distracted" route="E-to-W" depart="50" /> 
+        <vehicle id="bus2" type="bus" route="NE-to-SW" depart="65" />
+
+        <!-- Distracted bicycle stops with the RSU warning, bus doesnt stop as there is no OBU warning  -->
+        <vehicle id="bicycle3" type="bicycle-distracted" route="E-to-W" depart="100" /> 
+        <vehicle id="bus3" type="bus" route="NE-to-SW" depart="112" />
+
+        <!-- Reckless bicycle doesnt stop with RSU warning, Bus stops with OBU warning -->
+        <vehicle id="bicycle4" type="bicycle-reckless" route="E-to-W" depart="150"/>
+        <vehicle id="bus4" type="bus" route="NE-to-SW" depart="162" />
+
+</routes>
