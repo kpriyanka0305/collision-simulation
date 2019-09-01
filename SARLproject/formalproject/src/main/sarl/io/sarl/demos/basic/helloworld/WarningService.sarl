@@ -74,12 +74,12 @@ agent WarningService {
 					if (east_rsu && road_id.contains("i")) {
 						if (distance > rsu_distance && distance < rsu_distance + cyclist_range) {
 							this.conn.do_job_set(Vehicle.setSpeed(v, 0.0))
-							//println("Bicycle distracted entered" + distance + "RSU distance is:-" + rsu_distance + "Cyclists range is :- " + cyclist_range + "cyclists speed :-" + speed);
+							println("Bicycle distracted entered" + distance + "RSU distance is:-" + rsu_distance + "Cyclists range is :- " + cyclist_range + "cyclists speed :-" + speed);
 						}
 					} else {
 						if (speed == 0) {
 							this.conn.do_job_set(Vehicle.setSpeed(v, 4.2)) // 4.2 - speed of bicycle set here
-							//println(v + "Bicycle distracted entered");
+							println(v + "Bicycle distracted entered");
 						}
 					}
 				}
