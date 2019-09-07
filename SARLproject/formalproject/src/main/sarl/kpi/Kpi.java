@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import de.tudresden.sumo.cmd.Vehicle;
+import de.tudresden.sumo.cmd.Vehicletype;
 import de.tudresden.sumo.cmd.Simulation;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
@@ -57,31 +58,67 @@ public class Kpi {
 		    List<Double> bus_values = o.getValue();
 		    for (Map.Entry<String, List<Double>> p : bicycles.entrySet()) {
 		    	List<Double> bicycle_values = p.getValue();
+		    	String cycleKey = p.getKey();
 		    	for (int i = 0; i < bus_values.size(); i++) {
 		    		for (int j = 0; j < bicycle_values.size(); j++) {
 		    			if( (bus_values.get(i) < collision_limit) && (bicycle_values.get(j) < collision_limit) ) {
 		    				if(!collision_ids.contains(key)) {		    					
 								collision_ids.add(key);
-							}
+								
+								System.out.println("-> Collision Hit");
+								Double speed = (double)this.conn.do_job_get(Vehicle.getSpeed(key));
+								String type = (String)this.conn.do_job_get(Vehicle.getTypeID(key));
+								Double cycleSpeed = (double)this.conn.do_job_get(Vehicle.getSpeed(cycleKey));
+								String cycleType = (String)this.conn.do_job_get(Vehicle.getTypeID(cycleKey));
+							
+								System.out.println("-> Bus type & Key : " + type + "   " + key + "     Cycle type & key  " + cycleKey + "    " + cycleType);
+								System.out.println("-> BUS speed is " + speed + "    Cycle Speed is " +  cycleSpeed);
+								System.out.println("-> BUS values is " + bus_values.get(i) + "    Cycle Values is " +  bicycle_values.get(j));
+								System.out.println("-------------------------------------------------------------------");
+								
+								//System.out.println(" KPI JAVA,: bus value size:"+ bus_values.size() + " collision bus values : " + bus_values.get(i) + " bicycle values : " +  bicycle_values.get(j)+ "-- size--" + collision_ids.size());
+								
+		    				}
+		    				
 		    			}
 		    			else {
 			    			if( (i == 0) && (j == bicycle_values.size()-1) ) {
+			    				
+			    			//	System.out.println("--Collision limit-- " + bus_values.get(i) + "--------");
 			    				if( bus_values.get(i) > collision_limit && bus_values.get(i) <= near_collision_limit
 			    						&& bicycle_values.get(j) >= 0.0 && bicycle_values.get(j) <= collision_limit ) {
-			    					if(!collision_ids.contains(key)) {
-			    						near_collision_ids.add(key);
+			    					if(!collision_ids.contains(cycleKey)) {
+			    						near_collision_ids.add(cycleKey);
 			    					}
 			    					
+			    					System.out.println("-> Near Collision Hit");
+									Double speed = (double)this.conn.do_job_get(Vehicle.getSpeed(key));
+									Double cycleSpeed = (double)this.conn.do_job_get(Vehicle.getSpeed(cycleKey));
+									String type = (String)this.conn.do_job_get(Vehicle.getTypeID(key));
+									String cycleType = (String)this.conn.do_job_get(Vehicle.getTypeID(cycleKey));
+									System.out.println("-> Bus type & Key : " + type + "  " + key + "     Cycle type & key  " + cycleKey + "    " + cycleType);
+									System.out.println("-> BUS speed is " + speed + "    Cycle Speed is " +  cycleSpeed);
+									System.out.println("-> BUS values is " + bus_values.get(i) + "    Cycle Values is " +  bicycle_values.get(j));
+									System.out.println("-------------------------------------------------------------------");
+			    					//System.out.println(" KPI JAVA,: bicyclce value size  " + bicycle_values.size() +" near collision bus values1 : " + bus_values.get(i) + " bicycle values : " +  bicycle_values.get(j)+ "-- near collision size is--" + near_collision_ids.size());
+			    					//Double cycleSpeed = (double)this.conn.do_job_get(Vehicle.getSpeed(cycleKey));
+			    					//System.out.println("KPI JAVA Cycle speed is " + cycleSpeed);
 				    			}
+			    				
 			    			}
 			    			if( (i == bus_values.size()-1) && (j == 0) ) {
 			    				if( bus_values.get(i) >= 0.0 && bus_values.get(i) <= collision_limit
 			    						&& bicycle_values.get(j) > collision_limit && bicycle_values.get(j) <= near_collision_limit ) {
-			    					if(!collision_ids.contains(key)) {
-			    						near_collision_ids.add(key);
+			    					if(!collision_ids.contains(cycleKey)) {
+			    						near_collision_ids.add(cycleKey);
 			    					}
+			    					System.out.println(" KPI JAVA, near collision values2 : " + bus_values.get(i) + " bicycle values : " +  bicycle_values.get(j)+ "-- size--" + near_collision_ids.size());
 			    				}
+			    				
+			    			
 			    			}
+			    			
+			    			
 		    			}
 		    		}
 				}
@@ -94,7 +131,7 @@ public class Kpi {
 		Double time_ins;
 		time_ins = (Double)this.conn.do_job_get(Simulation.getTime());
 		if(time_ins >= i) {
-			s = s + time_ins + "," + collision_ids.size() + "," + near_collision_ids.size() + "\n";
+			s = s + time_ins + "," + collision_ids.size() + "," + near_collision_ids.size() + "," + 111 + "\n";
 			i = i + 50;
 		}
 		
