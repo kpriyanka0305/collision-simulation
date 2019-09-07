@@ -4,6 +4,8 @@ import io.sarl.demos.basic.helloworld.WarningService;
 import it.polito.appeal.traci.SumoTraciConnection;
 import io.sarl.demos.basic.helloworld.Simulations.*;
 
+// Hello
+
 public class main {		
 	static String sumo_bin = "sumo-gui";
 	static String config_file = "data/cross.sumocfg";
