@@ -52,6 +52,10 @@ public class Kpi {
 				bicycles.put(v, getData(v));
 			}			
 		}
+
+
+        logVehicleData();
+
 		
 		for (Map.Entry<String, List<Double>> o : buses.entrySet()) {
 		    String key = o.getKey();
@@ -171,4 +175,19 @@ public class Kpi {
 		}
 		return times;
 	}	
+
+    private void logVehicleData() throws Exception
+    {
+        // At every step of the simulation, print:
+        //  1. The timestamp
+        //  2. The speed and location of all vehicles
+        Double timestamp = (Double)this.conn.do_job_get(Simulation.getTime());
+        System.out.println("time " + timestamp);
+        for( String vehicleId : (List<String>)this.conn.do_job_get(Vehicle.getIDList()) )
+        {
+            SumoPosition2D position = (SumoPosition2D)this.conn.do_job_get(Vehicle.getPosition(vehicleId));
+            Double speed = (double)this.conn.do_job_get(Vehicle.getSpeed(vehicleId));
+            System.out.println(vehicleId + "," + position + "," + speed);
+        }
+    }
 }
