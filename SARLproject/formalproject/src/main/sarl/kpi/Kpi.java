@@ -22,7 +22,7 @@ public class Kpi {
     Double near_collision_limit = 1.0;
     static Set<String> collision_ids = new HashSet<String>();
     static Set<String> near_collision_ids = new HashSet<String>();
-    static KpiWindow kpiDataWindow;
+    //static KpiWindow kpiDataWindow;
     String s = new String();
     static boolean write_flag = false;
     static Double max_sim_time = 300.0;
@@ -36,7 +36,7 @@ public class Kpi {
     public Kpi(SumoTraciConnection connection) throws Exception {
         this.conn = connection;
         try {
-            kpiDataWindow = new KpiWindow();
+            //kpiDataWindow = new KpiWindow();
         }
         finally{
 
@@ -142,7 +142,7 @@ public class Kpi {
 
         kpi.put("Collision", collision_ids.size());
         kpi.put("NearCollision", near_collision_ids.size());
-        kpiDataWindow.updateKpiDataWindow(collision_ids.size(), near_collision_ids.size());
+        //kpiDataWindow.updateKpiDataWindow(collision_ids.size(), near_collision_ids.size());
         Double time_ins;
         time_ins = (Double)this.conn.do_job_get(Simulation.getTime());
         if(time_ins >= i) {
