@@ -11,7 +11,7 @@ import de.tudresden.sumo.cmd.Vehicletype;
 import de.tudresden.sumo.cmd.Simulation;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
-import java.io.FileWriter
+import java.io.FileWriter;
 
 public class Kpi {
     SumoTraciConnection conn;
