@@ -28,6 +28,8 @@ public class Kpi {
     static String type_scen = "chaotic";
     //static String type_scen = "onlyrsu";
     //static String type_scen = "rsuandobu";
+    
+    public enum CollisionType { COLLISION, NEAR_COLLISION }
 
     public Kpi(SumoTraciConnection connection) throws Exception {
         this.conn = connection;
@@ -54,7 +56,6 @@ public class Kpi {
         }
 
 
-        logVehicleData();
 
 
         for (Map.Entry<String, List<Double>> o : buses.entrySet()) {
@@ -68,6 +69,8 @@ public class Kpi {
                         if( (bus_values.get(i) < collision_limit) && (bicycle_values.get(j) < collision_limit) ) {
                             if(!collision_ids.contains(key)) {
                                 collision_ids.add(key);
+
+                                logVehicleData(CollisionType.COLLISION);
 
                                 System.out.println("-> Collision Hit");
                                 Double speed = (double)this.conn.do_job_get(Vehicle.getSpeed(key));
@@ -94,6 +97,8 @@ public class Kpi {
                                     if(!collision_ids.contains(cycleKey)) {
                                         near_collision_ids.add(cycleKey);
                                     }
+
+                                    logVehicleData(CollisionType.NEAR_COLLISION);
 
                                     System.out.println("-> Near Collision Hit");
                                     Double speed = (double)this.conn.do_job_get(Vehicle.getSpeed(key));
@@ -176,18 +181,18 @@ public class Kpi {
         return times;
     }
 
-    private void logVehicleData() throws Exception
+    private void logVehicleData(CollisionType collisionType) throws Exception
     {
-        // At every step of the simulation, print:
-        //  1. The timestamp
-        //  2. The speed and location of all vehicles
+        FileWriter file = new FileWriter("data/" + type_scen + "-collisions.csv", true);
         Double timestamp = (Double)this.conn.do_job_get(Simulation.getTime());
-        System.out.println("time " + timestamp);
+        file.append(timestamp + "," + collisionType);
         for( String vehicleId : (List<String>)this.conn.do_job_get(Vehicle.getIDList()) )
         {
             SumoPosition2D position = (SumoPosition2D)this.conn.do_job_get(Vehicle.getPosition(vehicleId));
             Double speed = (double)this.conn.do_job_get(Vehicle.getSpeed(vehicleId));
-            System.out.println(vehicleId + "," + position + "," + speed);
+            file.append("," + vehicleId + "," + position + "," + speed);
         }
+        file.append("\n");
+        file.close();
     }
 }
