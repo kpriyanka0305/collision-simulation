@@ -12,6 +12,8 @@ import de.tudresden.sumo.cmd.Simulation;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
 import java.io.FileWriter;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 public class Kpi {
     SumoTraciConnection conn;
@@ -66,8 +68,10 @@ public class Kpi {
                 String cycleKey = p.getKey();
                 for (int i = 0; i < bus_values.size(); i++) {
                     for (int j = 0; j < bicycle_values.size(); j++) {
-                        if( (bus_values.get(i) < collision_limit) && (bicycle_values.get(j) < collision_limit) ) {
-                            if(!collision_ids.contains(key)) {
+                    
+                    if( (bus_values.get(i) < collision_limit) && (bicycle_values.get(j) < collision_limit) ) {
+                        
+                            if(!collision_ids.contains(key) && !near_collision_ids.contains(key)) {
                                 collision_ids.add(key);
 
                                 logVehicleData(CollisionType.COLLISION);
@@ -75,15 +79,14 @@ public class Kpi {
                                 System.out.println("-> Collision Hit");
                                 Double speed = (double)this.conn.do_job_get(Vehicle.getSpeed(key));
                                 String type = (String)this.conn.do_job_get(Vehicle.getTypeID(key));
+                                 
                                 Double cycleSpeed = (double)this.conn.do_job_get(Vehicle.getSpeed(cycleKey));
                                 String cycleType = (String)this.conn.do_job_get(Vehicle.getTypeID(cycleKey));
-
+                            
                                 System.out.println("-> Bus type & Key : " + type + "   " + key + "     Cycle type & key  " + cycleKey + "    " + cycleType);
                                 System.out.println("-> BUS speed is " + speed + "    Cycle Speed is " +  cycleSpeed);
                                 System.out.println("-> BUS values is " + bus_values.get(i) + "    Cycle Values is " +  bicycle_values.get(j));
                                 System.out.println("-------------------------------------------------------------------");
-
-                                //System.out.println(" KPI JAVA,: bus value size:"+ bus_values.size() + " collision bus values : " + bus_values.get(i) + " bicycle values : " +  bicycle_values.get(j)+ "-- size--" + collision_ids.size());
 
                             }
 
@@ -91,27 +94,30 @@ public class Kpi {
                         else {
                             if( (i == 0) && (j == bicycle_values.size()-1) ) {
 
-                            //  System.out.println("--Collision limit-- " + bus_values.get(i) + "--------");
                                 if( bus_values.get(i) > collision_limit && bus_values.get(i) <= near_collision_limit
                                         && bicycle_values.get(j) >= 0.0 && bicycle_values.get(j) <= collision_limit ) {
-                                    if(!collision_ids.contains(cycleKey)) {
-                                        near_collision_ids.add(cycleKey);
-                                    }
+                                    if(!collision_ids.contains(key) && !near_collision_ids.contains(key)) {
+                                        near_collision_ids.add(key);
+                                    
 
                                     logVehicleData(CollisionType.NEAR_COLLISION);
 
                                     System.out.println("-> Near Collision Hit");
+                                   
                                     Double speed = (double)this.conn.do_job_get(Vehicle.getSpeed(key));
-                                    Double cycleSpeed = (double)this.conn.do_job_get(Vehicle.getSpeed(cycleKey));
                                     String type = (String)this.conn.do_job_get(Vehicle.getTypeID(key));
+                                     
+                                    Double cycleSpeed = (double)this.conn.do_job_get(Vehicle.getSpeed(cycleKey));
                                     String cycleType = (String)this.conn.do_job_get(Vehicle.getTypeID(cycleKey));
-                                    System.out.println("-> Bus type & Key : " + type + "  " + key + "     Cycle type & key  " + cycleKey + "    " + cycleType);
+                                
+
+
+                                    System.out.println("-> Bus type & Key : " + type + "   " + key + "     Cycle type & key  " + cycleKey + "    " + cycleType);
                                     System.out.println("-> BUS speed is " + speed + "    Cycle Speed is " +  cycleSpeed);
                                     System.out.println("-> BUS values is " + bus_values.get(i) + "    Cycle Values is " +  bicycle_values.get(j));
-                                    System.out.println("-------------------------------------------------------------------");
-                                    //System.out.println(" KPI JAVA,: bicyclce value size  " + bicycle_values.size() +" near collision bus values1 : " + bus_values.get(i) + " bicycle values : " +  bicycle_values.get(j)+ "-- near collision size is--" + near_collision_ids.size());
-                                    //Double cycleSpeed = (double)this.conn.do_job_get(Vehicle.getSpeed(cycleKey));
-                                    //System.out.println("KPI JAVA Cycle speed is " + cycleSpeed);
+                                    System.out.println("------------------------End of Near collision-------------------------------------------");
+                                  
+                                }
                                 }
 
                             }
@@ -172,19 +178,26 @@ public class Kpi {
         if(type.contains("bus")) {
             for (double i = 0; i < length; i++) {
                 times.add( (distance+i)/speed );
+                
             }
         }
         if(type.contains("bicycle")) {
             times.add(distance/speed);
             times.add((distance+length)/speed);
+            
+            
         }
         return times;
     }
 
     private void logVehicleData(CollisionType collisionType) throws Exception
     {
+    	try {
+    		
+    	
         FileWriter file = new FileWriter("data/" + type_scen + "-collisions.csv", true);
         Double timestamp = (Double)this.conn.do_job_get(Simulation.getTime());
+   
         file.append(timestamp + "," + collisionType);
         for( String vehicleId : (List<String>)this.conn.do_job_get(Vehicle.getIDList()) )
         {
@@ -194,5 +207,8 @@ public class Kpi {
         }
         file.append("\n");
         file.close();
+    	}catch(Exception e) {
+    		System.out.println(e);
+    	}
     }
 }

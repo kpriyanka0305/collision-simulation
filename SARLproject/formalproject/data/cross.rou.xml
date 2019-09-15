@@ -1,12 +1,12 @@
 <routes>
         <!-- Bus who stops when warned -->
-        <vType id="bus" accel="1" decel="3.5" sigma="0.5" length="12" minGap="2" maxSpeed="8.3" guiShape="bus" />
+        <vType id="bus" accel="1" decel="3.5" sigma="0.0" length="12" minGap="2" maxSpeed="8.3" guiShape="bus" />
         <!-- Bus who doesnt stop even when warned -->
-        <vType id="bus-reckless" accel="1" decel="3.5" sigma="0.5" length="12" minGap="2" maxSpeed="8.3" guiShape="bus" color="255,140,0" />
+        <vType id="bus-reckless" accel="1" decel="3.5" sigma="0.0" length="12" minGap="2" maxSpeed="8.3" guiShape="bus" color="255,140,0" />
         <!-- Cyclist who stops only when warned -->
-        <vType id="bicycle-distracted" accel="1" decel="5" sigma="0.5" length="1.8" minGap="0.2" maxSpeed="4.2" guiShape="bicycle"/>
+        <vType id="bicycle-distracted" accel="1" decel="5" sigma="0.0" length="1.8" minGap="0.2" maxSpeed="4.2" guiShape="bicycle"/>
         <!-- Cyclist who doesnt stop even when warned -->
-        <vType id="bicycle-reckless" accel="1" decel="5" sigma="0.5" length="1.8" minGap="0.2" maxSpeed="4.2" guiShape="bicycle" color="255,140,0" />
+        <vType id="bicycle-reckless" accel="1" decel="5" sigma="0.0" length="1.8" minGap="0.2" maxSpeed="4.2" guiShape="bicycle" color="255,140,0" />
 
         <!--Only approach the intersection-->
         <route id="W-to-intersection" edges="1i1 1i2" />
@@ -34,11 +34,14 @@
    
         <!-- Reckless bicycle doesnt stop as there is no RSU warning, bus doesnt stop as there is no OBU warning -->
         <vehicle id="bicycle1" type="bicycle-reckless" route="E-to-W" depart="20"/> 
-        <vehicle id="bus1" type="bus" route="NE-to-SW" depart="40" />
+        <vehicle id="bus1" type="bus" route="NE-to-SW" depart="40" >
+			
+		</vehicle>
 
         <!-- Distracted bicycle stops with the RSU warning, bus doesnt stop as there is no OBU warning  -->
         <vehicle id="bicycle2" type="bicycle-distracted" route="E-to-W" depart="70" /> 
-        <vehicle id="bus2" type="bus" route="NE-to-SW" depart="82" />
+        <vehicle id="bus2" type="bus" route="NE-to-SW" depart="82" >
+		</vehicle>	
 
         <!-- Reckless bicycle doesnt stop with RSU warning, Bus stops with OBU warning -->
         <vehicle id="bicycle3" type="bicycle-reckless" route="E-to-W" depart="120"/>
