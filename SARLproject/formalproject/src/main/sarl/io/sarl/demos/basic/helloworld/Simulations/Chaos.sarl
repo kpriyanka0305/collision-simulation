@@ -18,8 +18,7 @@ agent Chaos {
 
 	on Initialize {
 		this.conn = occurrence.parameters.get(0) as SumoTraciConnection
-
-		this.kpis = new Kpi(this.conn)
+		this.kpis = occurrence.parameters.get(1) as Kpi
 				
 		run
 	}

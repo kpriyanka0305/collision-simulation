@@ -2,6 +2,7 @@ import io.sarl.bootstrap.SRE;
 import io.sarl.bootstrap.SREBootstrap;
 import io.sarl.demos.basic.helloworld.WarningService;
 import it.polito.appeal.traci.SumoTraciConnection;
+import kpi.Kpi;
 import io.sarl.demos.basic.helloworld.Simulations.*;
 import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.subscription.ResponseType;
@@ -17,10 +18,12 @@ public class Main implements Observer {
 	static String config_file = "data/cross.sumocfg";
 	static double step_length = 0.2;
 
-	SumoTraciConnection conn;
+	private SumoTraciConnection conn;
+	private Kpi kpi;
 
-	public Main(SumoTraciConnection conn) {
+	public Main(SumoTraciConnection conn) throws Exception {
 		this.conn = conn;
+		this.kpi = new Kpi(conn);
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -30,9 +33,9 @@ public class Main implements Observer {
 		m.subscribe();
 
 		SREBootstrap bootstrap = SRE.getBootstrap();
-//		bootstrap.startAgent(WarningService.class, connection);
-		bootstrap.startAgent(Chaos.class, connection);
-		// bootstrap.startAgent(OnlyRSUWithCamera.class, connection);
+		bootstrap.startAgent(WarningService.class, m.conn, m.kpi);
+//		bootstrap.startAgent(Chaos.class, m.conn, m.kpi);
+//		bootstrap.startAgent(OnlyRSUWithCamera.class, m.conn, m.kpi);
 	}
 
 	public static SumoTraciConnection SumoConnect() throws Exception {

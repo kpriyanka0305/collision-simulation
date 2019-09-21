@@ -29,8 +29,7 @@ agent WarningService {
 
 	on Initialize {
 		this.conn = occurrence.parameters.get(0) as SumoTraciConnection
-
-		this.kpis = new Kpi(this.conn)
+		this.kpis = occurrence.parameters.get(1) as Kpi
 
 		this.RsusStatus.put("East", false)
 		this.RsusStatus.put("West", false)
