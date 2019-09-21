@@ -17,6 +17,9 @@ import java.text.DecimalFormat;
 
 public class Kpi {
     SumoTraciConnection conn;
+    Set<String> activeBuses = new HashSet<String>();
+    Set<String> activeBikes = new HashSet<String>();
+
     static HashMap<String, Integer> kpi = new HashMap<String, Integer>();
     Double collision_limit = 0.5;
     Double near_collision_limit = 1.0;
@@ -42,6 +45,22 @@ public class Kpi {
 
         }
     }
+    
+    public void addBus(String vehicleID) {
+    	activeBuses.add(vehicleID);
+    }
+    
+    public void removeBus(String vehicleID) {
+    	activeBuses.remove(vehicleID);
+    }
+    
+    public void addBike(String vehicleID) {
+    	activeBikes.add(vehicleID);
+    }
+    
+    public void removeBike(String vehicleID) {
+    	activeBikes.remove(vehicleID);
+    }
 
     public void checkKPIs() throws Exception{
         List<String> vehicles = new ArrayList<String>();
@@ -57,9 +76,7 @@ public class Kpi {
             }
         }
 
-
-
-
+        
         for (Map.Entry<String, List<Double>> o : buses.entrySet()) {
             String key = o.getKey();
             List<Double> bus_values = o.getValue();

@@ -61,15 +61,31 @@ public class Main implements Observer {
 			if (so.variable == Constants.VAR_DEPARTED_VEHICLES_IDS) {
 				SumoStringList ssl = (SumoStringList) so.object;
 				if (ssl.size() > 0) {
-					for (String vehID : ssl) {
-						System.out.println("Subscription Departed vehicles: " + vehID);
+					for (String vehicleID : ssl) {
+						System.out.println("Departed vehicles: " + vehicleID);
+						if( vehicleID.startsWith("bus"))
+						{
+							kpi.addBus(vehicleID);
+						}
+						else if( vehicleID.startsWith("bicycle"))
+						{
+							kpi.addBike(vehicleID);
+						}
 					}
 				}
 			} else if (so.variable == Constants.VAR_ARRIVED_VEHICLES_IDS) {
 				SumoStringList ssl = (SumoStringList) so.object;
 				if (ssl.size() > 0) {
-					for (String vehID : ssl) {
-						System.out.println("Subscription Arrived vehicles: " + vehID);
+					for (String vehicleID : ssl) {
+						System.out.println("Subscription Arrived vehicles: " + vehicleID);
+						if( vehicleID.startsWith("bus"))
+						{
+							kpi.removeBus(vehicleID);
+						}
+						else if( vehicleID.startsWith("bike"))
+						{
+							kpi.removeBike(vehicleID);
+						}
 					}
 				}
 			}
