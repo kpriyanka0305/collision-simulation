@@ -46,17 +46,27 @@ public class Main implements Observer {
 		conn.addObserver(new Main());
 		VariableSubscription vs = new VariableSubscription(SubscribtionVariable.simulation, 0, 100000 * 60, "");
 		vs.addCommand(Constants.VAR_DEPARTED_VEHICLES_IDS);
+		vs.addCommand(Constants.VAR_ARRIVED_VEHICLES_IDS);
 		conn.do_subscription(vs);
 	}
 
 	@Override
 	public void update(Observable arg0, SubscriptionObject so) {
 		if (so.response == ResponseType.SIM_VARIABLE) {
-			assert (so.variable == Constants.VAR_DEPARTED_VEHICLES_IDS);
-			SumoStringList ssl = (SumoStringList) so.object;
-			if (ssl.size() > 0) {
-				for (String vehID : ssl) {
-					System.out.println("Subscription Departed vehicles: " + vehID);
+			if (so.variable == Constants.VAR_DEPARTED_VEHICLES_IDS) {
+				SumoStringList ssl = (SumoStringList) so.object;
+				if (ssl.size() > 0) {
+					for (String vehID : ssl) {
+						System.out.println("Subscription Departed vehicles: " + vehID);
+					}
+				}
+			}
+			else if (so.variable == Constants.VAR_ARRIVED_VEHICLES_IDS) {
+				SumoStringList ssl = (SumoStringList) so.object;
+				if (ssl.size() > 0) {
+					for (String vehID : ssl) {
+						System.out.println("Subscription Arrived vehicles: " + vehID);
+					}
 				}
 			}
 		}
