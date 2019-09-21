@@ -20,7 +20,7 @@ public class Kpi {
 	SumoTraciConnection conn;
 	Set<String> activeBuses = new HashSet<>();
 	Set<String> activeBikes = new HashSet<>();
-	Map<String, Map<String, List<Double>>> distances = new HashMap<>();
+	Map<String, Map<String, List<Double[]>>> distances = new HashMap<>();
 
 	static HashMap<String, Integer> kpi = new HashMap<String, Integer>();
 	Double collision_limit = 0.5;
@@ -56,9 +56,12 @@ public class Kpi {
 
 	public void removeBus(String vehicleID) {
 		activeBuses.remove(vehicleID);
-		for( Map.Entry<String,List<Double>> dists : distances.get(vehicleID).entrySet() )
-		{
-			System.out.println(vehicleID + " -- " + dists.getKey() + " = " + dists.getValue().stream().mapToDouble(v -> v).min());
+		for (Map.Entry<String, List<Double[]>> dists : distances.get(vehicleID).entrySet()) {
+			System.out.println(vehicleID + " -- " + dists.getKey() + " = "
+					+ dists.getValue().stream().mapToDouble(v -> v[1]).min());
+			for (Double[] dataPoint : dists.getValue()) {
+				System.out.println(dataPoint[0] + " " + dataPoint[1]);
+			}
 		}
 	}
 
@@ -75,10 +78,13 @@ public class Kpi {
 		SumoPosition2D bikePos = (SumoPosition2D) conn.do_job_get(Vehicle.getPosition(bikeID));
 		Double distance = (Double) conn
 				.do_job_get(Simulation.getDistance2D(busPos.x, busPos.y, bikePos.x, bikePos.y, false, false));
-//		minimalDistances.get(busID).compute(bikeID, (k, v) -> v == null ? new ArrayList<Double>(distance) : Math.min(v, distance));
-		Map<String, List<Double>> bikeDistances = distances.get(busID);
+		Double timestamp = (Double) this.conn.do_job_get(Simulation.getTime());
+		Map<String, List<Double[]>> bikeDistances = distances.get(busID);
 		bikeDistances.putIfAbsent(bikeID, new ArrayList<>());
-		bikeDistances.compute(bikeID, (k, list) -> { list.add(distance); return list; });
+		bikeDistances.compute(bikeID, (k, list) -> {
+			list.add(new Double[] { timestamp, distance });
+			return list;
+		});
 	}
 
 	public void checkKPIs() throws Exception {
