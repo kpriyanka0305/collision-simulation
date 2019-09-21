@@ -1,7 +1,7 @@
 .PHONY: run compile
 
 compile:
-	mvn compile
+	mvn -o compile
 
 run:
-	mvn exec:java -Dexec.mainClass=main
+	mvn -o exec:java -Dexec.mainClass=main
