@@ -20,7 +20,7 @@ public class Kpi {
 	SumoTraciConnection conn;
 	Set<String> activeBuses = new HashSet<>();
 	Set<String> activeBikes = new HashSet<>();
-	Map<String, Map<String, Integer>> minimalDistances = new HashMap<>();
+	Map<String, Map<String, Double>> minimalDistances = new HashMap<>();
 
 	static HashMap<String, Integer> kpi = new HashMap<String, Integer>();
 	Double collision_limit = 0.5;
@@ -56,6 +56,10 @@ public class Kpi {
 
 	public void removeBus(String vehicleID) {
 		activeBuses.remove(vehicleID);
+		for( Map.Entry<String,Double> minimalDistance : minimalDistances.get(vehicleID).entrySet() )
+		{
+			System.out.println(vehicleID + " -- " + minimalDistance.getKey() + " = " + minimalDistance.getValue());
+		}
 	}
 
 	public void addBike(String vehicleID) {
@@ -71,7 +75,7 @@ public class Kpi {
 		SumoPosition2D bikePos = (SumoPosition2D) conn.do_job_get(Vehicle.getPosition(bikeID));
 		Double distance = (Double) conn
 				.do_job_get(Simulation.getDistance2D(busPos.x, busPos.y, bikePos.x, bikePos.y, false, false));
-		System.out.println(busID + " -- " + bikeID + " = " + distance);
+		minimalDistances.get(busID).compute(bikeID, (k, v) -> v == null ? distance : Math.min(v, distance));
 	}
 
 	public void checkKPIs() throws Exception {
