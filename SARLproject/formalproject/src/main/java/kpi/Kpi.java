@@ -18,8 +18,9 @@ import java.text.DecimalFormat;
 
 public class Kpi {
 	SumoTraciConnection conn;
-	Set<String> activeBuses = new HashSet<String>();
-	Set<String> activeBikes = new HashSet<String>();
+	Set<String> activeBuses = new HashSet<>();
+	Set<String> activeBikes = new HashSet<>();
+	Map<String, Map<String, Integer>> minimalDistances = new HashMap<>();
 
 	static HashMap<String, Integer> kpi = new HashMap<String, Integer>();
 	Double collision_limit = 0.5;
@@ -50,6 +51,7 @@ public class Kpi {
 
 	public void addBus(String vehicleID) {
 		activeBuses.add(vehicleID);
+		minimalDistances.put(vehicleID, new HashMap<>());
 	}
 
 	public void removeBus(String vehicleID) {
@@ -64,6 +66,14 @@ public class Kpi {
 		activeBikes.remove(vehicleID);
 	}
 
+	public void updateMinimalDistance(String busID, String bikeID) throws Exception {
+		SumoPosition2D busPos = (SumoPosition2D) conn.do_job_get(Vehicle.getPosition(busID));
+		SumoPosition2D bikePos = (SumoPosition2D) conn.do_job_get(Vehicle.getPosition(bikeID));
+		Double distance = (Double) conn
+				.do_job_get(Simulation.getDistance2D(busPos.x, busPos.y, bikePos.x, bikePos.y, false, false));
+		System.out.println(busID + " -- " + bikeID + " = " + distance);
+	}
+
 	public void checkKPIs() throws Exception {
 		List<String> vehicles = new ArrayList<String>();
 		vehicles = (List<String>) this.conn.do_job_get(Vehicle.getIDList());
@@ -74,6 +84,12 @@ public class Kpi {
 				buses.put(v, getData(v));
 			} else {
 				bicycles.put(v, getData(v));
+			}
+		}
+
+		for (String bus : activeBuses) {
+			for (String bike : activeBikes) {
+				updateMinimalDistance(bus, bike);
 			}
 		}
 

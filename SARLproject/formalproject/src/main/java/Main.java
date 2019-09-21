@@ -16,6 +16,8 @@ public class Main implements Observer {
 	static final String SUMO_BIN = "sumo-gui";
 	static final String CONFIG_FILE = "data/cross.sumocfg";
 	static final double STEP_LENGTH = 0.2;
+	static final String BUS_PREFIX = "bus";
+	static final String BIKE_PREFIX = "bicycle";
 
 	private SumoTraciConnection conn;
 	private Kpi kpi;
@@ -32,8 +34,8 @@ public class Main implements Observer {
 		m.subscribe();
 
 		SREBootstrap bootstrap = SRE.getBootstrap();
-		bootstrap.startAgent(WarningService.class, m.conn, m.kpi);
-//		bootstrap.startAgent(Chaos.class, m.conn, m.kpi);
+//		bootstrap.startAgent(WarningService.class, m.conn, m.kpi);
+		bootstrap.startAgent(Chaos.class, m.conn, m.kpi);
 //		bootstrap.startAgent(OnlyRSUWithCamera.class, m.conn, m.kpi);
 	}
 
@@ -63,9 +65,9 @@ public class Main implements Observer {
 				if (ssl.size() > 0) {
 					for (String vehicleID : ssl) {
 						System.out.println("Departed vehicles: " + vehicleID);
-						if (vehicleID.startsWith("bus")) {
+						if (vehicleID.startsWith(BUS_PREFIX)) {
 							kpi.addBus(vehicleID);
-						} else if (vehicleID.startsWith("bicycle")) {
+						} else if (vehicleID.startsWith(BIKE_PREFIX)) {
 							kpi.addBike(vehicleID);
 						}
 					}
@@ -75,9 +77,9 @@ public class Main implements Observer {
 				if (ssl.size() > 0) {
 					for (String vehicleID : ssl) {
 						System.out.println("Subscription Arrived vehicles: " + vehicleID);
-						if (vehicleID.startsWith("bus")) {
+						if (vehicleID.startsWith(BUS_PREFIX)) {
 							kpi.removeBus(vehicleID);
-						} else if (vehicleID.startsWith("bike")) {
+						} else if (vehicleID.startsWith(BIKE_PREFIX)) {
 							kpi.removeBike(vehicleID);
 						}
 					}
