@@ -14,9 +14,9 @@ import de.tudresden.sumo.util.Observer;
 import de.tudresden.ws.container.SumoStringList;
 
 public class Main implements Observer {
-	static String sumo_bin = "sumo-gui";
-	static String config_file = "data/cross.sumocfg";
-	static double step_length = 0.2;
+	static final String SUMO_BIN = "sumo-gui";
+	static final String CONFIG_FILE = "data/cross.sumocfg";
+	static final double STEP_LENGTH = 0.2;
 
 	private SumoTraciConnection conn;
 	private Kpi kpi;
@@ -39,8 +39,8 @@ public class Main implements Observer {
 	}
 
 	public static SumoTraciConnection SumoConnect() throws Exception {
-		SumoTraciConnection conn = new SumoTraciConnection(sumo_bin, config_file);
-		conn.addOption("step-length", step_length + "");
+		SumoTraciConnection conn = new SumoTraciConnection(SUMO_BIN, CONFIG_FILE);
+		conn.addOption("step-length", STEP_LENGTH + "");
 		conn.addOption("start", "false"); // start sumo immediately
 		conn.addOption("log", "data/log.txt");
 		conn.runServer();
