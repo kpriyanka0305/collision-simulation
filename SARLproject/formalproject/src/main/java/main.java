@@ -24,6 +24,8 @@ public class main {
         conn.addOption("step-length", step_length+"");
         conn.addOption("start", "false"); //start sumo immediately
         conn.addOption("log", "data/log.txt");
+        conn.runServer();
+        conn.setOrder(1);
         return conn;
     }
 }
