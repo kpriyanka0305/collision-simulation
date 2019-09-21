@@ -12,8 +12,6 @@ import de.tudresden.sumo.util.Observable;
 import de.tudresden.sumo.util.Observer;
 import de.tudresden.ws.container.SumoStringList;
 
-// Hello
-
 public class Main implements Observer {
 	static String sumo_bin = "sumo-gui";
 	static String config_file = "data/cross.sumocfg";
