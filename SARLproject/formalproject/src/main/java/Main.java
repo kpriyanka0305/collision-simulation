@@ -19,14 +19,19 @@ public class Main implements Observer {
 
 	SumoTraciConnection conn;
 
+	public Main(SumoTraciConnection conn) {
+		this.conn = conn;
+	}
+
 	public static void main(String[] args) throws Exception {
 		SumoTraciConnection connection = SumoConnect();
 
-		subscribe(connection);
+		Main m = new Main(connection);
+		m.subscribe();
 
 		SREBootstrap bootstrap = SRE.getBootstrap();
-		bootstrap.startAgent(WarningService.class, connection);
-//        bootstrap.startAgent(Chaos.class, connection);
+//		bootstrap.startAgent(WarningService.class, connection);
+		bootstrap.startAgent(Chaos.class, connection);
 		// bootstrap.startAgent(OnlyRSUWithCamera.class, connection);
 	}
 
@@ -40,8 +45,8 @@ public class Main implements Observer {
 		return conn;
 	}
 
-	public static void subscribe(SumoTraciConnection conn) throws Exception {
-		conn.addObserver(new Main());
+	public void subscribe() throws Exception {
+		conn.addObserver(this);
 		VariableSubscription vs = new VariableSubscription(SubscribtionVariable.simulation, 0, 100000 * 60, "");
 		vs.addCommand(Constants.VAR_DEPARTED_VEHICLES_IDS);
 		vs.addCommand(Constants.VAR_ARRIVED_VEHICLES_IDS);
@@ -58,8 +63,7 @@ public class Main implements Observer {
 						System.out.println("Subscription Departed vehicles: " + vehID);
 					}
 				}
-			}
-			else if (so.variable == Constants.VAR_ARRIVED_VEHICLES_IDS) {
+			} else if (so.variable == Constants.VAR_ARRIVED_VEHICLES_IDS) {
 				SumoStringList ssl = (SumoStringList) so.object;
 				if (ssl.size() > 0) {
 					for (String vehID : ssl) {
