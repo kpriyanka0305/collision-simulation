@@ -63,12 +63,9 @@ public class Main implements Observer {
 				if (ssl.size() > 0) {
 					for (String vehicleID : ssl) {
 						System.out.println("Departed vehicles: " + vehicleID);
-						if( vehicleID.startsWith("bus"))
-						{
+						if (vehicleID.startsWith("bus")) {
 							kpi.addBus(vehicleID);
-						}
-						else if( vehicleID.startsWith("bicycle"))
-						{
+						} else if (vehicleID.startsWith("bicycle")) {
 							kpi.addBike(vehicleID);
 						}
 					}
@@ -78,12 +75,9 @@ public class Main implements Observer {
 				if (ssl.size() > 0) {
 					for (String vehicleID : ssl) {
 						System.out.println("Subscription Arrived vehicles: " + vehicleID);
-						if( vehicleID.startsWith("bus"))
-						{
+						if (vehicleID.startsWith("bus")) {
 							kpi.removeBus(vehicleID);
-						}
-						else if( vehicleID.startsWith("bike"))
-						{
+						} else if (vehicleID.startsWith("bike")) {
 							kpi.removeBike(vehicleID);
 						}
 					}
