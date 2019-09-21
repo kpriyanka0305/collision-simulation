@@ -1,4 +1,4 @@
-package io.sarl.demos.basic.helloworld
+package simulations
 
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
@@ -9,11 +9,11 @@ import java.util.List
 import de.tudresden.sumo.cmd.Vehicle
 import de.tudresden.sumo.cmd.Junction
 import io.sarl.core.Schedules
-import io.sarl.demos.basic.helloworld.events.OBUDisconnect
 import java.util.ArrayList
 import java.util.HashMap;
-import io.sarl.demos.basic.helloworld.events.RSUStatus
 import de.tudresden.ws.container.SumoPosition2D
+import events.*
+import objects.*
 import kpi.Kpi
 
 @SuppressWarnings("potential_inefficient_value_conversion", "potential_field_synchronization_problem", "unused_agent_capacity", "discouraged_reference")

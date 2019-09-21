@@ -1,8 +1,7 @@
-package io.sarl.demos.basic.helloworld
+package objects
 
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
-import io.sarl.demos.basic.helloworld.events.CameraConnect
 import io.sarl.core.DefaultContextInteractions
 import it.polito.appeal.traci.SumoTraciConnection
 import de.tudresden.ws.container.SumoGeometry
@@ -13,7 +12,7 @@ import io.sarl.core.Schedules
 import java.util.List
 import de.tudresden.sumo.cmd.Vehicle
 import de.tudresden.sumo.cmd.Junction
-import io.sarl.demos.basic.helloworld.events.SendAllDataCamera
+import events.*
 import java.util.HashMap
 import math.geom2d.Point2D
 import math.geom2d.polygon.Polygon2D

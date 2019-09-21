@@ -1,4 +1,4 @@
-package io.sarl.demos.basic.helloworld.Simulations
+package simulations
 
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize

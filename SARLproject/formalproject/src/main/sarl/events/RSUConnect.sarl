@@ -1,9 +1,9 @@
 /** 
  * 
  */
-package io.sarl.demos.basic.helloworld.events
+package events
 
-import io.sarl.demos.basic.helloworld.RSU
+import objects.RSU
 
 /** 
  * @author 20184729

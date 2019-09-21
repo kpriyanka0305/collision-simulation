@@ -4,4 +4,4 @@ compile:
 	mvn -o compile
 
 run:
-	mvn -o exec:java -Dexec.mainClass=main
+	mvn -o exec:java -Dexec.mainClass=Main

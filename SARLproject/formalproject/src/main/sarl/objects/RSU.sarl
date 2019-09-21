@@ -1,17 +1,14 @@
-package io.sarl.demos.basic.helloworld
+package objects
 
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
-import io.sarl.demos.basic.helloworld.events.RSUConnect
 import de.tudresden.ws.container.SumoGeometry
 import de.tudresden.ws.container.SumoPosition2D
 import de.tudresden.sumo.cmd.Polygon
 import it.polito.appeal.traci.SumoTraciConnection
 import de.tudresden.ws.container.SumoColor
-import io.sarl.demos.basic.helloworld.events.WarnRSU
-import io.sarl.demos.basic.helloworld.events.ClearRSU
-import io.sarl.demos.basic.helloworld.events.RSUStatus
+import events.*
 
 @SuppressWarnings("discouraged_occurrence_readonly_use", "unused_agent_capacity", "discouraged_reference")
 agent RSU {	

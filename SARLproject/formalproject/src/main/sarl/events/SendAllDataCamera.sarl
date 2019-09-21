@@ -1,7 +1,7 @@
 /** 
  * 
  */
-package io.sarl.demos.basic.helloworld.events
+package events
 
 import java.util.HashMap
 

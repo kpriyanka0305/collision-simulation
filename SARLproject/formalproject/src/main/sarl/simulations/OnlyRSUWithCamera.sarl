@@ -1,4 +1,4 @@
-package io.sarl.demos.basic.helloworld.Simulations
+package simulations
 
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
@@ -11,9 +11,8 @@ import io.sarl.core.DefaultContextInteractions
 import java.util.List
 import de.tudresden.ws.container.SumoPosition2D
 import java.util.HashMap
-import io.sarl.demos.basic.helloworld.Simulations.ControllerRSUWCAM
-import io.sarl.demos.basic.helloworld.RSU
-import io.sarl.demos.basic.helloworld.Camera
+import simulations.ControllerRSUWCAM
+import objects.*
 import kpi.Kpi
 
 /** 

@@ -1,9 +1,7 @@
 import io.sarl.bootstrap.SRE;
 import io.sarl.bootstrap.SREBootstrap;
-import io.sarl.demos.basic.helloworld.WarningService;
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
-import io.sarl.demos.basic.helloworld.Simulations.*;
 import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.subscription.ResponseType;
 import de.tudresden.sumo.subscription.SubscribtionVariable;
@@ -12,6 +10,7 @@ import de.tudresden.sumo.subscription.VariableSubscription;
 import de.tudresden.sumo.util.Observable;
 import de.tudresden.sumo.util.Observer;
 import de.tudresden.ws.container.SumoStringList;
+import simulations.*;
 
 public class Main implements Observer {
 	static final String SUMO_BIN = "sumo-gui";

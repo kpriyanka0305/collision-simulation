@@ -1,21 +1,13 @@
-package io.sarl.demos.basic.helloworld
+package objects
 
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.DefaultContextInteractions
 import java.util.ArrayList
 import java.util.List
-import io.sarl.demos.basic.helloworld.events.RSUConnect
-import io.sarl.demos.basic.helloworld.events.CameraConnect
-import io.sarl.demos.basic.helloworld.events.OBUConnect
-import io.sarl.demos.basic.helloworld.events.OBUDisconnect
+import events.*
 import it.polito.appeal.traci.SumoTraciConnection
-import io.sarl.demos.basic.helloworld.events.WarnOBU
-import io.sarl.demos.basic.helloworld.events.WarnRSU
-import io.sarl.demos.basic.helloworld.events.ClearRSU
-import io.sarl.demos.basic.helloworld.events.SendAllDataCamera
 import java.util.HashMap
-import io.sarl.demos.basic.helloworld.events.tempClean
 
 @SuppressWarnings("discouraged_occurrence_readonly_use", "unused_agent_capacity", "discouraged_reference")
 agent Controller {

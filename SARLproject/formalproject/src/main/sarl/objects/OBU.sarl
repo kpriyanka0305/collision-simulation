@@ -1,17 +1,13 @@
-package io.sarl.demos.basic.helloworld
+package objects
 
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
-import io.sarl.demos.basic.helloworld.events.OBUDisconnect
+import events.*
 import io.sarl.core.Lifecycle
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.demos.basic.helloworld.events.OBUConnect
 import it.polito.appeal.traci.SumoTraciConnection
-import io.sarl.demos.basic.helloworld.events.WarnOBU
 import de.tudresden.sumo.cmd.Vehicle
 import de.tudresden.ws.container.SumoColor
-import io.sarl.demos.basic.helloworld.events.CleanOBU
-import io.sarl.demos.basic.helloworld.events.tempClean
 
 @SuppressWarnings("discouraged_occurrence_readonly_use", "potential_field_synchronization_problem", "discouraged_reference")
 agent OBU {
