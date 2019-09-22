@@ -59,12 +59,12 @@ public class Kpi {
 		distances.put(vehicleID, new HashMap<>());
 	}
 
-	public void removeBus(String vehicleID) {
-		activeBuses.remove(vehicleID);
-		for (Map.Entry<String, List<Double[]>> dists : distances.get(vehicleID).entrySet()) {
-			System.out.println(vehicleID + " -- " + dists.getKey() + " = "
+	public void removeBus(String busID) {
+		activeBuses.remove(busID);
+		for (Map.Entry<String, List<Double[]>> dists : distances.get(busID).entrySet()) {
+			System.out.println(busID + " -- " + dists.getKey() + " = "
 					+ dists.getValue().stream().mapToDouble(v -> v[1]).min());
-			writeDistanceGraph(dists.getValue());
+			writeDistanceGraph(dists.getValue(), busID, dists.getKey());
 		}
 	}
 
@@ -86,13 +86,12 @@ public class Kpi {
 
 		LineSegment2D busGeom = Util.createBusLineSegment(busPos.x, busPos.y, busAngleDeg, busLength);
 		double distance_ = busGeom.distance(bikePos.x, bikePos.y);
-		System.out.println(distance + " ## " + distance_);
 
 		Double timestamp = (Double) this.conn.do_job_get(Simulation.getTime());
 		Map<String, List<Double[]>> bikeDistances = distances.get(busID);
 		bikeDistances.putIfAbsent(bikeID, new ArrayList<>());
 		bikeDistances.compute(bikeID, (k, list) -> {
-			list.add(new Double[] { timestamp, distance });
+			list.add(new Double[] { timestamp, distance_ });
 			return list;
 		});
 	}
@@ -249,15 +248,16 @@ public class Kpi {
 		return times;
 	}
 
-	private void writeDistanceGraph(List<Double[]> distances) {
+	private void writeDistanceGraph(List<Double[]> distances, String busID, String bikeID) {
 		try {
 			FileWriter file = new FileWriter("data/distances.txt", true);
 
+			file.append("\n\n");
+			file.append("\"" + busID + " " + bikeID + "\"");
 			for (Double[] dataPoint : distances) {
 				file.append(dataPoint[0] + " " + dataPoint[1] + "\n");
 			}
 
-			file.append("\n");
 			file.close();
 		} catch (Exception e) {
 			System.out.println(e);
