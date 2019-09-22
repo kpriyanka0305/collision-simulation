@@ -13,6 +13,7 @@ import de.tudresden.sumo.cmd.Simulation;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
@@ -59,9 +60,7 @@ public class Kpi {
 		for (Map.Entry<String, List<Double[]>> dists : distances.get(vehicleID).entrySet()) {
 			System.out.println(vehicleID + " -- " + dists.getKey() + " = "
 					+ dists.getValue().stream().mapToDouble(v -> v[1]).min());
-			for (Double[] dataPoint : dists.getValue()) {
-				System.out.println(dataPoint[0] + " " + dataPoint[1]);
-			}
+			writeDistanceGraph(dists.getValue());
 		}
 	}
 
@@ -237,6 +236,21 @@ public class Kpi {
 
 		}
 		return times;
+	}
+
+	private void writeDistanceGraph(List<Double[]> distances) {
+		try {
+			FileWriter file = new FileWriter("data/distances.txt", true);
+
+			for (Double[] dataPoint : distances) {
+				file.append(dataPoint[0] + " " + dataPoint[1] + "\n");
+			}
+
+			file.append("\n");
+			file.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	private void logVehicleData(CollisionType collisionType) throws Exception {
