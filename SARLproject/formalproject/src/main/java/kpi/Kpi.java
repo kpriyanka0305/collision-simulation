@@ -27,10 +27,6 @@ public class Kpi {
 	Set<String> activeBikes = new HashSet<>();
 	Map<String, Map<String, List<Double[]>>> distances = new HashMap<>();
 
-	public enum CollisionType {
-		COLLISION, NEAR_COLLISION
-	}
-
 	public Kpi(SumoTraciConnection connection) throws Exception {
 		this.conn = connection;
 	}
