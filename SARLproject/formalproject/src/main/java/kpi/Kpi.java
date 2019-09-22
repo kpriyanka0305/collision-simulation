@@ -61,8 +61,8 @@ public class Kpi {
 		Double busLength = (Double) conn.do_job_get(Vehicle.getLength(busID));
 		SumoPosition2D bikePos = (SumoPosition2D) conn.do_job_get(Vehicle.getPosition(bikeID));
 
-		LineSegment2D busGeom = Util.createBusLineSegment(busPos.x, busPos.y, busAngleDeg, busLength);
-		double distance = busGeom.distance(bikePos.x, bikePos.y);
+		LineSegment2D busGeometry = Util.createBusLineSegment(busPos.x, busPos.y, busAngleDeg, busLength);
+		double distance = busGeometry.distance(bikePos.x, bikePos.y);
 
 		Double timestamp = (Double) this.conn.do_job_get(Simulation.getTime());
 		Map<String, List<Double[]>> bikeDistances = distances.get(busID);
