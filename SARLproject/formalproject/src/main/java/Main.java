@@ -15,7 +15,7 @@ import simulations.*;
 public class Main implements Observer {
 	static final String SUMO_BIN = "sumo-gui";
 	static final String CONFIG_FILE = "data/cross.sumocfg";
-	static final double STEP_LENGTH = 0.2;
+	static final double STEP_LENGTH = 0.1;
 	static final String BUS_PREFIX = "bus";
 	static final String BIKE_PREFIX = "bicycle";
 
