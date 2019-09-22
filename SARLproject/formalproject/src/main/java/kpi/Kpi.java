@@ -29,6 +29,7 @@ public class Kpi {
 	Set<String> activeBikes = new HashSet<>();
 	Map<String, Map<String, List<Double[]>>> distances = new HashMap<>();
 	Map<String, List<Double[]>> accelerations = new HashMap<>();
+	Map<String, List<Double[]>> speeds = new HashMap<>();
 
 	public Kpi(SumoTraciConnection connection) throws Exception {
 		this.conn = connection;
@@ -38,6 +39,7 @@ public class Kpi {
 		activeBuses.add(vehicleID);
 		distances.put(vehicleID, new HashMap<>());
 		accelerations.put(vehicleID, new ArrayList<>());
+		speeds.put(vehicleID, new ArrayList<>());
 	}
 
 	public void removeBus(String busID) {
@@ -46,6 +48,7 @@ public class Kpi {
 			writeDistanceGraph(dists.getValue(), busID, dists.getKey());
 		}
 		writeAccelGraph(busID);
+		writeSpeedGraph(busID);
 	}
 
 	public void addBike(String vehicleID) {
@@ -81,9 +84,16 @@ public class Kpi {
 		accelerations.get(busID).add(new Double[] { timestamp, busAccel });
 	}
 
+	private void updateSpeed(String busID) throws Exception {
+		Double busSpeed = (Double) conn.do_job_get(Vehicle.getSpeed(busID));
+		Double timestamp = (Double) this.conn.do_job_get(Simulation.getTime());
+		speeds.get(busID).add(new Double[] { timestamp, busSpeed });
+	}
+
 	public void checkKPIs() throws Exception {
 		for (String bus : activeBuses) {
 			updateAcceleration(bus);
+			updateSpeed(bus);
 			for (String bike : activeBikes) {
 				updateMinimalDistance(bus, bike);
 			}
@@ -113,6 +123,22 @@ public class Kpi {
 			file.append("\n\n");
 			file.append("\"acceleration " + busID + "\"\n");
 			for (Double[] dataPoint : accelerations.get(busID)) {
+				file.append(dataPoint[0] + " " + dataPoint[1] + "\n");
+			}
+
+			file.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	private void writeSpeedGraph(String busID) {
+		try {
+			FileWriter file = new FileWriter("data/speeds.txt", false);
+
+			file.append("\n\n");
+			file.append("\"speed " + busID + "\"\n");
+			for (Double[] dataPoint : speeds.get(busID)) {
 				file.append(dataPoint[0] + " " + dataPoint[1] + "\n");
 			}
 
