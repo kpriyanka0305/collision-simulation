@@ -9,6 +9,8 @@ import java.util.HashSet;
 
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.sumo.cmd.Vehicletype;
+import de.tudresden.sumo.config.Constants;
+import de.tudresden.sumo.util.SumoCommand;
 import de.tudresden.sumo.cmd.Simulation;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
@@ -26,6 +28,7 @@ public class Kpi {
 	Set<String> activeBuses = new HashSet<>();
 	Set<String> activeBikes = new HashSet<>();
 	Map<String, Map<String, List<Double[]>>> distances = new HashMap<>();
+	Map<String, List<Double[]>> accelerations = new HashMap<>();
 
 	public Kpi(SumoTraciConnection connection) throws Exception {
 		this.conn = connection;
@@ -34,6 +37,7 @@ public class Kpi {
 	public void addBus(String vehicleID) {
 		activeBuses.add(vehicleID);
 		distances.put(vehicleID, new HashMap<>());
+		accelerations.put(vehicleID, new ArrayList<>());
 	}
 
 	public void removeBus(String busID) {
@@ -41,6 +45,7 @@ public class Kpi {
 		for (Map.Entry<String, List<Double[]>> dists : distances.get(busID).entrySet()) {
 			writeDistanceGraph(dists.getValue(), busID, dists.getKey());
 		}
+		writeAccelGraph(busID);
 	}
 
 	public void addBike(String vehicleID) {
@@ -51,7 +56,7 @@ public class Kpi {
 		activeBikes.remove(vehicleID);
 	}
 
-	public void updateMinimalDistance(String busID, String bikeID) throws Exception {
+	private void updateMinimalDistance(String busID, String bikeID) throws Exception {
 		SumoPosition2D busPos = (SumoPosition2D) conn.do_job_get(Vehicle.getPosition(busID));
 		Double busAngleDeg = (Double) conn.do_job_get(Vehicle.getAngle(busID));
 		Double busLength = (Double) conn.do_job_get(Vehicle.getLength(busID));
@@ -66,8 +71,19 @@ public class Kpi {
 		bikeDistances.get(bikeID).add(new Double[] { timestamp, distance });
 	}
 
+	private void updateAcceleration(String busID) throws Exception {
+		// traas API is wrong. getAccel does *not* return current acceleration, but max
+		// possible acceleration
+		SumoCommand getAcceleration = new SumoCommand(Constants.CMD_GET_VEHICLE_VARIABLE, Constants.VAR_ACCELERATION,
+				busID, Constants.RESPONSE_GET_VEHICLE_VARIABLE, Constants.TYPE_DOUBLE);
+		Double busAccel = (Double) conn.do_job_get(getAcceleration);
+		Double timestamp = (Double) this.conn.do_job_get(Simulation.getTime());
+		accelerations.get(busID).add(new Double[] { timestamp, busAccel });
+	}
+
 	public void checkKPIs() throws Exception {
 		for (String bus : activeBuses) {
+			updateAcceleration(bus);
 			for (String bike : activeBikes) {
 				updateMinimalDistance(bus, bike);
 			}
@@ -76,11 +92,27 @@ public class Kpi {
 
 	private void writeDistanceGraph(List<Double[]> distances, String busID, String bikeID) {
 		try {
-			FileWriter file = new FileWriter("data/distances.txt", true);
+			FileWriter file = new FileWriter("data/distances.txt", false);
 
 			file.append("\n\n");
-			file.append("\"" + busID + " " + bikeID + "\"");
+			file.append("\"" + busID + " " + bikeID + "\"\n");
 			for (Double[] dataPoint : distances) {
+				file.append(dataPoint[0] + " " + dataPoint[1] + "\n");
+			}
+
+			file.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	private void writeAccelGraph(String busID) {
+		try {
+			FileWriter file = new FileWriter("data/accelerations.txt", false);
+
+			file.append("\n\n");
+			file.append("\"" + busID + "\"\n");
+			for (Double[] dataPoint : accelerations.get(busID)) {
 				file.append(dataPoint[0] + " " + dataPoint[1] + "\n");
 			}
 
