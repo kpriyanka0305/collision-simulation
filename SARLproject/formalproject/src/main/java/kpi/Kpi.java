@@ -95,7 +95,7 @@ public class Kpi {
 			FileWriter file = new FileWriter("data/distances.txt", false);
 
 			file.append("\n\n");
-			file.append("\"" + busID + " " + bikeID + "\"\n");
+			file.append("\"distance " + busID + " " + bikeID + "\"\n");
 			for (Double[] dataPoint : distances) {
 				file.append(dataPoint[0] + " " + dataPoint[1] + "\n");
 			}
@@ -111,7 +111,7 @@ public class Kpi {
 			FileWriter file = new FileWriter("data/accelerations.txt", false);
 
 			file.append("\n\n");
-			file.append("\"" + busID + "\"\n");
+			file.append("\"acceleration " + busID + "\"\n");
 			for (Double[] dataPoint : accelerations.get(busID)) {
 				file.append(dataPoint[0] + " " + dataPoint[1] + "\n");
 			}
