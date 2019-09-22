@@ -43,8 +43,6 @@ public class Kpi {
 	public void removeBus(String busID) {
 		activeBuses.remove(busID);
 		for (Map.Entry<String, List<Double[]>> dists : distances.get(busID).entrySet()) {
-			System.out.println(busID + " -- " + dists.getKey() + " = "
-					+ dists.getValue().stream().mapToDouble(v -> v[1]).min());
 			writeDistanceGraph(dists.getValue(), busID, dists.getKey());
 		}
 	}
