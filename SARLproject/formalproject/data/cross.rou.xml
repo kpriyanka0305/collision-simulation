@@ -32,31 +32,7 @@
         <!-- vehicle flow -->
         <!-- Scenario 1 - bus from NE-SW and cyclist from E-W -->
    
-        <!-- Reckless bicycle doesnt stop as there is no RSU warning, bus doesnt stop as there is no OBU warning -->
-        <vehicle id="bicycle1" type="bicycle-reckless" route="E-to-W" depart="20"/> 
-        <vehicle id="bus1" type="bus" route="NE-to-SW" depart="40" >
-			
-		</vehicle>
-
         <!-- Distracted bicycle stops with the RSU warning, bus doesnt stop as there is no OBU warning  -->
-        <vehicle id="bicycle2" type="bicycle-distracted" route="E-to-W" depart="70" /> 
-        <vehicle id="bus2" type="bus" route="NE-to-SW" depart="82" >
-		</vehicle>	
-
-        <!-- Reckless bicycle doesnt stop with RSU warning, Bus stops with OBU warning -->
-        <vehicle id="bicycle3" type="bicycle-reckless" route="E-to-W" depart="120"/>
-        <vehicle id="bus3" type="bus" route="NE-to-SW" depart="132" />
-
-        <vehicle id="bicycle4" type="bicycle-distracted" route="E-to-W" depart="170" /> 
-        <vehicle id="bicycle5" type="bicycle-distracted" route="E-to-W" depart="170" /> 
-        <vehicle id="bus4" type="bus" route="NE-to-SW" depart="182" />
-
-        <vehicle id="bicycle6" type="bicycle-reckless" route="E-to-W" depart="220"/>
-        <vehicle id="bicycle7" type="bicycle-distracted" route="E-to-W" depart="220"/>
-        <vehicle id="bus5" type="bus" route="NE-to-SW" depart="232" />
-
-        <vehicle id="bicycle8" type="bicycle-distracted" route="E-to-W" depart="270" /> 
-        <vehicle id="bicycle9" type="bicycle-reckless" route="E-to-W" depart="270" /> 
-        <vehicle id="bus6" type="bus" route="NE-to-SW" depart="282" />
-
+        <vehicle id="bicycle2" type="bicycle-reckless" route="E-to-W" depart="0" />
+        <vehicle id="bus2" type="bus" route="NE-to-SW" depart="12" />
 </routes>
