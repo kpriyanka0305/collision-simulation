@@ -206,3 +206,4 @@ nb-configuration.xml
 generated-sources/
 SARLproject/formalproject/.classpath
 SARLproject/formalproject/.classpath
+SARLproject/formalproject/data/distances.txt
