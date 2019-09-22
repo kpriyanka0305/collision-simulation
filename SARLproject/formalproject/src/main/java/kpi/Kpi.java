@@ -12,10 +12,14 @@ import de.tudresden.sumo.cmd.Vehicletype;
 import de.tudresden.sumo.cmd.Simulation;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
+import math.geom2d.line.LineSegment2D;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+
+import util.*;
 
 public class Kpi {
 	SumoTraciConnection conn;
@@ -74,9 +78,16 @@ public class Kpi {
 
 	public void updateMinimalDistance(String busID, String bikeID) throws Exception {
 		SumoPosition2D busPos = (SumoPosition2D) conn.do_job_get(Vehicle.getPosition(busID));
+		Double busAngleDeg = (Double) conn.do_job_get(Vehicle.getAngle(busID));
+		Double busLength = (Double) conn.do_job_get(Vehicle.getLength(busID));
 		SumoPosition2D bikePos = (SumoPosition2D) conn.do_job_get(Vehicle.getPosition(bikeID));
 		Double distance = (Double) conn
 				.do_job_get(Simulation.getDistance2D(busPos.x, busPos.y, bikePos.x, bikePos.y, false, false));
+
+		LineSegment2D busGeom = Util.createBusLineSegment(busPos.x, busPos.y, busAngleDeg, busLength);
+		double distance_ = busGeom.distance(bikePos.x, bikePos.y);
+		System.out.println(distance + " ## " + distance_);
+
 		Double timestamp = (Double) this.conn.do_job_get(Simulation.getTime());
 		Map<String, List<Double[]>> bikeDistances = distances.get(busID);
 		bikeDistances.putIfAbsent(bikeID, new ArrayList<>());
