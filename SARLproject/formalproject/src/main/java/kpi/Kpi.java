@@ -31,6 +31,10 @@ public class Kpi {
 	Map<String, List<Double[]>> accelerations = new HashMap<>();
 	Map<String, List<Double[]>> speeds = new HashMap<>();
 
+	private final FileWriter distancesFile = new FileWriter("data/distances.txt", false);
+	private final FileWriter accelerationsFile = new FileWriter("data/accelerations.txt", false);
+	private final FileWriter speedsFile = new FileWriter("data/speeds.txt", false);
+
 	public Kpi(SumoTraciConnection connection) throws Exception {
 		this.conn = connection;
 	}
@@ -44,9 +48,7 @@ public class Kpi {
 
 	public void removeBus(String busID) {
 		activeBuses.remove(busID);
-		for (Map.Entry<String, List<Double[]>> dists : distances.get(busID).entrySet()) {
-			writeDistanceGraph(dists.getValue(), busID, dists.getKey());
-		}
+		writeDistanceGraph(busID);
 		writeAccelGraph(busID);
 		writeSpeedGraph(busID);
 	}
@@ -100,17 +102,20 @@ public class Kpi {
 		}
 	}
 
-	private void writeDistanceGraph(List<Double[]> distances, String busID, String bikeID) {
+	private void writeDistanceGraph(String busID) {
 		try {
-			FileWriter file = new FileWriter("data/distances.txt", false);
 
-			file.append("\n\n");
-			file.append("\"distance " + busID + " " + bikeID + "\"\n");
-			for (Double[] dataPoint : distances) {
-				file.append(dataPoint[0] + " " + dataPoint[1] + "\n");
+			for (Map.Entry<String, List<Double[]>> dist : distances.get(busID).entrySet()) {
+
+				distancesFile.append("\n\n");
+				distancesFile.append("\"distance " + busID + " " + dist.getKey() + "\"\n");
+				for (Double[] dataPoint : dist.getValue()) {
+					distancesFile.append(dataPoint[0] + " " + dataPoint[1] + "\n");
+				}
 			}
 
-			file.close();
+			distancesFile.flush();
+
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -118,15 +123,15 @@ public class Kpi {
 
 	private void writeAccelGraph(String busID) {
 		try {
-			FileWriter file = new FileWriter("data/accelerations.txt", false);
 
-			file.append("\n\n");
-			file.append("\"acceleration " + busID + "\"\n");
+			accelerationsFile.append("\n\n");
+			accelerationsFile.append("\"acceleration " + busID + "\"\n");
 			for (Double[] dataPoint : accelerations.get(busID)) {
-				file.append(dataPoint[0] + " " + dataPoint[1] + "\n");
+				accelerationsFile.append(dataPoint[0] + " " + dataPoint[1] + "\n");
 			}
 
-			file.close();
+			accelerationsFile.flush();
+
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -134,15 +139,15 @@ public class Kpi {
 
 	private void writeSpeedGraph(String busID) {
 		try {
-			FileWriter file = new FileWriter("data/speeds.txt", false);
 
-			file.append("\n\n");
-			file.append("\"speed " + busID + "\"\n");
+			speedsFile.append("\n\n");
+			speedsFile.append("\"speed " + busID + "\"\n");
 			for (Double[] dataPoint : speeds.get(busID)) {
-				file.append(dataPoint[0] + " " + dataPoint[1] + "\n");
+				speedsFile.append(dataPoint[0] + " " + dataPoint[1] + "\n");
 			}
 
-			file.close();
+			speedsFile.flush();
+
 		} catch (Exception e) {
 			System.out.println(e);
 		}
