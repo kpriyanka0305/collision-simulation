@@ -14,6 +14,9 @@ stats DIST_FILE_C name 'DISTS_C' nooutput
 
 set logscale y 2
 
+set xlabel "time (s)"
+set ylabel "distance (m)"
+
 plot for [i=0:DISTS_A_blocks-1] DIST_FILE_A index i with lines title columnheader(1) ls 5\
    , for [i=0:DISTS_B_blocks-1] DIST_FILE_B index i with lines title columnheader(1) ls 4\
    , for [i=0:DISTS_C_blocks-1] DIST_FILE_C index i with lines title columnheader(1) ls 3\
