@@ -28,7 +28,12 @@ public class Main implements Observer {
 	}
 
 	public static void main(String[] args) throws Exception {
-		SumoTraciConnection connection = SumoConnect();
+		String sumocfg = CONFIG_FILE;
+		if( args.length > 0 ) {
+			sumocfg = args[0];
+		}
+
+		SumoTraciConnection connection = SumoConnect(sumocfg);
 
 		Main m = new Main(connection);
 		m.subscribe();
@@ -39,8 +44,8 @@ public class Main implements Observer {
 //		bootstrap.startAgent(OnlyRSUWithCamera.class, m.conn, m.kpi);
 	}
 
-	public static SumoTraciConnection SumoConnect() throws Exception {
-		SumoTraciConnection conn = new SumoTraciConnection(SUMO_BIN, CONFIG_FILE);
+	public static SumoTraciConnection SumoConnect(String sumocfg) throws Exception {
+		SumoTraciConnection conn = new SumoTraciConnection(SUMO_BIN, sumocfg);
 		conn.addOption("step-length", STEP_LENGTH + "");
 		conn.addOption("start", "false"); // start sumo immediately
 		conn.addOption("log", "data/log.txt");
