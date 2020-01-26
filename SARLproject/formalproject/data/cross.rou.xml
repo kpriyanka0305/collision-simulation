@@ -6,7 +6,7 @@
         <!-- Cyclist who stops only when warned -->
         <vType id="bicycle-distracted" accel="1" decel="5" sigma="0.0" length="1.8" minGap="0.2" maxSpeed="4.2" guiShape="bicycle"/>
         <!-- Cyclist who doesnt stop even when warned -->
-        <vType id="bicycle-reckless" accel="1" decel="5" sigma="0.0" length="1.8" minGap="0.2" maxSpeed="4.15" guiShape="bicycle" color="255,140,0" />
+        <vType id="bicycle-reckless" accel="1" decel="5" sigma="0.0" length="1.8" minGap="0.2" maxSpeed="4.7" guiShape="bicycle" color="255,140,0" />
 
         <!--Only approach the intersection-->
         <route id="W-to-intersection" edges="1i1 1i2" />
@@ -34,5 +34,5 @@
    
         <!-- Distracted bicycle stops with the RSU warning, bus doesnt stop as there is no OBU warning  -->
         <vehicle id="bicycle1" type="bicycle-reckless" route="E-to-W" depart="0" />
-        <vehicle id="bus1" type="bus-reckless" route="NE-to-SW" depart="10" />
+        <vehicle id="bus1" type="bus" route="NE-to-SW" depart="10" />
 </routes>
