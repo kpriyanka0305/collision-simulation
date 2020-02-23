@@ -1,0 +1,37 @@
+<routes>
+        <!-- Bus who stops when warned -->
+        <vType id="bus" accel="1" decel="3.5" sigma="0.0" length="12" minGap="2" maxSpeed="8.3" guiShape="bus" />
+        <!-- Bus who doesnt stop even when warned -->
+        <vType id="bus-reckless" accel="1" decel="3.5" sigma="0.0" length="12" minGap="2" maxSpeed="8.3" guiShape="bus" color="255,140,0" />
+        <!-- Cyclist who stops only when warned -->
+        <vType id="bicycle-distracted" accel="1" decel="5" sigma="0.0" length="1.8" minGap="0.2" maxSpeed="4.7" guiShape="bicycle"/>
+        <!-- Cyclist who doesnt stop even when warned -->
+        <vType id="bicycle-reckless" accel="1" decel="5" sigma="0.0" length="1.8" minGap="0.2" maxSpeed="4.7" guiShape="bicycle" color="255,140,0" />
+
+        <!--Only approach the intersection-->
+        <route id="W-to-intersection" edges="1i1 1i2" />
+        <route id="SW-to-intersection" edges="2i1 2i2" />
+        <route id="S-to-intersection" edges="3i" />
+        <route id="E-to-intersection" edges="4i1 4i2" />
+        <route id="NE-to-intersection" edges="5i1 5i2" />
+        
+        <!--Pass (approach and leave) the intersection-->
+        <route id="W-to-E" edges="1i1 1i2 4o1 4o2" />
+        <route id="SW-to-NE" edges="2i1 2i2 5o1 5o2" />
+        <route id="S-to-NE" edges="3i 5o1 5o2" />  
+        <route id="E-to-W" edges="4i1 4i2 1o1 1o2" />
+        <route id="NE-to-SW" edges="5i1 5i2 2o1 2o2" />
+
+        <!--Only leave the intersection-->
+        <route id="intersection-to-W" edges="1o1 1o2" />
+        <route id="intersection-to-SW" edges="2o1 2o2" />
+        <route id="intersection-to-E" edges="4o1 4o2 " />
+        <route id="intersection-to-NE" edges="5o1 5o2" />
+
+        
+        <!-- vehicle flow -->
+        <!-- Scenario 1 - bus from NE-SW and cyclist from E-W -->
+   
+        <vehicle id="bicycle" type="bicycle-reckless" route="E-to-W" depart="0" />
+        <vehicle id="bus" type="bus" route="NE-to-SW" depart="10" />
+</routes>
