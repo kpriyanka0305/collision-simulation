@@ -39,8 +39,8 @@ public class Main implements Observer {
 		m.subscribe();
 
 		SREBootstrap bootstrap = SRE.getBootstrap();
-//		bootstrap.startAgent(WarningService.class, m.conn, m.kpi);
-		bootstrap.startAgent(Chaos.class, m.conn, m.kpi);
+		bootstrap.startAgent(WarningService.class, m.conn, m.kpi);
+//		bootstrap.startAgent(Chaos.class, m.conn, m.kpi);
 //		bootstrap.startAgent(OnlyRSUWithCamera.class, m.conn, m.kpi);
 	}
 
