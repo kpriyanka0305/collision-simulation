@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 06/19/19 23:28:33 by Eclipse SUMO netconvert Version 1.2.0
+<!-- generated on So 23 Feb 2020 13:02:28 CET by Eclipse SUMO netedit Version v1_3_1+0155-9eee3b84a7
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <node-files value="cross.nod.xml"/>
-        <edge-files value="cross.edg.xml"/>
+        <sumo-net-file value="hard-braking.net.xml"/>
     </input>
 
     <output>
-        <output-file value="cross.net.xml"/>
+        <output-file value="hard-braking.net.xml"/>
     </output>
 
     <processing>
-        <offset.x value="0"/>
-        <offset.y value="0"/>
+        <geometry.max-grade.fix value="false"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="false"/>
     </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.corner-detail value="5"/>
+        <junctions.limit-turn-speed value="5.5"/>
+        <rectangular-lane-cut value="false"/>
+    </junctions>
+
+    <pedestrian>
+        <walkingareas value="false"/>
+    </pedestrian>
 
 </configuration>
 -->
 
-<net version="1.1" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+<net version="1.3" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
 
     <location netOffset="0.00,0.00" convBoundary="-108.50,-70.00,101.00,5.75" origBoundary="-108.50,-70.00,101.00,5.75" projParameter="!"/>
 
@@ -210,14 +221,14 @@
     <connection from="4o1" to="4o2" fromLane="0" toLane="0" via=":40_1_0" dir="s" state="M"/>
     <connection from="4o2" to="4i1" fromLane="0" toLane="0" via=":4_0_0" dir="t" state="M"/>
     <connection from="5i1" to="5i2" fromLane="0" toLane="0" via=":50_0_0" dir="s" state="M"/>
-    <connection from="5i2" to="1o1" fromLane="0" toLane="0" via=":0_0_0" dir="s" state="M"/>
+    <connection from="5i2" to="1o1" fromLane="0" toLane="0" via=":0_0_0" dir="R" state="M"/>
     <connection from="5i2" to="2o1" fromLane="0" toLane="0" via=":0_1_0" dir="s" state="M"/>
     <connection from="5i2" to="4o1" fromLane="0" toLane="0" via=":0_2_0" dir="l" state="M"/>
     <connection from="5i2" to="5o1" fromLane="0" toLane="0" via=":0_3_0" dir="t" state="M"/>
     <connection from="5o1" to="5o2" fromLane="0" toLane="0" via=":50_1_0" dir="s" state="M"/>
     <connection from="5o2" to="5i1" fromLane="0" toLane="0" via=":5_0_0" dir="t" state="M"/>
 
-    <connection from=":0_0" to="1o1" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":0_0" to="1o1" fromLane="0" toLane="0" dir="R" state="M"/>
     <connection from=":0_1" to="2o1" fromLane="0" toLane="0" dir="s" state="M"/>
     <connection from=":0_2" to="4o1" fromLane="0" toLane="0" dir="l" state="M"/>
     <connection from=":0_3" to="5o1" fromLane="0" toLane="0" dir="t" state="M"/>
