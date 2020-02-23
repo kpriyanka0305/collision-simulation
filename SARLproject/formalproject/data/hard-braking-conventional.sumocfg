@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--for generating the hard-breaking graphs; chaos and warningservice -->
-
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="hard-braking.net.xml"/>
-        <route-files value="conventional.rou.xml"/>
+        <net-file value="conventional.net.xml"/>
+        <route-files value="hard-braking.rou.xml"/>
     </input>
 
     <time>
