@@ -32,6 +32,6 @@
         <!-- vehicle flow -->
         <!-- Scenario 1 - bus from NE-SW and cyclist from E-W -->
    
-        <vehicle id="bicycle" type="bicycle-reckless" route="E-to-W" depart="0" />
+        <vehicle id="bicycle" type="bicycle-distracted" route="E-to-W" depart="0" />
         <vehicle id="bus" type="bus" route="NE-to-SW" depart="10" />
 </routes>
