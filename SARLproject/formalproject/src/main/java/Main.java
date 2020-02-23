@@ -14,7 +14,7 @@ import simulations.*;
 
 public class Main implements Observer {
 	static final String SUMO_BIN = "sumo-gui";
-	static final String CONFIG_FILE = "data/cross.sumocfg";
+	static final String CONFIG_FILE = "data/hard-braking.sumocfg";
 	static final double STEP_LENGTH = 0.1;
 	static final String BUS_PREFIX = "bus";
 	static final String BIKE_PREFIX = "bicycle";
@@ -39,8 +39,8 @@ public class Main implements Observer {
 		m.subscribe();
 
 		SREBootstrap bootstrap = SRE.getBootstrap();
-		bootstrap.startAgent(WarningService.class, m.conn, m.kpi);
-//		bootstrap.startAgent(Chaos.class, m.conn, m.kpi);
+//		bootstrap.startAgent(WarningService.class, m.conn, m.kpi);
+		bootstrap.startAgent(Chaos.class, m.conn, m.kpi);
 //		bootstrap.startAgent(OnlyRSUWithCamera.class, m.conn, m.kpi);
 	}
 
