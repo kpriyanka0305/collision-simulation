@@ -6,7 +6,7 @@
 
     <input>
         <net-file value="hard-braking.net.xml"/>
-        <route-files value="hard-braking.rou.xml"/>
+        <route-files value="connected.rou.xml"/>
     </input>
 
     <time>
