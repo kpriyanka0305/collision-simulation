@@ -5,8 +5,8 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="wait-time-connected.net.xml"/>
-        <route-files value="wait-time-connected.rou.xml"/>
+        <net-file value="wait-time.net.xml"/>
+        <route-files value="connected.rou.xml"/>
     </input>
 
     <time>
