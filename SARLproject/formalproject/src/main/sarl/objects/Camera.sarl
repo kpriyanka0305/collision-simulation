@@ -81,7 +81,6 @@ agent Camera {
 			var vehicle_data : HashMap<String, HashMap<String, Object>> = newHashMap();
 			for (v : this.vehicles) {
 				var sumoPosition : SumoPosition2D = this.conn.do_job_get(Vehicle.getPosition(v)) as SumoPosition2D
-				var type = this.conn.do_job_get(Vehicle.getTypeID(v)) as String
 				var position : Point2D = new Point2D(sumoPosition.x, sumoPosition.y)
 
 				if (fieldOfView.contains(position)) {

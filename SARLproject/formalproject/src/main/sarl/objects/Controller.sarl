@@ -18,12 +18,9 @@ agent Controller {
 	
 	var bicycleSeconds : HashMap<String, Double> = new HashMap<String, Double>()
 	
-	var conn : SumoTraciConnection
-	
 	uses DefaultContextInteractions
 
 	on Initialize  {
-		this.conn = occurrence.parameters.get(0) as SumoTraciConnection		
 		println("Controller spawned!")			
 	}
 

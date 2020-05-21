@@ -16,12 +16,9 @@ agent ControllerRSUWCAM {
 	var allRSU : List<RSU> = new ArrayList<RSU>() // all *RSU* that are connected to the *Controller*
 	var allCamera : List<Camera> = new ArrayList<Camera>() // all *Camera* that are connected to the *Controller*
 
-	var conn : SumoTraciConnection
-
 	uses DefaultContextInteractions
 
 	on Initialize {
-		this.conn = occurrence.parameters.get(0) as SumoTraciConnection
 		println("Controller spawned!")
 	}
 
