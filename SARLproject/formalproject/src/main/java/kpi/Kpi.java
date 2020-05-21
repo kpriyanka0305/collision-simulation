@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import de.tudresden.sumo.cmd.Vehicle;
-import de.tudresden.sumo.cmd.Vehicletype;
 import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.util.SumoCommand;
 import de.tudresden.sumo.cmd.Simulation;
@@ -17,9 +16,6 @@ import it.polito.appeal.traci.SumoTraciConnection;
 import math.geom2d.line.LineSegment2D;
 
 import java.io.FileWriter;
-import java.io.IOException;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 import util.*;
 
