@@ -75,7 +75,7 @@ agent Camera {
 
 	def run {
 		val task = task("camera observing")
-		task.every(6) [
+		task.every(1) [
 			this.vehicles = this.conn.do_job_get(Vehicle.getIDList()) as List<String>
 
 			var vehicle_data : HashMap<String, HashMap<String, Object>> = newHashMap();

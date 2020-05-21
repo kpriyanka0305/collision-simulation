@@ -13,7 +13,7 @@ import de.tudresden.ws.container.SumoStringList;
 import simulations.*;
 
 public class Main implements Observer {
-	static final String SUMO_BIN = "sumo-gui";
+	static final String SUMO_BIN = "sumo";
 	static final String CONFIG_FILE = "data/hard-braking-connected.sumocfg";
 	static final double STEP_LENGTH = 0.1;
 	static final String BUS_PREFIX = "bus";

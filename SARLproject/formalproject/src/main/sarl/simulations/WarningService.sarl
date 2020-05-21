@@ -49,7 +49,7 @@ agent WarningService {
 
 	def run {
 		val task = task("sumo running")	
-		task.every(50) [
+		task.every(1) [
 			this.conn.do_timestep();
 			var vehicles : List<String> = this.conn.do_job_get(Vehicle.getIDList()) as List<String>
 			kpis.checkKPIs();
