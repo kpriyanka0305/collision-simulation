@@ -3,6 +3,7 @@ package objects
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
 import de.tudresden.ws.container.SumoGeometry
 import de.tudresden.ws.container.SumoPosition2D
 import de.tudresden.sumo.cmd.Polygon
@@ -20,7 +21,7 @@ agent RSU {
 	var status = false
 	var conn : SumoTraciConnection
 		
-	uses DefaultContextInteractions
+	uses DefaultContextInteractions, Lifecycle
 	
 	on Initialize {		
 		this.name = occurrence.parameters.get(0) as String
@@ -54,6 +55,10 @@ agent RSU {
 	on Destroy {
 		println("RSU destroyed")
 	}	
+	
+	on ShutdownSimulation {
+		killMe
+	}
 	
 	def goRed {
 		this.conn.do_job_set(Polygon.setColor(this.name, new SumoColor(255, 0, 0, 255)))		

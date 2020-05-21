@@ -3,6 +3,7 @@ package objects
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Lifecycle
 import it.polito.appeal.traci.SumoTraciConnection
 import de.tudresden.ws.container.SumoGeometry
 import de.tudresden.ws.container.SumoPosition2D
@@ -20,6 +21,7 @@ import math.geom2d.polygon.SimplePolygon2D
 
 @SuppressWarnings("potential_inefficient_value_conversion", "potential_field_synchronization_problem", "unused_private_member", "unused_agent_capacity", "discouraged_reference")
 agent Camera {
+	uses Lifecycle
 
 	var name : String
 	var angle : int // 90 - NORTH, 180 - WEST, 270 - SOUTH, 0 - EAST
@@ -118,6 +120,10 @@ agent Camera {
 			'seconds' -> seconds
 		)
 		return myMap
+	}
+	
+	on ShutdownSimulation {
+		killMe
 	}
 
 	on Destroy {

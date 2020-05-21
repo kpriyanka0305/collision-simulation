@@ -3,6 +3,7 @@ package objects
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Lifecycle
 import java.util.ArrayList
 import java.util.List
 import events.*
@@ -11,6 +12,7 @@ import java.util.HashMap
 
 @SuppressWarnings("discouraged_occurrence_readonly_use", "unused_agent_capacity", "discouraged_reference")
 agent Controller {
+	uses Lifecycle
 
 	var allRSU : List<RSU> = new ArrayList<RSU>() //all *RSU* that are connected to the *Controller*
 	var allCamera : List<Camera> = new ArrayList<Camera>() // all *Camera* that are connected to the *Controller*
@@ -26,6 +28,10 @@ agent Controller {
 
 	on Destroy {
 		println("Controller destroyed")
+	}
+	
+	on ShutdownSimulation {
+		killMe
 	}
 
 	on SendAllDataCamera {

@@ -52,6 +52,13 @@ agent WarningService {
 		task.every(1) [
 			this.conn.do_timestep();
 			var vehicles : List<String> = this.conn.do_job_get(Vehicle.getIDList()) as List<String>
+			
+			if( vehicles.isEmpty() )
+			{
+				emit(new ShutdownSimulation)
+				killMe
+			}
+
 			kpis.checkKPIs();
 			for (v : vehicles) {
 				var veh_data = readData(v)
@@ -109,7 +116,7 @@ agent WarningService {
 	}
 
 	on Destroy {
-		this.conn.close();
+		// this.conn.close();
 		println("Environment destroyed")
 
 	}
