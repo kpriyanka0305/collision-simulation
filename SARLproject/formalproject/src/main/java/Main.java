@@ -1,5 +1,3 @@
-import io.sarl.bootstrap.SRE;
-import io.sarl.bootstrap.SREBootstrap;
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
 

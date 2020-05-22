@@ -8,44 +8,18 @@
 	<version>0.9.0</version>
 
 	<properties>
-		<sarl.version>0.9.0</sarl.version>
-		<janus.version>2.0.9.0</janus.version>
 		<compiler.level>1.8</compiler.level>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.sdk</artifactId>
-			<version>${sarl.version}</version>
-		</dependency>
 		
-		<dependency>
-          <groupId>io.janusproject</groupId>
-          <artifactId>io.janusproject.kernel</artifactId>
-          <version>${janus.version}</version>
-       </dependency>
-       
 		<!-- https://mvnrepository.com/artifact/math.geom2d/javaGeom -->
 		<dependency>
 		    <groupId>math.geom2d</groupId>
 		    <artifactId>javaGeom</artifactId>
 		    <version>0.11.1</version>
-		</dependency>
-
-		<dependency>
-		    <groupId>javax.xml.ws</groupId>
-		    <artifactId>jaxws-api</artifactId>
-		    <version>2.3.1</version>
-		</dependency>
-
-
-		<dependency>
-		    <groupId>org.glassfish.main.javaee-api</groupId>
-		    <artifactId>javax.jws</artifactId>
-		    <version>3.1.2.2</version>
 		</dependency>
 
 		<dependency>
@@ -61,6 +35,7 @@
         <version>5.4.2</version>
         <scope>test</scope>
     </dependency>
+
     <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-engine</artifactId>
@@ -77,17 +52,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.6.2</version>
-				<configuration>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>io.sarl.maven</groupId>
-				<artifactId>sarl-maven-plugin</artifactId>
-				<version>${sarl.version}</version>
-				<extensions>true</extensions>
 				<configuration>
 					<source>${compiler.level}</source>
 					<target>${compiler.level}</target>
