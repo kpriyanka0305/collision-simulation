@@ -55,7 +55,7 @@ public class Main implements Observer {
 		SumoTraciConnection conn = new SumoTraciConnection(SUMO_BIN, sumocfg);
 		conn.addOption("step-length", STEP_LENGTH + "");
 		conn.addOption("start", "true"); // start simulation at startup
-		conn.addOption("log", "data/log.txt");
+		conn.addOption("log", "out/log.txt");
 		conn.runServer();
 		conn.setOrder(1);
 		return conn;
