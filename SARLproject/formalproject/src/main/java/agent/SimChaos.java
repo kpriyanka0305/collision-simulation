@@ -17,6 +17,7 @@ public class SimChaos implements Simulation {
 
 	@Override
 	public boolean step() throws Exception {
+		@SuppressWarnings("unchecked")
 		List<String> vehicles = (List<String>) (this.conn.do_job_get(Vehicle.getIDList()));
 
 		if (vehicles.isEmpty()) {

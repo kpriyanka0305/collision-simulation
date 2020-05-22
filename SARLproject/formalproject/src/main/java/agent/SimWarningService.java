@@ -52,6 +52,7 @@ public class SimWarningService implements Simulation {
 			cam.observeSituation();
 		}
 
+		@SuppressWarnings("unchecked")
 		List<String> vehicles = (List<String>) (this.conn.do_job_get(Vehicle.getIDList()));
 
 		if (vehicles.isEmpty()) {
