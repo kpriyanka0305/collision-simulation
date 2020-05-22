@@ -14,8 +14,10 @@ public class RSU {
 	private double size = 5;
 	private boolean status = false;
 	private SumoTraciConnection conn;
+	private Simulation simulation;
 
-	public RSU(String name, Double x, Double y, SumoTraciConnection conn) throws Exception {
+	public RSU(String name, Double x, Double y, SumoTraciConnection conn, Controller controller, Simulation simulation)
+			throws Exception {
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -24,6 +26,7 @@ public class RSU {
 		drawRSU();
 
 //		emit(new RSUConnect(this))
+		controller.RSUConnect(this);
 		System.out.println("RSU spawned");
 	}
 
@@ -32,6 +35,7 @@ public class RSU {
 			this.status = true;
 			goRed();
 //			emit(new RSUStatus(this.name, this.status))
+			simulation.RSUStatus(this.name, this.status);
 		}
 	}
 
@@ -40,6 +44,7 @@ public class RSU {
 			this.status = false;
 			goGreen();
 //			emit(new RSUStatus(this.name, this.status))
+			simulation.RSUStatus(this.name, this.status);
 		}
 	}
 

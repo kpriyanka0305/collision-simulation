@@ -8,7 +8,7 @@ import java.util.Map;
 public class Controller {
 	private List<RSU> allRSU = new ArrayList<RSU>(); // all *RSU* that are connected to the *Controller*
 	private List<Camera> allCamera = new ArrayList<Camera>(); // all *Camera* that are connected to the *Controller*
-	private List<String> allOBU = new ArrayList<String>(); // all *OBU* that are connected to the *Controller*
+	private List<OBU> allOBU = new ArrayList<OBU>(); // all *OBU* that are connected to the *Controller*
 
 	private Map<String, Double> bicycleSeconds = new HashMap<String, Double>();
 
@@ -24,17 +24,20 @@ public class Controller {
 //		killMe
 //	}
 
-	public void SendAllDataCamera(Map<String, Map<String, Object>> vehicle_data) {
+	public void SendAllDataCamera(Map<String, Map<String, Object>> vehicle_data) throws Exception {
 		// Warning RSU
 		if (vehicle_data.isEmpty()) {
-//			emit(new ClearRSU("East"))
+			for (RSU rsu : allRSU) {
+//				emit(new ClearRSU("East"))
+				rsu.ClearRSU("East");
+			}
 		} else {
 			warningRSU(vehicle_data);
 			warningOBU(vehicle_data);
 		}
 	}
 
-	private void warningRSU(Map<String, Map<String, Object>> vehicle_data) {
+	private void warningRSU(Map<String, Map<String, Object>> vehicle_data) throws Exception {
 		boolean bus_flag = false;
 		double def_distance = 32;
 
@@ -45,15 +48,21 @@ public class Controller {
 				bus_flag = true;
 				if (distance < def_distance) {
 //					emit(new WarnRSU("East"))
+					for (RSU rsu : allRSU) {
+						rsu.WarnRSU("East");
+					}
 				}
 			}
 		}
 		if (bus_flag == false) {
-//			emit(new ClearRSU("East"))
+			for (RSU rsu : allRSU) {
+//				emit(new ClearRSU("East"))
+				rsu.ClearRSU("East");
+			}
 		}
 	}
 
-	private void warningOBU(Map<String, Map<String, Object>> vehicle_data) {
+	private void warningOBU(Map<String, Map<String, Object>> vehicle_data) throws Exception {
 		boolean bus_flag = false;
 		boolean bicycle_flag = false;
 
@@ -105,9 +114,15 @@ public class Controller {
 		if (bus_flag && bicycle_flag) {
 			for (String busID : busIDList) {
 //				emit(new WarnOBU(busID))
+				for (OBU obu : allOBU) {
+					obu.WarnOBU(busID);
+				}
 			}
 		} else if (!bicycle_flag) {
-//			emit(new tempClean)
+			for (OBU obu : allOBU) {
+//				emit(new tempClean)
+				obu.tempClean();
+			}
 		}
 	}
 
@@ -119,8 +134,8 @@ public class Controller {
 		removeOBU(name);
 	}
 
-	public void OBUConnect(String name) {
-		addOBU(name);
+	public void OBUConnect(OBU obu) {
+		addOBU(obu);
 	}
 
 	public void RSUConnect(RSU RSUAgent) {
@@ -132,11 +147,11 @@ public class Controller {
 	}
 
 	private void removeOBU(String name) {
-		this.allOBU.remove(name);
+		this.allOBU.removeIf((obu) -> obu.getName().equals(name));
 	}
 
-	private void addOBU(String name) {
-		this.allOBU.add(name);
+	private void addOBU(OBU element) {
+		this.allOBU.add(element);
 	}
 
 	void addRSU(RSU element) {

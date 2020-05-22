@@ -39,10 +39,13 @@ public class Camera {
 	// CONNECTION OF COURSE
 	private SumoTraciConnection conn;
 
-	public Camera(String name, SumoTraciConnection conn, double x, double y, double size, double height, int angle) throws Exception {
+	private Controller controller;
+
+	public Camera(String name, SumoTraciConnection conn, double x, double y, double size, double height, int angle, Controller controller) throws Exception {
 		// BASE
 		this.name = name;
 		this.conn = conn;
+		this.controller = controller;
 
 		// THESE ARE FOR CAMERA SQUARE
 		this.x = x;
@@ -55,11 +58,13 @@ public class Camera {
 
 		// THESE ARE FOR COLLISION POINT
 		this.center = new SumoPosition2D(2.28, 0.88);
+
 		drawCamera();
 		drawFOV();
 
 		// CONNECT TO THE CONTROLLER
 //		emit(new CameraConnect(this))
+		controller.CameraConnect(this);
 	}
 
 	public void observeSituation() throws Exception {
@@ -75,6 +80,7 @@ public class Camera {
 			}
 		}
 //		emit(new SendAllDataCamera(vehicle_data))
+		controller.SendAllDataCamera(vehicle_data);
 	}
 
 	Map<String, Object> readData(String id, Point2D position) throws Exception {

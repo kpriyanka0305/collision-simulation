@@ -10,11 +10,16 @@ public class OBU {
 	private String type;
 	private SumoTraciConnection conn;
 
-	public OBU(String name, SumoTraciConnection conn, String type) {
+	public OBU(String name, SumoTraciConnection conn, String type, Controller controller) {
 		this.name = name;
 		this.conn = conn;
 		this.type = type;
 //		emit(new OBUConnect(this.name))
+		controller.OBUConnect(this);
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	void OBUDisconnect(String name) {

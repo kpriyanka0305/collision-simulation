@@ -21,6 +21,7 @@ public class SimWarningService implements Simulation {
 	private double cyclist_range = 5.0;
 
 	private Kpi kpis;
+	private Controller controller;
 
 	private Consumer<Void> shutdownCallback;
 
@@ -32,12 +33,12 @@ public class SimWarningService implements Simulation {
 		this.RsusStatus.put("East", false);
 		this.RsusStatus.put("West", false);
 
-//		spawnElements
+		spawnElements();
 
 //		run
 	}
 
-	void RSUStatus(String name, boolean status) {
+	public void RSUStatus(String name, boolean status) {
 		if (name.equals("East")) {
 			this.RsusStatus.put("East", status);
 		} else {
@@ -99,10 +100,17 @@ public class SimWarningService implements Simulation {
 			if (!flag) {
 				System.out.println(k + " REMOVED");
 //				emit(new OBUDisconnect(k))
+				controller.OBUDisconnect(k);
 				this.OBusList.remove(k);
 				break;
 			}
 		}
+	}
+
+	void spawnElements() {
+//		spawn(Controller, this.conn)
+//		spawn(RSU, "East", 15.5, -10.5, this.conn) // EAST X, Y
+//		spawn(Camera, "CameraOne", this.conn, -15.0, 0.0, 2.0, 0.7, 4) 	// CameraName, Connection, X, Y, Size, Height, Angle
 	}
 
 	private Map<String, Object> readData(String id) throws Exception {
