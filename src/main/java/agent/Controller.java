@@ -100,7 +100,7 @@ public class Controller {
 			}
 
 			// BUS
-			if (vehicleType.equals("bus") && vehicleSecond <= 3.5 && vehicleDistance >= 4.0) {
+			if (vehicleType.contains("bus") && vehicleSecond <= 3.5 && vehicleDistance >= 4.0) {
 				for (Double vs : this.bicycleSeconds.values()) {
 					if ((almostEqual(vehicleSecond, vs, 0.75) || almostEqual(extraSecond, vs, 0.75))
 							|| (vs > vehicleSecond && vs < extraSecond)) {
