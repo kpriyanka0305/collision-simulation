@@ -4,7 +4,6 @@ import kpi.Kpi;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Consumer;
 
 import agent.SimWarningService;
 import de.tudresden.sumo.config.Constants;
@@ -16,8 +15,6 @@ import de.tudresden.sumo.util.Observable;
 import de.tudresden.sumo.util.Observer;
 import de.tudresden.ws.container.SumoStringList;
 
-import simulations.*;
-
 public class Main implements Observer {
 	static final String SUMO_BIN = "sumo";
 	static final String CONFIG_FILE = "data/hard-braking-connected.sumocfg";
@@ -28,15 +25,9 @@ public class Main implements Observer {
 	private SumoTraciConnection conn;
 	private Kpi kpi;
 
-	private final Lock lock;
-	private final Condition simulationFinished;
-
 	public Main(SumoTraciConnection conn) throws Exception {
 		this.conn = conn;
 		this.kpi = new Kpi(conn);
-
-		lock = new ReentrantLock();
-		simulationFinished = lock.newCondition();
 	}
 
 	public static void main(String[] args) throws Exception {
