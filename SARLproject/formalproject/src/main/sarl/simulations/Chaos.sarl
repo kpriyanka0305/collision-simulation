@@ -26,7 +26,6 @@ agent Chaos {
 	def run {
 		val task = task("sumo running")
 		task.every(50) [
-
 			this.conn.do_timestep();
 			kpis.checkKPIs();
 		]

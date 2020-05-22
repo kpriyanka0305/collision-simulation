@@ -2,6 +2,12 @@ import io.sarl.bootstrap.SRE;
 import io.sarl.bootstrap.SREBootstrap;
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
+
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
+
 import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.subscription.ResponseType;
 import de.tudresden.sumo.subscription.SubscribtionVariable;
@@ -22,14 +28,20 @@ public class Main implements Observer {
 	private SumoTraciConnection conn;
 	private Kpi kpi;
 
+	private final Lock lock;
+	private final Condition simulationFinished;
+
 	public Main(SumoTraciConnection conn) throws Exception {
 		this.conn = conn;
 		this.kpi = new Kpi(conn);
+
+		lock = new ReentrantLock();
+		simulationFinished = lock.newCondition();
 	}
 
 	public static void main(String[] args) throws Exception {
 		String sumocfg = CONFIG_FILE;
-		if( args.length > 0 ) {
+		if (args.length > 0) {
 			sumocfg = args[0];
 		}
 
@@ -37,9 +49,30 @@ public class Main implements Observer {
 
 		Main m = new Main(connection);
 		m.subscribe();
+		m.runSimulation();
+	}
 
+	private void runSimulation() throws Exception {
 		SREBootstrap bootstrap = SRE.getBootstrap();
-		bootstrap.startAgent(WarningService.class, m.conn, m.kpi);
+
+		lock.lock();
+		try {
+			Consumer<Void> simulationFinishedCallback = (x) -> {
+				try {
+					lock.lock();
+					this.simulationFinished.signalAll();
+				} finally {
+					lock.unlock();
+				}
+			};
+			bootstrap.startAgent(WarningService.class, conn, kpi, simulationFinishedCallback);
+			System.out.println("runSimulation waiting for finish");
+			simulationFinished.await();
+			System.out.println("runSimulation END");
+			conn.close();
+		} finally {
+			lock.unlock();
+		}
 //		bootstrap.startAgent(Chaos.class, m.conn, m.kpi);
 //		bootstrap.startAgent(OnlyRSUWithCamera.class, m.conn, m.kpi);
 	}

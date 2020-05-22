@@ -77,20 +77,22 @@ agent Camera {
 
 	def run {
 		val task = task("camera observing")
-		task.every(1) [
-			this.vehicles = this.conn.do_job_get(Vehicle.getIDList()) as List<String>
+		task.every(1) [ observeSituation ]
+	}
+	
+	def observeSituation {
+		this.vehicles = this.conn.do_job_get(Vehicle.getIDList()) as List<String>
 
-			var vehicle_data : HashMap<String, HashMap<String, Object>> = newHashMap();
-			for (v : this.vehicles) {
-				var sumoPosition : SumoPosition2D = this.conn.do_job_get(Vehicle.getPosition(v)) as SumoPosition2D
-				var position : Point2D = new Point2D(sumoPosition.x, sumoPosition.y)
+		var vehicle_data : HashMap<String, HashMap<String, Object>> = newHashMap();
+		for (v : this.vehicles) {
+			var sumoPosition : SumoPosition2D = this.conn.do_job_get(Vehicle.getPosition(v)) as SumoPosition2D
+			var position : Point2D = new Point2D(sumoPosition.x, sumoPosition.y)
 
-				if (fieldOfView.contains(position)) {
-					vehicle_data.put(v, readData(v, position))
-				}
+			if (fieldOfView.contains(position)) {
+				vehicle_data.put(v, readData(v, position))
 			}
-			emit(new SendAllDataCamera(vehicle_data))
-		]
+		}
+		emit(new SendAllDataCamera(vehicle_data))
 	}
 
 	def readData(id : String, position : Point2D) {
@@ -123,6 +125,8 @@ agent Camera {
 	}
 	
 	on ShutdownSimulation {
+		val task = task("camera observing")
+		task.cancel()
 		killMe
 	}
 

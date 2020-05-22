@@ -11,6 +11,7 @@ import de.tudresden.sumo.cmd.Junction
 import io.sarl.core.Schedules
 import java.util.ArrayList
 import java.util.HashMap;
+import java.util.function.Consumer;
 import de.tudresden.ws.container.SumoPosition2D
 import events.*
 import objects.*
@@ -26,10 +27,13 @@ agent WarningService {
 	var cyclist_range = 5.0
 	
 	var kpis : Kpi
+	
+	var shutdownCallback : Consumer<Void>
 
 	on Initialize {
 		this.conn = occurrence.parameters.get(0) as SumoTraciConnection
 		this.kpis = occurrence.parameters.get(1) as Kpi
+		this.shutdownCallback = occurrence.parameters.get(2) as Consumer<Void>
 
 		this.RsusStatus.put("East", false)
 		this.RsusStatus.put("West", false)
@@ -49,64 +53,66 @@ agent WarningService {
 
 	def run {
 		val task = task("sumo running")	
-		task.every(1) [
-			this.conn.do_timestep();
-			var vehicles : List<String> = this.conn.do_job_get(Vehicle.getIDList()) as List<String>
-			
-			if( vehicles.isEmpty() )
-			{
-				emit(new ShutdownSimulation)
-				killMe
-			}
+		task.every(1) [ simulationStep ]
+	}
+	
+	def simulationStep {
+		this.conn.do_timestep();
+		var vehicles : List<String> = this.conn.do_job_get(Vehicle.getIDList()) as List<String>
+		
+		if( vehicles.isEmpty() )
+		{
+			emit(new ShutdownSimulation)
+			return
+		}
 
-			kpis.checkKPIs();
+		kpis.checkKPIs();
+		for (v : vehicles) {
+			var veh_data = readData(v)
+			var type = veh_data.get("type") as String
+			if (type.contains("bus")) {
+				if (!this.OBusList.contains(v)) {
+					spawn(OBU, v, this.conn)
+					this.OBusList.add(v)
+					println(v + " ENTERED")
+				}
+			} else if (type.contains("bicycle-distracted")) {	
+					
+				var distance = veh_data.get("distance") as Double
+				var speed = veh_data.get("speed") as Double
+				var east_rsu = this.RsusStatus.get("East") as Boolean
+				var road_id = veh_data.get("road_id") as String
+				if (east_rsu && road_id.contains("i")) {
+					if (distance > rsu_distance && distance < rsu_distance + cyclist_range) {
+						this.conn.do_job_set(Vehicle.setSpeed(v, 0.0))
+						//println("Bicycle distracted entered" + distance + "RSU distance is:-" + rsu_distance + "Cyclists range is :- " + cyclist_range + "cyclists speed :-" + speed);
+					}
+				} else {
+					if (speed == 0) {
+						this.conn.do_job_set(Vehicle.setSpeed(v, 4.2)) // 4.2 - speed of bicycle set here
+						//println(v + "Bicycle distracted entered");
+					}
+				}
+			}
+		}
+
+		for (k : this.OBusList) {
+			var flag : boolean = false
+
 			for (v : vehicles) {
-				var veh_data = readData(v)
-				var type = veh_data.get("type") as String
-				if (type.contains("bus")) {
-					if (!this.OBusList.contains(v)) {
-						spawn(OBU, v, this.conn)
-						this.OBusList.add(v)
-						println(v + " ENTERED")
-					}
-				} else if (type.contains("bicycle-distracted")) {	
-						
-					var distance = veh_data.get("distance") as Double
-					var speed = veh_data.get("speed") as Double
-					var east_rsu = this.RsusStatus.get("East") as Boolean
-					var road_id = veh_data.get("road_id") as String
-					if (east_rsu && road_id.contains("i")) {
-						if (distance > rsu_distance && distance < rsu_distance + cyclist_range) {
-							this.conn.do_job_set(Vehicle.setSpeed(v, 0.0))
-							//println("Bicycle distracted entered" + distance + "RSU distance is:-" + rsu_distance + "Cyclists range is :- " + cyclist_range + "cyclists speed :-" + speed);
-						}
-					} else {
-						if (speed == 0) {
-							this.conn.do_job_set(Vehicle.setSpeed(v, 4.2)) // 4.2 - speed of bicycle set here
-							//println(v + "Bicycle distracted entered");
-						}
-					}
-				}
-			}
-
-			for (k : this.OBusList) {
-				var flag : boolean = false
-
-				for (v : vehicles) {
-					if (k.equals(v)) {
-						flag = true
-						break
-					}
-				}
-
-				if (!flag) {
-					println(k + " REMOVED")
-					emit(new OBUDisconnect(k))
-					this.OBusList.remove(k)
+				if (k.equals(v)) {
+					flag = true
 					break
 				}
 			}
-		]
+
+			if (!flag) {
+				println(k + " REMOVED")
+				emit(new OBUDisconnect(k))
+				this.OBusList.remove(k)
+				break
+			}
+		}
 	}
 
 	def spawnElements {
@@ -114,11 +120,14 @@ agent WarningService {
 		spawn(RSU, "East", 15.5, -10.5, this.conn) // EAST X, Y
 		spawn(Camera, "CameraOne", this.conn, -15.0, 0.0, 2.0, 0.7, 4) 	// CameraName, Connection, X, Y, Size, Height, Angle
 	}
+	
+	on ShutdownSimulation {
+		killMe
+	}
 
 	on Destroy {
-		// this.conn.close();
-		println("Environment destroyed")
-
+		shutdownCallback.accept(null);
+		println("WarningService destroyed")
 	}
 
 	def readData(id : String) {

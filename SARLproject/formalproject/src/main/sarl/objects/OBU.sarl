@@ -65,6 +65,6 @@ agent OBU {
 	}
 
 	on Destroy {
-		println(this.name + " DESTROYED!")	
+		println(this.name + " OBU destroyed")	
 	}
 }
