@@ -23,8 +23,8 @@ public class Main implements Observer {
 	private SumoTraciConnection conn;
 	private Kpi kpi;
 
-	public Main(SumoTraciConnection conn) throws Exception {
-		this.conn = conn;
+	public Main(String sumocfg) throws Exception {
+		this.conn = SumoConnect(sumocfg);
 		this.kpi = new Kpi(conn);
 	}
 
@@ -34,23 +34,23 @@ public class Main implements Observer {
 			sumocfg = args[0];
 		}
 
-		SumoTraciConnection connection = SumoConnect(sumocfg);
-
-		Main m = new Main(connection);
+		long startTime = System.nanoTime();
+		
+		Main m = new Main(sumocfg);
 		m.subscribe();
 		m.runSimulation();
+
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime);
+		System.out.println("elapsed time: " + duration / 1000000 + " ms");
 	}
 
 	private void runSimulation() throws Exception {
-		long startTime = System.nanoTime();
 //		Simulation sim = new SimWarningService(conn, kpi);
 		Simulation sim = new SimChaos(conn, kpi);
 		while (sim.step()) {
 		}
 		conn.close();
-		long endTime = System.nanoTime();
-		long duration = (endTime - startTime);
-		System.out.println("elapsed time: " + duration / 1000000 + " ms");
 	}
 
 	public static SumoTraciConnection SumoConnect(String sumocfg) throws Exception {
