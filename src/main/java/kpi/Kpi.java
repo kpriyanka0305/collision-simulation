@@ -26,10 +26,12 @@ public class Kpi {
 	Map<String, Map<String, List<Double[]>>> distances = new HashMap<>();
 	Map<String, List<Double[]>> accelerations = new HashMap<>();
 	Map<String, List<Double[]>> speeds = new HashMap<>();
+	
+	private final static String OUT_DIR = "out";
 
-	private final FileWriter distancesFile = new FileWriter("data/distances.txt", false);
-	private final FileWriter accelerationsFile = new FileWriter("data/accelerations.txt", false);
-	private final FileWriter speedsFile = new FileWriter("data/speeds.txt", false);
+	private final FileWriter distancesFile = new FileWriter(OUT_DIR + "/distances.txt", false);
+	private final FileWriter accelerationsFile = new FileWriter(OUT_DIR + "/accelerations.txt", false);
+	private final FileWriter speedsFile = new FileWriter(OUT_DIR + "/speeds.txt", false);
 
 	public Kpi(SumoTraciConnection connection) throws Exception {
 		this.conn = connection;
