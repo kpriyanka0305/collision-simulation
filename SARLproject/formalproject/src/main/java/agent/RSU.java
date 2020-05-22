@@ -22,6 +22,7 @@ public class RSU {
 		this.x = x;
 		this.y = y;
 		this.conn = conn;
+		this.simulation = simulation;
 
 		drawRSU();
 

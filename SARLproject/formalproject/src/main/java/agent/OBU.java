@@ -10,10 +10,10 @@ public class OBU {
 	private String type;
 	private SumoTraciConnection conn;
 
-	public OBU(String name, SumoTraciConnection conn, String type, Controller controller) {
+	public OBU(String name, SumoTraciConnection conn, Controller controller) throws Exception {
 		this.name = name;
 		this.conn = conn;
-		this.type = type;
+		this.type = (String)(this.conn.do_job_get(Vehicle.getTypeID(this.name)));
 //		emit(new OBUConnect(this.name))
 		controller.OBUConnect(this);
 	}

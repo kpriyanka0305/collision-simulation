@@ -15,7 +15,9 @@ import kpi.Kpi;
 public class SimWarningService implements Simulation {
 
 	private SumoTraciConnection conn;
-	private List<String> OBusList = new ArrayList<String>();
+	private List<OBU> allOBUs = new ArrayList<OBU>();
+	private List<RSU> allRSUs = new ArrayList<RSU>();
+	private List<Camera> allCameras = new ArrayList<Camera>();
 	private Map<String, Boolean> RsusStatus = new HashMap<String, Boolean>();
 	private double rsu_distance = 13.0;
 	private double cyclist_range = 5.0;
@@ -25,7 +27,7 @@ public class SimWarningService implements Simulation {
 
 	private Consumer<Void> shutdownCallback;
 
-	public SimWarningService(SumoTraciConnection conn, Kpi kpis, Consumer<Void> shutdownCallback) {
+	public SimWarningService(SumoTraciConnection conn, Kpi kpis, Consumer<Void> shutdownCallback) throws Exception {
 		this.conn = conn;
 		this.kpis = kpis;
 		this.shutdownCallback = shutdownCallback;
@@ -49,10 +51,14 @@ public class SimWarningService implements Simulation {
 	@Override
 	public void step() throws Exception {
 		this.conn.do_timestep();
-		List<String> vehicles = (List<String>)(this.conn.do_job_get(Vehicle.getIDList()));
-		
-		if( vehicles.isEmpty() )
-		{
+
+		for (Camera cam : allCameras) {
+			cam.observeSituation();
+		}
+
+		List<String> vehicles = (List<String>) (this.conn.do_job_get(Vehicle.getIDList()));
+
+		if (vehicles.isEmpty()) {
 //			emit(new ShutdownSimulation)
 //			return
 		}
@@ -60,57 +66,63 @@ public class SimWarningService implements Simulation {
 		kpis.checkKPIs();
 
 		for (String v : vehicles) {
-			Map<String,Object> veh_data = readData(v);
-			String type = (String)(veh_data.get("type"));
+			Map<String, Object> veh_data = readData(v);
+			String type = (String) (veh_data.get("type"));
 			if (type.contains("bus")) {
-				if (!this.OBusList.contains(v)) {
+				if (!this.allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
 //					spawn(OBU, v, this.conn)
-					this.OBusList.add(v);
+					OBU obu = new OBU(v, conn, controller);
+					this.allOBUs.add(obu);
 					System.out.println(v + " ENTERED");
 				}
-			} else if (type.contains("bicycle-distracted")) {	
-				double distance = (Double)(veh_data.get("distance"));
-				double speed = (Double)(veh_data.get("speed"));
-				boolean east_rsu = (Boolean)(this.RsusStatus.get("East"));
-				String road_id = (String)(veh_data.get("road_id"));
+			} else if (type.contains("bicycle-distracted")) {
+				double distance = (Double) (veh_data.get("distance"));
+				double speed = (Double) (veh_data.get("speed"));
+				boolean east_rsu = (Boolean) (this.RsusStatus.get("East"));
+				String road_id = (String) (veh_data.get("road_id"));
 				if (east_rsu && road_id.contains("i")) {
 					if (distance > rsu_distance && distance < rsu_distance + cyclist_range) {
 						this.conn.do_job_set(Vehicle.setSpeed(v, 0.0));
-						//println("Bicycle distracted entered" + distance + "RSU distance is:-" + rsu_distance + "Cyclists range is :- " + cyclist_range + "cyclists speed :-" + speed);
+						// println("Bicycle distracted entered" + distance + "RSU distance is:-" +
+						// rsu_distance + "Cyclists range is :- " + cyclist_range + "cyclists speed :-"
+						// + speed);
 					}
 				} else {
 					if (speed == 0) {
 						this.conn.do_job_set(Vehicle.setSpeed(v, 4.2)); // 4.2 - speed of bicycle set here
-						//println(v + "Bicycle distracted entered");
+						// println(v + "Bicycle distracted entered");
 					}
 				}
 			}
 		}
 
-		for (String k : this.OBusList) {
+		for (OBU obu : this.allOBUs) {
 			boolean flag = false;
 
 			for (String v : vehicles) {
-				if (k.equals(v)) {
+				if (obu.getName().equals(v)) {
 					flag = true;
 					break;
 				}
 			}
 
 			if (!flag) {
-				System.out.println(k + " REMOVED");
+				System.out.println(obu.getName() + " REMOVED");
 //				emit(new OBUDisconnect(k))
-				controller.OBUDisconnect(k);
-				this.OBusList.remove(k);
+				controller.OBUDisconnect(obu.getName());
+				this.allOBUs.removeIf((o) -> o.getName().equals(obu.getName()));
 				break;
 			}
 		}
 	}
 
-	void spawnElements() {
+	void spawnElements() throws Exception {
 //		spawn(Controller, this.conn)
+		controller = new Controller();
 //		spawn(RSU, "East", 15.5, -10.5, this.conn) // EAST X, Y
+		allRSUs.add(new RSU("East", 15.5, -10.5, conn, controller, this));
 //		spawn(Camera, "CameraOne", this.conn, -15.0, 0.0, 2.0, 0.7, 4) 	// CameraName, Connection, X, Y, Size, Height, Angle
+		allCameras.add(new Camera("CameraOne", conn, -15.0, 0.0, 2.0, 0.7, 4, controller));
 	}
 
 	private Map<String, Object> readData(String id) throws Exception {
