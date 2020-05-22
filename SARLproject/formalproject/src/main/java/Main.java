@@ -8,6 +8,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
+import agent.SimWarningService;
 import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.subscription.ResponseType;
 import de.tudresden.sumo.subscription.SubscribtionVariable;
@@ -20,7 +21,7 @@ import de.tudresden.ws.container.SumoStringList;
 import simulations.*;
 
 public class Main implements Observer {
-	static final String SUMO_BIN = "sumo";
+	static final String SUMO_BIN = "sumo-gui";
 	static final String CONFIG_FILE = "data/hard-braking-connected.sumocfg";
 	static final double STEP_LENGTH = 0.1;
 	static final String BUS_PREFIX = "bus";
@@ -54,25 +55,11 @@ public class Main implements Observer {
 	}
 
 	private void runSimulation() throws Exception {
-		SREBootstrap bootstrap = SRE.getBootstrap();
-
-		lock.lock();
-		try {
-			Consumer<Void> simulationFinishedCallback = (x) -> {
-				try {
-					lock.lock();
-					this.simulationFinished.signalAll();
-				} finally {
-					lock.unlock();
-				}
-			};
-			bootstrap.startAgent(WarningService.class, conn, kpi, simulationFinishedCallback);
-			System.out.println("runSimulation waiting for finish");
-			simulationFinished.await();
-			System.out.println("runSimulation END");
-			conn.close();
-		} finally {
-			lock.unlock();
+		SimWarningService sim = new SimWarningService(conn, kpi, null);
+		while( true )
+		{
+			sim.step();
+			Thread.sleep(50);
 		}
 //		bootstrap.startAgent(Chaos.class, m.conn, m.kpi);
 //		bootstrap.startAgent(OnlyRSUWithCamera.class, m.conn, m.kpi);
