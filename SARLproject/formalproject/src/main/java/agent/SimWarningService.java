@@ -49,10 +49,6 @@ public class SimWarningService extends Simulation {
 		numSteps++;
 		this.conn.do_timestep();
 
-		for (Camera cam : allCameras) {
-			cam.observeSituation();
-		}
-
 		@SuppressWarnings("unchecked")
 		List<String> vehicles = (List<String>) (this.conn.do_job_get(Vehicle.getIDList()));
 
@@ -63,6 +59,10 @@ public class SimWarningService extends Simulation {
 		}
 
 		kpis.checkKPIs();
+
+		for (Camera cam : allCameras) {
+			cam.observeSituation();
+		}
 
 		for (String v : vehicles) {
 			Map<String, Object> veh_data = readData(v);
@@ -82,14 +82,10 @@ public class SimWarningService extends Simulation {
 				if (east_rsu && road_id.contains("i")) {
 					if (distance > rsu_distance && distance < rsu_distance + cyclist_range) {
 						this.conn.do_job_set(Vehicle.setSpeed(v, 0.0));
-						// println("Bicycle distracted entered" + distance + "RSU distance is:-" +
-						// rsu_distance + "Cyclists range is :- " + cyclist_range + "cyclists speed :-"
-						// + speed);
 					}
 				} else {
 					if (speed == 0) {
-						this.conn.do_job_set(Vehicle.setSpeed(v, 4.2)); // 4.2 - speed of bicycle set here
-						// println(v + "Bicycle distracted entered");
+						this.conn.do_job_set(Vehicle.setSpeed(v, 4.2));
 					}
 				}
 			}
@@ -113,7 +109,7 @@ public class SimWarningService extends Simulation {
 				break;
 			}
 		}
-		
+
 		// simulation wants to make another step
 		return true;
 	}
