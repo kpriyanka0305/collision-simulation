@@ -1,10 +1,6 @@
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
 
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 import agent.SimWarningService;
 import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.subscription.ResponseType;
@@ -44,7 +40,7 @@ public class Main implements Observer {
 	}
 
 	private void runSimulation() throws Exception {
-		SimWarningService sim = new SimWarningService(conn, kpi, null);
+		SimWarningService sim = new SimWarningService(conn, kpi);
 		while (sim.step()) {
 		}
 		conn.close();

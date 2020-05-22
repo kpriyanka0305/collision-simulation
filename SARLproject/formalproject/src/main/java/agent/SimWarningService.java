@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import de.tudresden.sumo.cmd.Junction;
 import de.tudresden.sumo.cmd.Vehicle;
@@ -25,12 +24,9 @@ public class SimWarningService implements Simulation {
 	private Kpi kpis;
 	private Controller controller;
 
-	private Consumer<Void> shutdownCallback;
-
-	public SimWarningService(SumoTraciConnection conn, Kpi kpis, Consumer<Void> shutdownCallback) throws Exception {
+	public SimWarningService(SumoTraciConnection conn, Kpi kpis) throws Exception {
 		this.conn = conn;
 		this.kpis = kpis;
-		this.shutdownCallback = shutdownCallback;
 
 		this.RsusStatus.put("East", false);
 		this.RsusStatus.put("West", false);
