@@ -202,8 +202,3 @@ nb-configuration.xml
 ## OS X
 ##########################
 .DS_Store
-
-generated-sources/
-SARLproject/formalproject/.classpath
-SARLproject/formalproject/.classpath
-SARLproject/formalproject/data/distances.txt
