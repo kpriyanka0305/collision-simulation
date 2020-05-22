@@ -1,4 +1,4 @@
-package simulations;
+package agent;
 
 import java.util.ArrayList;
 import java.util.HashMap;

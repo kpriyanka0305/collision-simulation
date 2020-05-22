@@ -1,4 +1,4 @@
-package simulations;
+package agent;
 
 import de.tudresden.sumo.cmd.Polygon;
 import de.tudresden.ws.container.SumoColor;
