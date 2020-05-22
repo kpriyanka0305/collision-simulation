@@ -1,8 +1,9 @@
 package main;
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
-
+import agent.SimChaos;
 import agent.SimWarningService;
+import agent.Simulation;
 import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.subscription.ResponseType;
 import de.tudresden.sumo.subscription.SubscribtionVariable;
@@ -41,12 +42,15 @@ public class Main implements Observer {
 	}
 
 	private void runSimulation() throws Exception {
-		SimWarningService sim = new SimWarningService(conn, kpi);
+		long startTime = System.nanoTime();
+//		Simulation sim = new SimWarningService(conn, kpi);
+		Simulation sim = new SimChaos(conn, kpi);
 		while (sim.step()) {
 		}
 		conn.close();
-//		bootstrap.startAgent(Chaos.class, m.conn, m.kpi);
-//		bootstrap.startAgent(OnlyRSUWithCamera.class, m.conn, m.kpi);
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime);
+		System.out.println("elapsed time: " + duration / 1000000 + " ms");
 	}
 
 	public static SumoTraciConnection SumoConnect(String sumocfg) throws Exception {

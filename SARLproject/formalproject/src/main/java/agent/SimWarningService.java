@@ -11,7 +11,7 @@ import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
 
-public class SimWarningService implements Simulation {
+public class SimWarningService extends Simulation {
 
 	private SumoTraciConnection conn;
 	private List<OBU> allOBUs = new ArrayList<OBU>();
@@ -46,6 +46,7 @@ public class SimWarningService implements Simulation {
 
 	@Override
 	public boolean step() throws Exception {
+		numSteps++;
 		this.conn.do_timestep();
 
 		for (Camera cam : allCameras) {
@@ -57,6 +58,7 @@ public class SimWarningService implements Simulation {
 
 		if (vehicles.isEmpty()) {
 			// simulation wants to shut down
+			System.out.println("terminated after " + numSteps + " steps");
 			return false;
 		}
 

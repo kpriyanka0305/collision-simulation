@@ -6,7 +6,7 @@ import de.tudresden.sumo.cmd.Vehicle;
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
 
-public class SimChaos implements Simulation {
+public class SimChaos extends Simulation {
 	private SumoTraciConnection conn;
 	private Kpi kpis;
 
@@ -17,15 +17,18 @@ public class SimChaos implements Simulation {
 
 	@Override
 	public boolean step() throws Exception {
+		numSteps++;
+		this.conn.do_timestep();
+
 		@SuppressWarnings("unchecked")
 		List<String> vehicles = (List<String>) (this.conn.do_job_get(Vehicle.getIDList()));
 
 		if (vehicles.isEmpty()) {
 			// simulation wants to shut down
+			System.out.println("terminated after " + numSteps + " steps");
 			return false;
 		}
 
-		this.conn.do_timestep();
 		kpis.checkKPIs();
 
 		// simulation wants to continue
