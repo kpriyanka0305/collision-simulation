@@ -1,3 +1,5 @@
+package util;
+
 import static org.junit.jupiter.api.Assertions.*;
 import math.geom2d.line.LineSegment2D;
 
