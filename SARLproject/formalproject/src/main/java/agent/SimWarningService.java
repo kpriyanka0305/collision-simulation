@@ -56,7 +56,6 @@ public class SimWarningService implements Simulation {
 		List<String> vehicles = (List<String>) (this.conn.do_job_get(Vehicle.getIDList()));
 
 		if (vehicles.isEmpty()) {
-//			emit(new ShutdownSimulation)
 			// simulation wants to shut down
 			return false;
 		}
