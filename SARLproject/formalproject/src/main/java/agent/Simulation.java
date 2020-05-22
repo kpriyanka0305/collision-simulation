@@ -1,6 +1,6 @@
 package agent;
 
 public interface Simulation {
-	void step() throws Exception;
+	boolean step() throws Exception;
 	void RSUStatus(String name, boolean status);
 }

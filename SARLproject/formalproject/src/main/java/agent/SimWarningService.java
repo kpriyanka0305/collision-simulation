@@ -49,7 +49,7 @@ public class SimWarningService implements Simulation {
 	}
 
 	@Override
-	public void step() throws Exception {
+	public boolean step() throws Exception {
 		this.conn.do_timestep();
 
 		for (Camera cam : allCameras) {
@@ -60,7 +60,8 @@ public class SimWarningService implements Simulation {
 
 		if (vehicles.isEmpty()) {
 //			emit(new ShutdownSimulation)
-//			return
+			// simulation wants to shut down
+			return false;
 		}
 
 		kpis.checkKPIs();
@@ -114,6 +115,9 @@ public class SimWarningService implements Simulation {
 				break;
 			}
 		}
+		
+		// simulation wants to make another step
+		return true;
 	}
 
 	void spawnElements() throws Exception {
