@@ -28,12 +28,6 @@ public class OBU {
 		}
 	}
 
-	void CleanOBU(String name) throws Exception {
-		if (name.equals(this.name)) {
-			goDefaultColor();
-		}
-	}
-
 	void tempClean() throws Exception {
 		goDefaultColor();
 	}
