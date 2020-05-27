@@ -90,6 +90,7 @@ public class Main implements Observer {
 								this.conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, this.simParameters.busMaxSpeed));
 								kpi.addBus(vehicleID);
 							} else if (vehicleID.startsWith(BIKE_PREFIX)) {
+								// TODO: same problem as with bus, this changes the ID name of the bike. Need to adjust in agent (I think it was camera)
 								this.conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, this.simParameters.bikeMaxSpeed));
 								kpi.addBike(vehicleID);
 							}
