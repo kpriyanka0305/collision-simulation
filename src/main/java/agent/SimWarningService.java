@@ -10,6 +10,7 @@ import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
+import main.SimulationParameters;
 
 public class SimWarningService extends Simulation {
 
@@ -23,10 +24,12 @@ public class SimWarningService extends Simulation {
 
 	private Kpi kpis;
 	private Controller controller;
+	private final SimulationParameters simParams;
 
-	public SimWarningService(SumoTraciConnection conn, Kpi kpis) throws Exception {
+	public SimWarningService(SumoTraciConnection conn, Kpi kpis, SimulationParameters simParams) throws Exception {
 		this.conn = conn;
 		this.kpis = kpis;
+		this.simParams = simParams;
 
 		this.RsusStatus.put("East", false);
 		this.RsusStatus.put("West", false);
@@ -70,7 +73,7 @@ public class SimWarningService extends Simulation {
 			if (type.contains("bus")) {
 				if (!this.allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
 //					spawn(OBU, v, this.conn)
-					OBU obu = new OBU(v, conn, controller);
+					OBU obu = new OBU(v, conn, controller, simParams);
 					this.allOBUs.add(obu);
 					System.out.println(v + " ENTERED");
 				}
@@ -85,7 +88,7 @@ public class SimWarningService extends Simulation {
 					}
 				} else {
 					if (speed == 0) {
-						this.conn.do_job_set(Vehicle.setSpeed(v, 4.2));
+						this.conn.do_job_set(Vehicle.setSpeed(v, simParams.bikeMaxSpeed));
 					}
 				}
 			}

@@ -20,15 +20,14 @@ public class Main implements Observer {
 	static final String BUS_PREFIX = "bus";
 	static final String BIKE_PREFIX = "bicycle";
 
-	private double busMaxSpeed;
-
 	private SumoTraciConnection conn;
 	private Kpi kpi;
+	private SimulationParameters simParameters;
 
-	public Main(String sumocfg, double busMaxSpeed) throws Exception {
+	public Main(String sumocfg, double busMaxSpeed, double bikeMaxSpeed) throws Exception {
 		this.conn = SumoConnect(sumocfg);
 		this.kpi = new Kpi(conn);
-		this.busMaxSpeed = busMaxSpeed;
+		this.simParameters = new SimulationParameters(busMaxSpeed, bikeMaxSpeed);
 		subscribe();
 	}
 
@@ -41,7 +40,7 @@ public class Main implements Observer {
 		long startTime = System.nanoTime();
 
 		for (int i = 0; i < 1; i++) {
-			Main m = new Main(sumocfg, 4.3);
+			Main m = new Main(sumocfg, 8.3, 4.2);
 			m.runSimulation();
 		}
 
@@ -51,7 +50,7 @@ public class Main implements Observer {
 	}
 
 	private void runSimulation() throws Exception {
-		Simulation sim = new SimWarningService(conn, kpi);
+		Simulation sim = new SimWarningService(conn, kpi, this.simParameters);
 //		Simulation sim = new SimChaos(conn, kpi);
 		while (sim.step()) {
 			Thread.sleep(10);
@@ -88,9 +87,10 @@ public class Main implements Observer {
 //							Double curMaxSpeed = (Double) this.conn.do_job_get(Vehicle.getMaxSpeed(vehicleID));
 //							System.out.println("Departed vehicle: " + vehicleID + " max speed " + curMaxSpeed);
 							if (vehicleID.startsWith(BUS_PREFIX)) {
-								this.conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, this.busMaxSpeed));
+								this.conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, this.simParameters.busMaxSpeed));
 								kpi.addBus(vehicleID);
 							} else if (vehicleID.startsWith(BIKE_PREFIX)) {
+								this.conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, this.simParameters.bikeMaxSpeed));
 								kpi.addBike(vehicleID);
 							}
 						}
