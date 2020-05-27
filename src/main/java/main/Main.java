@@ -50,7 +50,7 @@ public class Main implements Observer {
 	}
 
 	private void runSimulation() throws Exception {
-		Simulation sim = new SimWarningService(conn, kpi, this.simParameters);
+		Simulation sim = new SimWarningService(conn, kpi, simParameters);
 //		Simulation sim = new SimChaos(conn, kpi);
 		while (sim.step()) {
 			Thread.sleep(10);
@@ -84,14 +84,14 @@ public class Main implements Observer {
 					SumoStringList ssl = (SumoStringList) so.object;
 					if (ssl.size() > 0) {
 						for (String vehicleID : ssl) {
-//							Double curMaxSpeed = (Double) this.conn.do_job_get(Vehicle.getMaxSpeed(vehicleID));
+//							Double curMaxSpeed = (Double) conn.do_job_get(Vehicle.getMaxSpeed(vehicleID));
 //							System.out.println("Departed vehicle: " + vehicleID + " max speed " + curMaxSpeed);
 							if (vehicleID.startsWith(BUS_PREFIX)) {
-								this.conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, this.simParameters.busMaxSpeed));
+								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.busMaxSpeed));
 								kpi.addBus(vehicleID);
 							} else if (vehicleID.startsWith(BIKE_PREFIX)) {
 								// TODO: same problem as with bus, this changes the ID name of the bike. Need to adjust in agent (I think it was camera)
-								this.conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, this.simParameters.bikeMaxSpeed));
+								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.bikeMaxSpeed));
 								kpi.addBike(vehicleID);
 							}
 						}

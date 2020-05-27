@@ -69,11 +69,11 @@ public class Camera {
 
 	public void observeSituation() throws Exception {
 		@SuppressWarnings("unchecked")
-		List<String> vehicles = (List<String>) (this.conn.do_job_get(Vehicle.getIDList()));
+		List<String> vehicles = (List<String>) (conn.do_job_get(Vehicle.getIDList()));
 
 		Map<String, Map<String, Object>> vehicle_data = new HashMap<>();
 		for (String v : vehicles) {
-			SumoPosition2D sumoPosition = (SumoPosition2D) (this.conn.do_job_get(Vehicle.getPosition(v)));
+			SumoPosition2D sumoPosition = (SumoPosition2D) (conn.do_job_get(Vehicle.getPosition(v)));
 			Point2D position = new Point2D(sumoPosition.x, sumoPosition.y);
 
 			if (fieldOfView.contains(position)) {
@@ -85,11 +85,11 @@ public class Camera {
 	}
 
 	Map<String, Object> readData(String id, Point2D position) throws Exception {
-		String type = (String) (this.conn.do_job_get(Vehicle.getTypeID(id)));
-		double speed = (Double) (this.conn.do_job_get(Vehicle.getSpeed(id)));
-		double length = (Double) (this.conn.do_job_get(Vehicle.getLength(id)));
-		double accel = (Double) (this.conn.do_job_get(Vehicle.getAccel(id)));
-		Point2D cameraLocation = new Point2D(this.center.x, this.center.y);
+		String type = (String) (conn.do_job_get(Vehicle.getTypeID(id)));
+		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(id)));
+		double length = (Double) (conn.do_job_get(Vehicle.getLength(id)));
+		double accel = (Double) (conn.do_job_get(Vehicle.getAccel(id)));
+		Point2D cameraLocation = new Point2D(center.x, center.y);
 		double distance = cameraLocation.distance(position);
 		double seconds;
 
@@ -125,18 +125,18 @@ public class Camera {
 
 	// FOR SIMULATION/COLLISION PURPOSES ONLY
 	void drawCamera() throws Exception {
-		this.cameraObject.add(new SumoPosition2D(x + size / 2, y + size / 2));
-		this.cameraObject.add(new SumoPosition2D(x - size / 2, y + size / 2));
-		this.cameraObject.add(new SumoPosition2D(x - size / 2, y - size / 2));
-		this.cameraObject.add(new SumoPosition2D(x + size / 2, y - size / 2));
+		cameraObject.add(new SumoPosition2D(x + size / 2, y + size / 2));
+		cameraObject.add(new SumoPosition2D(x - size / 2, y + size / 2));
+		cameraObject.add(new SumoPosition2D(x - size / 2, y - size / 2));
+		cameraObject.add(new SumoPosition2D(x + size / 2, y - size / 2));
 
-		this.conn.do_job_set(
-				Polygon.add(this.name, cameraObject, new SumoColor(this.r, this.g, this.b, 255), true, "Square", -2));
+		conn.do_job_set(
+				Polygon.add(name, cameraObject, new SumoColor(r, g, b, 255), true, "Square", -2));
 	}
 
 	void drawFOV() throws Exception {
 		double smallRadius = size / 2 + 15;
-		double bigRadius = size / 2 + 15 + (90 * Math.sqrt(this.height));
+		double bigRadius = size / 2 + 15 + (90 * Math.sqrt(height));
 
 		double fovAngle = 25;
 
@@ -154,16 +154,16 @@ public class Camera {
 		double yBigTwo = y + Math.sin(Math.toRadians(angle + fovAngle)) * bigRadius;
 
 		// DRAWING OBJECT
-		this.fovObject.add(new SumoPosition2D(xSmallOne, ySmallOne));
-		this.fovObject.add(new SumoPosition2D(xSmallTwo, ySmallTwo));
-		this.fovObject.add(new SumoPosition2D(xBigOne, yBigOne));
-		this.fovObject.add(new SumoPosition2D(xBigTwo, yBigTwo));
+		fovObject.add(new SumoPosition2D(xSmallOne, ySmallOne));
+		fovObject.add(new SumoPosition2D(xSmallTwo, ySmallTwo));
+		fovObject.add(new SumoPosition2D(xBigOne, yBigOne));
+		fovObject.add(new SumoPosition2D(xBigTwo, yBigTwo));
 
 		// FOR COLLISION
-		this.fieldOfView = new SimplePolygon2D(new Point2D(xSmallOne, ySmallOne), new Point2D(xSmallTwo, ySmallTwo),
+		fieldOfView = new SimplePolygon2D(new Point2D(xSmallOne, ySmallOne), new Point2D(xSmallTwo, ySmallTwo),
 				new Point2D(xBigOne, yBigOne), new Point2D(xBigTwo, yBigTwo));
 
-		this.conn.do_job_set(
-				Polygon.add(this.name + "FOV", fovObject, new SumoColor(this.r, this.g, this.b, 64), true, "FOV", -2));
+		conn.do_job_set(
+				Polygon.add(name + "FOV", fovObject, new SumoColor(r, g, b, 64), true, "FOV", -2));
 	}
 }

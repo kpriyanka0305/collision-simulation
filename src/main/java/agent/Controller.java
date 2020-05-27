@@ -90,18 +90,18 @@ public class Controller {
 			// BICYCLE
 			if (vehicleType.contains("bicycle") && vehicleSecond <= 3.5 && vehicleDistance >= 2.0) {
 
-				this.bicycleSeconds.put(vehicleID, vehicleSecond);
+				bicycleSeconds.put(vehicleID, vehicleSecond);
 				// println(vehicleID + " : " + vehicleSecond)
 				bicycle_flag = true;
 
 			} else if (vehicleType.contains("bicycle") && vehicleDistance < 2.0) {
-				this.bicycleSeconds.remove(vehicleID);
+				bicycleSeconds.remove(vehicleID);
 
 			}
 
 			// BUS
 			if (vehicleType.contains("bus") && vehicleSecond <= 3.5 && vehicleDistance >= 4.0) {
-				for (Double vs : this.bicycleSeconds.values()) {
+				for (Double vs : bicycleSeconds.values()) {
 					if ((almostEqual(vehicleSecond, vs, 0.75) || almostEqual(extraSecond, vs, 0.75))
 							|| (vs > vehicleSecond && vs < extraSecond)) {
 						busIDList.add(vehicleID);
@@ -147,20 +147,20 @@ public class Controller {
 	}
 
 	private void removeOBU(String name) {
-		this.allOBU.removeIf((obu) -> obu.getName().equals(name));
+		allOBU.removeIf((obu) -> obu.getName().equals(name));
 	}
 
 	private void addOBU(OBU element) {
-		this.allOBU.add(element);
+		allOBU.add(element);
 	}
 
 	void addRSU(RSU element) {
-		this.allRSU.add(element);
+		allRSU.add(element);
 		System.out.println("RSU Connected to the Controller!");
 	}
 
 	void addCamera(Camera element) {
-		this.allCamera.add(element);
+		allCamera.add(element);
 		System.out.println("Camera Connected to the Controller!");
 	}
 }

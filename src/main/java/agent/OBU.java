@@ -16,7 +16,7 @@ public class OBU {
 		this.name = name;
 		this.conn = conn;
 		this.simParams = simParams;
-		this.type = (String)(this.conn.do_job_get(Vehicle.getTypeID(this.name)));
+		this.type = (String)(conn.do_job_get(Vehicle.getTypeID(name)));
 //		emit(new OBUConnect(this.name))
 		controller.OBUConnect(this);
 	}
@@ -42,21 +42,21 @@ public class OBU {
 	}
 
 	void goRed() throws Exception {
-		this.conn.do_job_set(Vehicle.setColor(this.name, new SumoColor(255, 0, 0, 255)));
-		this.conn.do_job_set(Vehicle.setSpeed(this.name, 0.0));
+		conn.do_job_set(Vehicle.setColor(name, new SumoColor(255, 0, 0, 255)));
+		conn.do_job_set(Vehicle.setSpeed(name, 0.0));
 	}
 
 	void goDefaultColor() throws Exception {
 		if (type.contains("reckless")) {
-			this.conn.do_job_set(Vehicle.setColor(this.name, new SumoColor(255, 140, 0, 255)));
+			conn.do_job_set(Vehicle.setColor(name, new SumoColor(255, 140, 0, 255)));
 		} else {
-			this.conn.do_job_set(Vehicle.setColor(this.name, new SumoColor(255, 255, 0, 255)));
+			conn.do_job_set(Vehicle.setColor(name, new SumoColor(255, 255, 0, 255)));
 		}
-		this.conn.do_job_set(Vehicle.setSpeed(this.name, simParams.busMaxSpeed));
+		conn.do_job_set(Vehicle.setSpeed(name, simParams.busMaxSpeed));
 	}
 
 //	on Destroy
 //	{
-//		println(this.name + " OBU destroyed")	
+//		println(name + " OBU destroyed")	
 //	}
 }

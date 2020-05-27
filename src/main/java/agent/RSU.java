@@ -33,19 +33,19 @@ public class RSU {
 
 	void WarnRSU(String name) throws Exception {
 		if (name.equals(this.name)) {
-			this.status = true;
+			status = true;
 			goRed();
 //			emit(new RSUStatus(this.name, this.status))
-			simulation.RSUStatus(this.name, this.status);
+			simulation.RSUStatus(this.name, status);
 		}
 	}
 
 	void ClearRSU(String name) throws Exception {
 		if (name.equals(this.name)) {
-			this.status = false;
+			status = false;
 			goGreen();
 //			emit(new RSUStatus(this.name, this.status))
-			simulation.RSUStatus(this.name, this.status);
+			simulation.RSUStatus(this.name, status);
 		}
 	}
 
@@ -58,19 +58,19 @@ public class RSU {
 //	}
 
 	void goRed() throws Exception {
-		this.conn.do_job_set(Polygon.setColor(this.name, new SumoColor(255, 0, 0, 255)));
+		conn.do_job_set(Polygon.setColor(name, new SumoColor(255, 0, 0, 255)));
 	}
 
 	void goGreen() throws Exception {
-		this.conn.do_job_set(Polygon.setColor(this.name, new SumoColor(0, 255, 0, 255)));
+		conn.do_job_set(Polygon.setColor(name, new SumoColor(0, 255, 0, 255)));
 	}
 
 	void drawRSU() throws Exception {
-		this.RSUObject.add(new SumoPosition2D(x + size / 2, y + size / 2));
-		this.RSUObject.add(new SumoPosition2D(x - size / 2, y + size / 2));
-		this.RSUObject.add(new SumoPosition2D(x - size / 2, y - size / 2));
-		this.RSUObject.add(new SumoPosition2D(x + size / 2, y - size / 2));
+		RSUObject.add(new SumoPosition2D(x + size / 2, y + size / 2));
+		RSUObject.add(new SumoPosition2D(x - size / 2, y + size / 2));
+		RSUObject.add(new SumoPosition2D(x - size / 2, y - size / 2));
+		RSUObject.add(new SumoPosition2D(x + size / 2, y - size / 2));
 
-		this.conn.do_job_set(Polygon.add(this.name, RSUObject, new SumoColor(0, 255, 0, 255), true, "Square", -2));
+		conn.do_job_set(Polygon.add(name, RSUObject, new SumoColor(0, 255, 0, 255), true, "Square", -2));
 	}
 }

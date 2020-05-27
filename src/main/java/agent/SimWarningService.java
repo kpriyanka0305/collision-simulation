@@ -31,8 +31,8 @@ public class SimWarningService extends Simulation {
 		this.kpis = kpis;
 		this.simParams = simParams;
 
-		this.RsusStatus.put("East", false);
-		this.RsusStatus.put("West", false);
+		RsusStatus.put("East", false);
+		RsusStatus.put("West", false);
 
 		spawnElements();
 
@@ -41,19 +41,19 @@ public class SimWarningService extends Simulation {
 
 	public void RSUStatus(String name, boolean status) {
 		if (name.equals("East")) {
-			this.RsusStatus.put("East", status);
+			RsusStatus.put("East", status);
 		} else {
-			this.RsusStatus.put("West", status);
+			RsusStatus.put("West", status);
 		}
 	}
 
 	@Override
 	public boolean step() throws Exception {
 		numSteps++;
-		this.conn.do_timestep();
+		conn.do_timestep();
 
 		@SuppressWarnings("unchecked")
-		List<String> vehicles = (List<String>) (this.conn.do_job_get(Vehicle.getIDList()));
+		List<String> vehicles = (List<String>) (conn.do_job_get(Vehicle.getIDList()));
 
 		if (vehicles.isEmpty()) {
 			// simulation wants to shut down
@@ -71,30 +71,30 @@ public class SimWarningService extends Simulation {
 			Map<String, Object> veh_data = readData(v);
 			String type = (String) (veh_data.get("type"));
 			if (type.contains("bus")) {
-				if (!this.allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
-//					spawn(OBU, v, this.conn)
+				if (!allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
+//					spawn(OBU, v, conn)
 					OBU obu = new OBU(v, conn, controller, simParams);
-					this.allOBUs.add(obu);
+					allOBUs.add(obu);
 					System.out.println(v + " ENTERED");
 				}
 			} else if (type.contains("bicycle-distracted")) {
 				double distance = (Double) (veh_data.get("distance"));
 				double speed = (Double) (veh_data.get("speed"));
-				boolean east_rsu = (Boolean) (this.RsusStatus.get("East"));
+				boolean east_rsu = (Boolean) (RsusStatus.get("East"));
 				String road_id = (String) (veh_data.get("road_id"));
 				if (east_rsu && road_id.contains("i")) {
 					if (distance > rsu_distance && distance < rsu_distance + cyclist_range) {
-						this.conn.do_job_set(Vehicle.setSpeed(v, 0.0));
+						conn.do_job_set(Vehicle.setSpeed(v, 0.0));
 					}
 				} else {
 					if (speed == 0) {
-						this.conn.do_job_set(Vehicle.setSpeed(v, simParams.bikeMaxSpeed));
+						conn.do_job_set(Vehicle.setSpeed(v, simParams.bikeMaxSpeed));
 					}
 				}
 			}
 		}
 
-		for (OBU obu : this.allOBUs) {
+		for (OBU obu : allOBUs) {
 			boolean flag = false;
 
 			for (String v : vehicles) {
@@ -108,7 +108,7 @@ public class SimWarningService extends Simulation {
 				System.out.println(obu.getName() + " REMOVED");
 //				emit(new OBUDisconnect(k))
 				controller.OBUDisconnect(obu.getName());
-				this.allOBUs.removeIf((o) -> o.getName().equals(obu.getName()));
+				allOBUs.removeIf((o) -> o.getName().equals(obu.getName()));
 				break;
 			}
 		}
@@ -118,22 +118,22 @@ public class SimWarningService extends Simulation {
 	}
 
 	void spawnElements() throws Exception {
-//		spawn(Controller, this.conn)
+//		spawn(Controller, conn)
 		controller = new Controller();
-//		spawn(RSU, "East", 15.5, -10.5, this.conn) // EAST X, Y
+//		spawn(RSU, "East", 15.5, -10.5, conn) // EAST X, Y
 		allRSUs.add(new RSU("East", 15.5, -10.5, conn, controller, this));
-//		spawn(Camera, "CameraOne", this.conn, -15.0, 0.0, 2.0, 0.7, 4) 	// CameraName, Connection, X, Y, Size, Height, Angle
+//		spawn(Camera, "CameraOne", conn, -15.0, 0.0, 2.0, 0.7, 4) 	// CameraName, Connection, X, Y, Size, Height, Angle
 		allCameras.add(new Camera("CameraOne", conn, -15.0, 0.0, 2.0, 0.7, 4, controller));
 	}
 
 	private Map<String, Object> readData(String id) throws Exception {
-		SumoPosition2D position = (SumoPosition2D) (this.conn.do_job_get(Vehicle.getPosition(id)));
-		SumoPosition2D centre = (SumoPosition2D) (this.conn.do_job_get(Junction.getPosition("0")));
-		String type = (String) (this.conn.do_job_get(Vehicle.getTypeID(id)));
-		double speed = (Double) (this.conn.do_job_get(Vehicle.getSpeed(id)));
-		double length = (Double) (this.conn.do_job_get(Vehicle.getLength(id)));
-		double accel = (Double) (this.conn.do_job_get(Vehicle.getAccel(id)));
-		String road_id = (String) (this.conn.do_job_get(Vehicle.getRoadID(id)));
+		SumoPosition2D position = (SumoPosition2D) (conn.do_job_get(Vehicle.getPosition(id)));
+		SumoPosition2D centre = (SumoPosition2D) (conn.do_job_get(Junction.getPosition("0")));
+		String type = (String) (conn.do_job_get(Vehicle.getTypeID(id)));
+		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(id)));
+		double length = (Double) (conn.do_job_get(Vehicle.getLength(id)));
+		double accel = (Double) (conn.do_job_get(Vehicle.getAccel(id)));
+		String road_id = (String) (conn.do_job_get(Vehicle.getRoadID(id)));
 		double tempx = Math.abs(centre.x - position.x);
 		double tempy = Math.abs(centre.y - position.y);
 		double distance = Math.sqrt(tempx * tempx + tempy * tempy);
