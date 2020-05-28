@@ -119,16 +119,16 @@ public class SimWarningService extends Simulation {
 	}
 
 	private Map<String, Object> readData(String id) throws Exception {
-		SumoPosition2D position = (SumoPosition2D) (conn.do_job_get(Vehicle.getPosition(id)));
-		SumoPosition2D centre = (SumoPosition2D) (conn.do_job_get(Junction.getPosition("0")));
+		SumoPosition2D vehiclePosition = (SumoPosition2D) (conn.do_job_get(Vehicle.getPosition(id)));
+		SumoPosition2D junctionPosition = (SumoPosition2D) (conn.do_job_get(Junction.getPosition("0")));
 		String type = (String) (conn.do_job_get(Vehicle.getTypeID(id)));
 		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(id)));
 		double length = (Double) (conn.do_job_get(Vehicle.getLength(id)));
 		double accel = (Double) (conn.do_job_get(Vehicle.getAccel(id)));
 		String roadId = (String) (conn.do_job_get(Vehicle.getRoadID(id)));
-		double tempx = Math.abs(centre.x - position.x);
-		double tempy = Math.abs(centre.y - position.y);
-		double distanceToJunction = Math.sqrt(tempx * tempx + tempy * tempy) - length / 2;
+		double dX = Math.abs(junctionPosition.x - vehiclePosition.x);
+		double dY = Math.abs(junctionPosition.y - vehiclePosition.y);
+		double distanceToJunction = Math.sqrt(dX * dX + dY * dY) - length / 2;
 		Map<String, Object> myMap = new HashMap<>();
 		myMap.put("type", type);
 		myMap.put("speed", speed);
