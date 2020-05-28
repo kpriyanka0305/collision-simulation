@@ -34,8 +34,6 @@ public class SimWarningService extends Simulation {
 		RsusStatus.put("West", false);
 
 		spawnElements();
-
-//		run
 	}
 
 	public void RSUStatus(String name, boolean status) {
@@ -71,7 +69,6 @@ public class SimWarningService extends Simulation {
 			String type = (String) (veh_data.get("type"));
 			if (type.contains("bus")) {
 				if (!allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
-//					spawn(OBU, v, conn)
 					OBU obu = new OBU(v, conn, controller, simParams);
 					allOBUs.add(obu);
 					System.out.println(v + " ENTERED");
@@ -105,7 +102,6 @@ public class SimWarningService extends Simulation {
 
 			if (!flag) {
 				System.out.println(obu.getName() + " REMOVED");
-//				emit(new OBUDisconnect(k))
 				controller.OBUDisconnect(obu.getName());
 				allOBUs.removeIf((o) -> o.getName().equals(obu.getName()));
 				break;
@@ -117,11 +113,8 @@ public class SimWarningService extends Simulation {
 	}
 
 	void spawnElements() throws Exception {
-//		spawn(Controller, conn)
 		controller = new Controller();
-//		spawn(RSU, "East", 15.5, -10.5, conn) // EAST X, Y
 		allRSUs.add(new RSU("East", 15.5, -10.5, conn, controller, this));
-//		spawn(Camera, "CameraOne", conn, -15.0, 0.0, 2.0, 0.7, 4) 	// CameraName, Connection, X, Y, Size, Height, Angle
 		allCameras.add(new Camera("CameraOne", conn, -15.0, 0.0, 2.0, 0.7, 4, controller));
 	}
 

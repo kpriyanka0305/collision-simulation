@@ -12,23 +12,10 @@ public class Controller {
 
 	private Map<String, Double> bicycleSeconds = new HashMap<String, Double>();
 
-//	on Initialize  {
-//		println("Controller spawned!")			
-//	}
-//
-//	on Destroy {
-//		println("Controller destroyed")
-//	}
-//	
-//	on ShutdownSimulation {
-//		killMe
-//	}
-
 	public void SendAllDataCamera(Map<String, Map<String, Object>> vehicle_data) throws Exception {
 		// Warning RSU
 		if (vehicle_data.isEmpty()) {
 			for (RSU rsu : allRSU) {
-//				emit(new ClearRSU("East"))
 				rsu.ClearRSU("East");
 			}
 		} else {
@@ -47,7 +34,6 @@ public class Controller {
 			if (veh_type.contains("bus")) {
 				bus_flag = true;
 				if (distance < def_distance) {
-//					emit(new WarnRSU("East"))
 					for (RSU rsu : allRSU) {
 						rsu.WarnRSU("East");
 					}
@@ -56,7 +42,6 @@ public class Controller {
 		}
 		if (bus_flag == false) {
 			for (RSU rsu : allRSU) {
-//				emit(new ClearRSU("East"))
 				rsu.ClearRSU("East");
 			}
 		}
@@ -89,7 +74,6 @@ public class Controller {
 			// BICYCLE
 			if (vehicleType.contains("bicycle") && vehicleSecond <= 3.5 && vehicleDistance >= 2.0) {
 				bicycleSeconds.put(vehicleID, vehicleSecond);
-				// println(vehicleID + " : " + vehicleSecond)
 				bicycle_flag = true;
 			} else if (vehicleType.contains("bicycle") && vehicleDistance < 2.0) {
 				bicycleSeconds.remove(vehicleID);
@@ -109,14 +93,12 @@ public class Controller {
 
 		if (bus_flag && bicycle_flag) {
 			for (String busID : busIDList) {
-//				emit(new WarnOBU(busID))
 				for (OBU obu : allOBU) {
 					obu.WarnOBU(busID);
 				}
 			}
 		} else if (!bicycle_flag) {
 			for (OBU obu : allOBU) {
-//				emit(new tempClean)
 				obu.tempClean();
 			}
 		}

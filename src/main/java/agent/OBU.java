@@ -18,18 +18,11 @@ public class OBU {
 		this.conn = conn;
 		this.simParams = simParams;
 		this.type = (String) (conn.do_job_get(Vehicle.getTypeID(name)));
-//		emit(new OBUConnect(this.name))
 		controller.OBUConnect(this);
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	void OBUDisconnect(String name) {
-		if (name.equals(this.name)) {
-//			killMe
-		}
 	}
 
 	void tempClean() throws Exception {
@@ -55,9 +48,4 @@ public class OBU {
 		}
 		conn.do_job_set(Vehicle.setSpeed(name, simParams.busMaxSpeed));
 	}
-
-//	on Destroy
-//	{
-//		println(name + " OBU destroyed")	
-//	}
 }

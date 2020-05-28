@@ -26,7 +26,6 @@ public class RSU {
 
 		drawRSU();
 
-//		emit(new RSUConnect(this))
 		controller.RSUConnect(this);
 		System.out.println("RSU spawned");
 	}
@@ -35,7 +34,6 @@ public class RSU {
 		if (name.equals(this.name)) {
 			status = true;
 			goRed();
-//			emit(new RSUStatus(this.name, this.status))
 			simulation.RSUStatus(this.name, status);
 		}
 	}
@@ -44,18 +42,9 @@ public class RSU {
 		if (name.equals(this.name)) {
 			status = false;
 			goGreen();
-//			emit(new RSUStatus(this.name, this.status))
 			simulation.RSUStatus(this.name, status);
 		}
 	}
-
-//	on Destroy {
-//		println("RSU destroyed")
-//	}	
-
-//	on ShutdownSimulation {
-//		killMe
-//	}
 
 	void goRed() throws Exception {
 		conn.do_job_set(Polygon.setColor(name, new SumoColor(255, 0, 0, 255)));

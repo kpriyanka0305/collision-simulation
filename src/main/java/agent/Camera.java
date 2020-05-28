@@ -110,18 +110,6 @@ public class Camera {
 		return myMap;
 	}
 
-//	on ShutdownSimulation
-//	{
-//		val task = task("camera observing")
-//		task.cancel()
-//		killMe
-//	}
-
-//	on Destroy
-//	{
-//		println("Camera destroyed")
-//	}
-
 	// FOR SIMULATION/COLLISION PURPOSES ONLY
 	void drawCamera() throws Exception {
 		cameraObject.add(new SumoPosition2D(x + size / 2, y + size / 2));
