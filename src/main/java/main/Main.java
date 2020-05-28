@@ -40,7 +40,7 @@ public class Main implements Observer {
 		long startTime = System.nanoTime();
 
 		for (int i = 0; i < 1; i++) {
-			Main m = new Main(sumocfg, 8.3, 4.2);
+			Main m = new Main(sumocfg, 8.3, 4.7);
 			m.runSimulation();
 		}
 
