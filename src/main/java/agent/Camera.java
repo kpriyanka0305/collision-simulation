@@ -1,5 +1,7 @@
 package agent;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,15 +69,15 @@ public class Camera {
 
 	public void observeSituation() throws Exception {
 		@SuppressWarnings("unchecked")
-		List<String> vehicles = (List<String>) (conn.do_job_get(Vehicle.getIDList()));
+		List<String> vehicleIDs = (List<String>) (conn.do_job_get(Vehicle.getIDList()));
 
-		Map<String, VehicleData> vehicleData = new HashMap<>();
-		for (String v : vehicles) {
+		Collection<VehicleData> vehicleData = new ArrayList<>();
+		for (String v : vehicleIDs) {
 			SumoPosition2D sumoPosition = (SumoPosition2D) (conn.do_job_get(Vehicle.getPosition(v)));
 			Point2D position = new Point2D(sumoPosition.x, sumoPosition.y);
 
 			if (fieldOfView.contains(position)) {
-				vehicleData.put(v, readData(v, position));
+				vehicleData.add(readData(v, position));
 			}
 		}
 		controller.SendAllDataCamera(vehicleData);

@@ -1,6 +1,7 @@
 package agent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ public class Controller {
 
 	private Map<String, Double> bicycleSeconds = new HashMap<String, Double>();
 
-	public void SendAllDataCamera(Map<String, VehicleData> vehicleData) throws Exception {
+	public void SendAllDataCamera(Collection<VehicleData> vehicleData) throws Exception {
 		// Warning RSU
 		if (vehicleData.isEmpty()) {
 			for (RSU rsu : allRSU) {
@@ -24,13 +25,13 @@ public class Controller {
 		}
 	}
 
-	private void warningRSU(Map<String, VehicleData> vehicleData) throws Exception {
+	private void warningRSU(Collection<VehicleData> vehicleData) throws Exception {
 		boolean bus_flag = false;
 		double def_distance = 32;
 
-		for (String vehID : vehicleData.keySet()) {
-			Double distance = vehicleData.get(vehID).getDistance();
-			String veh_type = vehicleData.get(vehID).getType();
+		for (VehicleData vehicle : vehicleData) {
+			Double distance = vehicle.getDistance();
+			String veh_type = vehicle.getType();
 			if (veh_type.contains("bus")) {
 				bus_flag = true;
 				if (distance < def_distance) {
@@ -47,7 +48,7 @@ public class Controller {
 		}
 	}
 
-	private void warningOBU(Map<String, VehicleData> vehicleData) throws Exception {
+	private void warningOBU(Collection<VehicleData> vehicleData) throws Exception {
 		boolean bus_flag = false;
 		boolean bicycle_flag = false;
 
@@ -61,22 +62,22 @@ public class Controller {
 
 		List<String> busIDList = new ArrayList<String>();
 
-		for (String vehicleID : vehicleData.keySet()) {
-			vehicleType = vehicleData.get(vehicleID).getType();
-			vehicleSecond = vehicleData.get(vehicleID).getSeconds();
-			vehicleDistance = vehicleData.get(vehicleID).getDistance();
+		for (VehicleData vehicle : vehicleData) {
+			vehicleType = vehicle.getType();
+			vehicleSecond = vehicle.getSeconds();
+			vehicleDistance = vehicle.getDistance();
 
-			vehicleSpeed = vehicleData.get(vehicleID).getSpeed();
-			vehicleLength = vehicleData.get(vehicleID).getLength();
+			vehicleSpeed = vehicle.getSpeed();
+			vehicleLength = vehicle.getLength();
 
 			extraSecond = vehicleSecond + (vehicleLength / vehicleSpeed);
 
 			// BICYCLE
 			if (vehicleType.contains("bicycle") && vehicleSecond <= 3.5 && vehicleDistance >= 2.0) {
-				bicycleSeconds.put(vehicleID, vehicleSecond);
+				bicycleSeconds.put(vehicle.getId(), vehicleSecond);
 				bicycle_flag = true;
 			} else if (vehicleType.contains("bicycle") && vehicleDistance < 2.0) {
-				bicycleSeconds.remove(vehicleID);
+				bicycleSeconds.remove(vehicle.getId());
 			}
 
 			// BUS
@@ -84,7 +85,7 @@ public class Controller {
 				for (Double vs : bicycleSeconds.values()) {
 					if ((almostEqual(vehicleSecond, vs, 0.75) || almostEqual(extraSecond, vs, 0.75))
 							|| (vs > vehicleSecond && vs < extraSecond)) {
-						busIDList.add(vehicleID);
+						busIDList.add(vehicle.getId());
 						bus_flag = true;
 					}
 				}
