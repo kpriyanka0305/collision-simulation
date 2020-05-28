@@ -74,12 +74,12 @@ public class SimWarningService extends Simulation {
 					System.out.println(v + " ENTERED");
 				}
 			} else if (type.contains("bicycle-distracted")) {
-				double distance = (Double) (vehData.get("distance"));
+				double distanceToJunction = (Double) (vehData.get("distanceToJunction"));
 				double speed = (Double) (vehData.get("speed"));
 				boolean eastRsu = (Boolean) (RsusStatus.get("East"));
-				String roadId = (String) (vehData.get("road_id"));
+				String roadId = (String) (vehData.get("roadId"));
 				if (eastRsu && roadId.contains("i")) {
-					if (distance > rsuDistance && distance < rsuDistance + cyclistRange) {
+					if (distanceToJunction > rsuDistance && distanceToJunction < rsuDistance + cyclistRange) {
 						conn.do_job_set(Vehicle.setSpeed(v, 0.0));
 					}
 				} else {
@@ -128,14 +128,13 @@ public class SimWarningService extends Simulation {
 		String roadId = (String) (conn.do_job_get(Vehicle.getRoadID(id)));
 		double tempx = Math.abs(centre.x - position.x);
 		double tempy = Math.abs(centre.y - position.y);
-		double distance = Math.sqrt(tempx * tempx + tempy * tempy);
-		distance = distance - length / 2;
+		double distanceToJunction = Math.sqrt(tempx * tempx + tempy * tempy) - length / 2;
 		Map<String, Object> myMap = new HashMap<>();
 		myMap.put("type", type);
 		myMap.put("speed", speed);
 		myMap.put("accel", accel);
-		myMap.put("distance", distance);
-		myMap.put("road_id", roadId);
+		myMap.put("distanceToJunction", distanceToJunction);
+		myMap.put("roadId", roadId);
 		myMap.put("length", length);
 		return myMap;
 	}

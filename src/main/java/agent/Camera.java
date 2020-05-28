@@ -34,7 +34,7 @@ public class Camera {
 	private SumoGeometry fovObject = new SumoGeometry();
 
 	// FOR COLLISION
-	private SumoPosition2D center;
+	private SumoPosition2D cameraPosition;
 
 	// CONNECTION OF COURSE
 	private SumoTraciConnection conn;
@@ -58,7 +58,7 @@ public class Camera {
 		this.angle = angle;
 
 		// THESE ARE FOR COLLISION POINT
-		this.center = new SumoPosition2D(2.28, 0.88);
+		this.cameraPosition = new SumoPosition2D(2.28, 0.88);
 
 		drawCamera();
 		drawFOV();
@@ -74,33 +74,31 @@ public class Camera {
 		Collection<VehicleData> vehicleData = new ArrayList<>();
 		for (String v : vehicleIDs) {
 			SumoPosition2D sumoPosition = (SumoPosition2D) (conn.do_job_get(Vehicle.getPosition(v)));
-			Point2D position = new Point2D(sumoPosition.x, sumoPosition.y);
+			Point2D vehiclePosition = new Point2D(sumoPosition.x, sumoPosition.y);
 
-			if (fieldOfView.contains(position)) {
-				vehicleData.add(readData(v, position));
+			if (fieldOfView.contains(vehiclePosition)) {
+				vehicleData.add(readData(v, vehiclePosition));
 			}
 		}
 		controller.SendAllDataCamera(vehicleData);
 	}
 
-	VehicleData readData(String id, Point2D position) throws Exception {
-		String type = (String) (conn.do_job_get(Vehicle.getTypeID(id)));
-		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(id)));
-		double length = (Double) (conn.do_job_get(Vehicle.getLength(id)));
-		double accel = (Double) (conn.do_job_get(Vehicle.getAccel(id)));
-		Point2D cameraLocation = new Point2D(center.x, center.y);
-		double distance = cameraLocation.distance(position);
+	VehicleData readData(String vehicleID, Point2D vehiclePosition) throws Exception {
+		String type = (String) (conn.do_job_get(Vehicle.getTypeID(vehicleID)));
+		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(vehicleID)));
+		double length = (Double) (conn.do_job_get(Vehicle.getLength(vehicleID)));
+		double accel = (Double) (conn.do_job_get(Vehicle.getAccel(vehicleID)));
+		Point2D cameraLocation = new Point2D(cameraPosition.x, cameraPosition.y);
+		double distanceToCamera = cameraLocation.distance(vehiclePosition) - length / 2;
 		double seconds;
 
-		distance = distance - length / 2;
-
 		if (speed > 0) {
-			seconds = distance / speed;
+			seconds = distanceToCamera / speed;
 		} else {
 			seconds = 100.0;
 		}
 
-		VehicleData vehicleData = new VehicleData(id, type, speed, accel, length, distance, seconds);
+		VehicleData vehicleData = new VehicleData(vehicleID, type, speed, accel, length, distanceToCamera, seconds);
 		return vehicleData;
 	}
 
