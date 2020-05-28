@@ -18,8 +18,8 @@ public class SimWarningService extends Simulation {
 	private List<RSU> allRSUs = new ArrayList<RSU>();
 	private List<Camera> allCameras = new ArrayList<Camera>();
 	private Map<String, Boolean> RsusStatus = new HashMap<String, Boolean>();
-	private double rsu_distance = 13.0;
-	private double cyclist_range = 5.0;
+	private double rsuDistance = 13.0;
+	private double cyclistRange = 5.0;
 
 	private Kpi kpis;
 	private Controller controller;
@@ -65,8 +65,8 @@ public class SimWarningService extends Simulation {
 		}
 
 		for (String v : vehicles) {
-			Map<String, Object> veh_data = readData(v);
-			String type = (String) (veh_data.get("type"));
+			Map<String, Object> vehData = readData(v);
+			String type = (String) (vehData.get("type"));
 			if (type.contains("bus")) {
 				if (!allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
 					OBU obu = new OBU(v, conn, controller, simParams);
@@ -74,12 +74,12 @@ public class SimWarningService extends Simulation {
 					System.out.println(v + " ENTERED");
 				}
 			} else if (type.contains("bicycle-distracted")) {
-				double distance = (Double) (veh_data.get("distance"));
-				double speed = (Double) (veh_data.get("speed"));
-				boolean east_rsu = (Boolean) (RsusStatus.get("East"));
-				String road_id = (String) (veh_data.get("road_id"));
-				if (east_rsu && road_id.contains("i")) {
-					if (distance > rsu_distance && distance < rsu_distance + cyclist_range) {
+				double distance = (Double) (vehData.get("distance"));
+				double speed = (Double) (vehData.get("speed"));
+				boolean eastRsu = (Boolean) (RsusStatus.get("East"));
+				String roadId = (String) (vehData.get("road_id"));
+				if (eastRsu && roadId.contains("i")) {
+					if (distance > rsuDistance && distance < rsuDistance + cyclistRange) {
 						conn.do_job_set(Vehicle.setSpeed(v, 0.0));
 					}
 				} else {
@@ -125,7 +125,7 @@ public class SimWarningService extends Simulation {
 		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(id)));
 		double length = (Double) (conn.do_job_get(Vehicle.getLength(id)));
 		double accel = (Double) (conn.do_job_get(Vehicle.getAccel(id)));
-		String road_id = (String) (conn.do_job_get(Vehicle.getRoadID(id)));
+		String roadId = (String) (conn.do_job_get(Vehicle.getRoadID(id)));
 		double tempx = Math.abs(centre.x - position.x);
 		double tempy = Math.abs(centre.y - position.y);
 		double distance = Math.sqrt(tempx * tempx + tempy * tempy);
@@ -135,7 +135,7 @@ public class SimWarningService extends Simulation {
 		myMap.put("speed", speed);
 		myMap.put("accel", accel);
 		myMap.put("distance", distance);
-		myMap.put("road_id", road_id);
+		myMap.put("road_id", roadId);
 		myMap.put("length", length);
 		return myMap;
 	}

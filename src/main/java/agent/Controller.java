@@ -26,22 +26,22 @@ public class Controller {
 	}
 
 	private void warningRSU(Collection<VehicleData> vehicleData) throws Exception {
-		boolean bus_flag = false;
-		double def_distance = 32;
+		boolean busFlag = false;
+		double defDistance = 32;
 
 		for (VehicleData vehicle : vehicleData) {
 			Double distance = vehicle.getDistance();
-			String veh_type = vehicle.getType();
-			if (veh_type.contains("bus")) {
-				bus_flag = true;
-				if (distance < def_distance) {
+			String vehType = vehicle.getType();
+			if (vehType.contains("bus")) {
+				busFlag = true;
+				if (distance < defDistance) {
 					for (RSU rsu : allRSU) {
 						rsu.WarnRSU("East");
 					}
 				}
 			}
 		}
-		if (bus_flag == false) {
+		if (busFlag == false) {
 			for (RSU rsu : allRSU) {
 				rsu.ClearRSU("East");
 			}
@@ -49,8 +49,8 @@ public class Controller {
 	}
 
 	private void warningOBU(Collection<VehicleData> vehicleData) throws Exception {
-		boolean bus_flag = false;
-		boolean bicycle_flag = false;
+		boolean busFlag = false;
+		boolean bicycleFlag = false;
 
 		String vehicleType;
 		double vehicleSecond;
@@ -75,7 +75,7 @@ public class Controller {
 			// BICYCLE
 			if (vehicleType.contains("bicycle") && vehicleSecond <= 3.5 && vehicleDistance >= 2.0) {
 				bicycleSeconds.put(vehicle.getId(), vehicleSecond);
-				bicycle_flag = true;
+				bicycleFlag = true;
 			} else if (vehicleType.contains("bicycle") && vehicleDistance < 2.0) {
 				bicycleSeconds.remove(vehicle.getId());
 			}
@@ -86,19 +86,19 @@ public class Controller {
 					if ((almostEqual(vehicleSecond, vs, 0.75) || almostEqual(extraSecond, vs, 0.75))
 							|| (vs > vehicleSecond && vs < extraSecond)) {
 						busIDList.add(vehicle.getId());
-						bus_flag = true;
+						busFlag = true;
 					}
 				}
 			}
 		}
 
-		if (bus_flag && bicycle_flag) {
+		if (busFlag && bicycleFlag) {
 			for (String busID : busIDList) {
 				for (OBU obu : allOBU) {
 					obu.WarnOBU(busID);
 				}
 			}
-		} else if (!bicycle_flag) {
+		} else if (!bicycleFlag) {
 			for (OBU obu : allOBU) {
 				obu.tempClean();
 			}
