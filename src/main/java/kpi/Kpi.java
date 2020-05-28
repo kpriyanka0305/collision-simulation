@@ -26,7 +26,7 @@ public class Kpi {
 	Map<String, Map<String, List<Double[]>>> distances = new HashMap<>();
 	Map<String, List<Double[]>> accelerations = new HashMap<>();
 	Map<String, List<Double[]>> speeds = new HashMap<>();
-	
+
 	private final static String OUT_DIR = "out";
 
 	private final FileWriter distancesFile = new FileWriter(OUT_DIR + "/distances.txt", false);

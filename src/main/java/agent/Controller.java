@@ -77,7 +77,6 @@ public class Controller {
 		List<String> busIDList = new ArrayList<String>();
 
 		for (String vehicleID : vehicle_data.keySet()) {
-
 			vehicleType = (String) (vehicle_data.get(vehicleID).get("type"));
 			vehicleSecond = (Double) (vehicle_data.get(vehicleID).get("seconds"));
 			vehicleDistance = (Double) (vehicle_data.get(vehicleID).get("distance"));
@@ -89,14 +88,11 @@ public class Controller {
 
 			// BICYCLE
 			if (vehicleType.contains("bicycle") && vehicleSecond <= 3.5 && vehicleDistance >= 2.0) {
-
 				bicycleSeconds.put(vehicleID, vehicleSecond);
 				// println(vehicleID + " : " + vehicleSecond)
 				bicycle_flag = true;
-
 			} else if (vehicleType.contains("bicycle") && vehicleDistance < 2.0) {
 				bicycleSeconds.remove(vehicleID);
-
 			}
 
 			// BUS

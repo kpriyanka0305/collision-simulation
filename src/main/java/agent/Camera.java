@@ -15,7 +15,6 @@ import math.geom2d.polygon.Polygon2D;
 import math.geom2d.polygon.SimplePolygon2D;
 
 public class Camera {
-
 	private String name;
 	private int angle; // 90 - NORTH, 180 - WEST, 270 - SOUTH, 0 - EAST
 	private double height; // Meters
@@ -130,8 +129,7 @@ public class Camera {
 		cameraObject.add(new SumoPosition2D(x - size / 2, y - size / 2));
 		cameraObject.add(new SumoPosition2D(x + size / 2, y - size / 2));
 
-		conn.do_job_set(
-				Polygon.add(name, cameraObject, new SumoColor(r, g, b, 255), true, "Square", -2));
+		conn.do_job_set(Polygon.add(name, cameraObject, new SumoColor(r, g, b, 255), true, "Square", -2));
 	}
 
 	void drawFOV() throws Exception {
@@ -163,7 +161,6 @@ public class Camera {
 		fieldOfView = new SimplePolygon2D(new Point2D(xSmallOne, ySmallOne), new Point2D(xSmallTwo, ySmallTwo),
 				new Point2D(xBigOne, yBigOne), new Point2D(xBigTwo, yBigTwo));
 
-		conn.do_job_set(
-				Polygon.add(name + "FOV", fovObject, new SumoColor(r, g, b, 64), true, "FOV", -2));
+		conn.do_job_set(Polygon.add(name + "FOV", fovObject, new SumoColor(r, g, b, 64), true, "FOV", -2));
 	}
 }

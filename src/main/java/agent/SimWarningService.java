@@ -13,7 +13,6 @@ import kpi.Kpi;
 import main.SimulationParameters;
 
 public class SimWarningService extends Simulation {
-
 	private SumoTraciConnection conn;
 	private List<OBU> allOBUs = new ArrayList<OBU>();
 	private List<RSU> allRSUs = new ArrayList<RSU>();

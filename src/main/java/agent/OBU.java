@@ -12,11 +12,12 @@ public class OBU {
 	private SumoTraciConnection conn;
 	private SimulationParameters simParams;
 
-	public OBU(String name, SumoTraciConnection conn, Controller controller, SimulationParameters simParams) throws Exception {
+	public OBU(String name, SumoTraciConnection conn, Controller controller, SimulationParameters simParams)
+			throws Exception {
 		this.name = name;
 		this.conn = conn;
 		this.simParams = simParams;
-		this.type = (String)(conn.do_job_get(Vehicle.getTypeID(name)));
+		this.type = (String) (conn.do_job_get(Vehicle.getTypeID(name)));
 //		emit(new OBUConnect(this.name))
 		controller.OBUConnect(this);
 	}
