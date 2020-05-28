@@ -44,7 +44,7 @@ public class Controller {
 		for (String vehID : vehicle_data.keySet()) {
 			Double distance = (Double) (vehicle_data.get(vehID).get("distance"));
 			String veh_type = (String) (vehicle_data.get(vehID).get("type"));
-			if (veh_type == "bus") {
+			if (veh_type.contains("bus")) {
 				bus_flag = true;
 				if (distance < def_distance) {
 //					emit(new WarnRSU("East"))
