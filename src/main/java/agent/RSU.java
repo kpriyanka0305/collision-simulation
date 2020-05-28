@@ -30,7 +30,7 @@ public class RSU {
 		System.out.println("RSU spawned");
 	}
 
-	void WarnRSU(String name) throws Exception {
+	public void WarnRSU(String name) throws Exception {
 		if (name.equals(this.name)) {
 			status = true;
 			goRed();
@@ -38,7 +38,7 @@ public class RSU {
 		}
 	}
 
-	void ClearRSU(String name) throws Exception {
+	public void ClearRSU(String name) throws Exception {
 		if (name.equals(this.name)) {
 			status = false;
 			goGreen();
@@ -46,15 +46,15 @@ public class RSU {
 		}
 	}
 
-	void goRed() throws Exception {
+	private void goRed() throws Exception {
 		conn.do_job_set(Polygon.setColor(name, new SumoColor(255, 0, 0, 255)));
 	}
 
-	void goGreen() throws Exception {
+	private void goGreen() throws Exception {
 		conn.do_job_set(Polygon.setColor(name, new SumoColor(0, 255, 0, 255)));
 	}
 
-	void drawRSU() throws Exception {
+	private void drawRSU() throws Exception {
 		RSUObject.add(new SumoPosition2D(x + size / 2, y + size / 2));
 		RSUObject.add(new SumoPosition2D(x - size / 2, y + size / 2));
 		RSUObject.add(new SumoPosition2D(x - size / 2, y - size / 2));

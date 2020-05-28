@@ -112,7 +112,7 @@ public class SimWarningService extends Simulation {
 		return true;
 	}
 
-	void spawnElements() throws Exception {
+	private void spawnElements() throws Exception {
 		controller = new Controller();
 		allRSUs.add(new RSU("East", 15.5, -10.5, conn, controller, this));
 		allCameras.add(new Camera("CameraOne", conn, -15.0, 0.0, 2.0, 0.7, 4, controller));

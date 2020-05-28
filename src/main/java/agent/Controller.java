@@ -105,7 +105,7 @@ public class Controller {
 		}
 	}
 
-	boolean almostEqual(double a, double b, double eps) {
+	private boolean almostEqual(double a, double b, double eps) {
 		return Math.abs(a - b) < eps;
 	}
 
@@ -133,12 +133,12 @@ public class Controller {
 		allOBU.add(element);
 	}
 
-	void addRSU(RSU element) {
+	private void addRSU(RSU element) {
 		allRSU.add(element);
 		System.out.println("RSU Connected to the Controller!");
 	}
 
-	void addCamera(Camera element) {
+	private void addCamera(Camera element) {
 		allCamera.add(element);
 		System.out.println("Camera Connected to the Controller!");
 	}

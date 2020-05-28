@@ -83,7 +83,7 @@ public class Camera {
 		controller.SendAllDataCamera(vehicleData);
 	}
 
-	VehicleData readData(String vehicleID, Point2D vehiclePosition) throws Exception {
+	private VehicleData readData(String vehicleID, Point2D vehiclePosition) throws Exception {
 		String type = (String) (conn.do_job_get(Vehicle.getTypeID(vehicleID)));
 		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(vehicleID)));
 		double length = (Double) (conn.do_job_get(Vehicle.getLength(vehicleID)));
@@ -103,7 +103,7 @@ public class Camera {
 	}
 
 	// FOR SIMULATION/COLLISION PURPOSES ONLY
-	void drawCamera() throws Exception {
+	private void drawCamera() throws Exception {
 		cameraObject.add(new SumoPosition2D(x + size / 2, y + size / 2));
 		cameraObject.add(new SumoPosition2D(x - size / 2, y + size / 2));
 		cameraObject.add(new SumoPosition2D(x - size / 2, y - size / 2));
@@ -112,7 +112,7 @@ public class Camera {
 		conn.do_job_set(Polygon.add(name, cameraObject, new SumoColor(r, g, b, 255), true, "Square", -2));
 	}
 
-	void drawFOV() throws Exception {
+	private void drawFOV() throws Exception {
 		double smallRadius = size / 2 + 15;
 		double bigRadius = size / 2 + 15 + (90 * Math.sqrt(height));
 

@@ -25,22 +25,22 @@ public class OBU {
 		return name;
 	}
 
-	void tempClean() throws Exception {
+	public void tempClean() throws Exception {
 		goDefaultColor();
 	}
 
-	void WarnOBU(String name) throws Exception {
+	public void WarnOBU(String name) throws Exception {
 		if (name.equals(this.name)) {
 			goRed();
 		}
 	}
 
-	void goRed() throws Exception {
+	private void goRed() throws Exception {
 		conn.do_job_set(Vehicle.setColor(name, new SumoColor(255, 0, 0, 255)));
 		conn.do_job_set(Vehicle.setSpeed(name, 0.0));
 	}
 
-	void goDefaultColor() throws Exception {
+	private void goDefaultColor() throws Exception {
 		if (type.contains("reckless")) {
 			conn.do_job_set(Vehicle.setColor(name, new SumoColor(255, 140, 0, 255)));
 		} else {
