@@ -12,25 +12,25 @@ public class Controller {
 
 	private Map<String, Double> bicycleSeconds = new HashMap<String, Double>();
 
-	public void SendAllDataCamera(Map<String, Map<String, Object>> vehicle_data) throws Exception {
+	public void SendAllDataCamera(Map<String, VehicleData> vehicleData) throws Exception {
 		// Warning RSU
-		if (vehicle_data.isEmpty()) {
+		if (vehicleData.isEmpty()) {
 			for (RSU rsu : allRSU) {
 				rsu.ClearRSU("East");
 			}
 		} else {
-			warningRSU(vehicle_data);
-			warningOBU(vehicle_data);
+			warningRSU(vehicleData);
+			warningOBU(vehicleData);
 		}
 	}
 
-	private void warningRSU(Map<String, Map<String, Object>> vehicle_data) throws Exception {
+	private void warningRSU(Map<String, VehicleData> vehicleData) throws Exception {
 		boolean bus_flag = false;
 		double def_distance = 32;
 
-		for (String vehID : vehicle_data.keySet()) {
-			Double distance = (Double) (vehicle_data.get(vehID).get("distance"));
-			String veh_type = (String) (vehicle_data.get(vehID).get("type"));
+		for (String vehID : vehicleData.keySet()) {
+			Double distance = vehicleData.get(vehID).getDistance();
+			String veh_type = vehicleData.get(vehID).getType();
 			if (veh_type.contains("bus")) {
 				bus_flag = true;
 				if (distance < def_distance) {
@@ -47,7 +47,7 @@ public class Controller {
 		}
 	}
 
-	private void warningOBU(Map<String, Map<String, Object>> vehicle_data) throws Exception {
+	private void warningOBU(Map<String, VehicleData> vehicleData) throws Exception {
 		boolean bus_flag = false;
 		boolean bicycle_flag = false;
 
@@ -61,13 +61,13 @@ public class Controller {
 
 		List<String> busIDList = new ArrayList<String>();
 
-		for (String vehicleID : vehicle_data.keySet()) {
-			vehicleType = (String) (vehicle_data.get(vehicleID).get("type"));
-			vehicleSecond = (Double) (vehicle_data.get(vehicleID).get("seconds"));
-			vehicleDistance = (Double) (vehicle_data.get(vehicleID).get("distance"));
+		for (String vehicleID : vehicleData.keySet()) {
+			vehicleType = vehicleData.get(vehicleID).getType();
+			vehicleSecond = vehicleData.get(vehicleID).getSeconds();
+			vehicleDistance = vehicleData.get(vehicleID).getDistance();
 
-			vehicleSpeed = (Double) (vehicle_data.get(vehicleID).get("speed"));
-			vehicleLength = (Double) (vehicle_data.get(vehicleID).get("length"));
+			vehicleSpeed = vehicleData.get(vehicleID).getSpeed();
+			vehicleLength = vehicleData.get(vehicleID).getLength();
 
 			extraSecond = vehicleSecond + (vehicleLength / vehicleSpeed);
 

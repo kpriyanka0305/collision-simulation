@@ -62,7 +62,6 @@ public class Camera {
 		drawFOV();
 
 		// CONNECT TO THE CONTROLLER
-//		emit(new CameraConnect(this))
 		controller.CameraConnect(this);
 	}
 
@@ -70,20 +69,19 @@ public class Camera {
 		@SuppressWarnings("unchecked")
 		List<String> vehicles = (List<String>) (conn.do_job_get(Vehicle.getIDList()));
 
-		Map<String, Map<String, Object>> vehicle_data = new HashMap<>();
+		Map<String, VehicleData> vehicleData = new HashMap<>();
 		for (String v : vehicles) {
 			SumoPosition2D sumoPosition = (SumoPosition2D) (conn.do_job_get(Vehicle.getPosition(v)));
 			Point2D position = new Point2D(sumoPosition.x, sumoPosition.y);
 
 			if (fieldOfView.contains(position)) {
-				vehicle_data.put(v, readData(v, position));
+				vehicleData.put(v, readData(v, position));
 			}
 		}
-//		emit(new SendAllDataCamera(vehicle_data))
-		controller.SendAllDataCamera(vehicle_data);
+		controller.SendAllDataCamera(vehicleData);
 	}
 
-	Map<String, Object> readData(String id, Point2D position) throws Exception {
+	VehicleData readData(String id, Point2D position) throws Exception {
 		String type = (String) (conn.do_job_get(Vehicle.getTypeID(id)));
 		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(id)));
 		double length = (Double) (conn.do_job_get(Vehicle.getLength(id)));
@@ -100,14 +98,8 @@ public class Camera {
 			seconds = 100.0;
 		}
 
-		Map<String, Object> myMap = new HashMap<>();
-		myMap.put("type", type);
-		myMap.put("speed", speed);
-		myMap.put("accel", accel);
-		myMap.put("length", length);
-		myMap.put("distance", distance);
-		myMap.put("seconds", seconds);
-		return myMap;
+		VehicleData vehicleData = new VehicleData(id, type, speed, accel, length, distance, seconds);
+		return vehicleData;
 	}
 
 	// FOR SIMULATION/COLLISION PURPOSES ONLY
