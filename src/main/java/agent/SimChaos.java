@@ -16,23 +16,14 @@ public class SimChaos extends Simulation {
 	}
 
 	@Override
-	public boolean step() throws Exception {
+	public void step() throws Exception {
 		numSteps++;
 		conn.do_timestep();
 
 		@SuppressWarnings("unchecked")
 		List<String> vehicles = (List<String>) (conn.do_job_get(Vehicle.getIDList()));
 
-		if (vehicles.isEmpty()) {
-			// simulation wants to shut down
-			System.out.println("terminated after " + numSteps + " steps");
-			return false;
-		}
-
 		kpis.checkKPIs();
-
-		// simulation wants to continue
-		return true;
 	}
 
 	@Override

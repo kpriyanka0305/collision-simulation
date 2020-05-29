@@ -4,6 +4,7 @@ import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
 import agent.*;
 import de.tudresden.sumo.cmd.Vehicle;
+import de.tudresden.sumo.cmd.Simulation;
 import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.subscription.ResponseType;
 import de.tudresden.sumo.subscription.SubscribtionVariable;
@@ -50,9 +51,10 @@ public class Main implements Observer {
 	}
 
 	private void runSimulation() throws Exception {
-		Simulation sim = new SimWarningService(conn, kpi, simParameters);
-//		Simulation sim = new SimChaos(conn, kpi);
-		while (sim.step()) {
+		agent.Simulation sim = new SimWarningService(conn, kpi, simParameters);
+//		agent.Simulation sim = new SimChaos(conn, kpi);
+		while ((int) (conn.do_job_get(Simulation.getMinExpectedNumber())) > 0) {
+			sim.step();
 			Thread.sleep(10);
 		}
 		conn.close();
