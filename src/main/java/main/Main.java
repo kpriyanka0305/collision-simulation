@@ -53,6 +53,8 @@ public class Main implements Observer {
 	private void runSimulation() throws Exception {
 		agent.Simulation sim = new SimWarningService(conn, kpi, simParameters);
 //		agent.Simulation sim = new SimChaos(conn, kpi);
+		// getMinExpectedNumber returns present and future vehicles. If that
+		// number is 0 we are done.
 		while ((int) (conn.do_job_get(Simulation.getMinExpectedNumber())) > 0) {
 			sim.step();
 			Thread.sleep(10);
