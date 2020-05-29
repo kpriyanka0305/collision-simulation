@@ -102,9 +102,7 @@ public class Kpi {
 
 	private void writeDistanceGraph(String busID) {
 		try {
-
 			for (Map.Entry<String, List<Double[]>> dist : distances.get(busID).entrySet()) {
-
 				distancesFile.append("\n\n");
 				distancesFile.append("\"distance " + busID + " " + dist.getKey() + "\"\n");
 				for (Double[] dataPoint : dist.getValue()) {
@@ -121,7 +119,6 @@ public class Kpi {
 
 	private void writeAccelGraph(String busID) {
 		try {
-
 			accelerationsFile.append("\n\n");
 			accelerationsFile.append("\"acceleration " + busID + "\"\n");
 			for (Double[] dataPoint : accelerations.get(busID)) {
@@ -137,7 +134,6 @@ public class Kpi {
 
 	private void writeSpeedGraph(String busID) {
 		try {
-
 			speedsFile.append("\n\n");
 			speedsFile.append("\"speed " + busID + "\"\n");
 			for (Double[] dataPoint : speeds.get(busID)) {
