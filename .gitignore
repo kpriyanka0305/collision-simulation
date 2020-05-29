@@ -1,2 +1,4 @@
 target/
 .settings/
+output/*.txt
+output/*.pdf
