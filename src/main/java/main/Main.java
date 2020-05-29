@@ -2,6 +2,10 @@ package main;
 
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import agent.*;
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.sumo.cmd.Simulation;
@@ -15,7 +19,7 @@ import de.tudresden.sumo.util.Observer;
 import de.tudresden.ws.container.SumoStringList;
 
 public class Main implements Observer {
-	static final String SUMO_BIN = "sumo-gui";
+	static final String SUMO_BIN = "sumo";
 	static final String CONFIG_FILE = "data/hard-braking-connected.sumocfg";
 	static final double STEP_LENGTH = 0.1;
 	static final String BUS_PREFIX = "bus";
@@ -25,9 +29,9 @@ public class Main implements Observer {
 	private Kpi kpi;
 	private SimulationParameters simParameters;
 
-	public Main(String sumocfg, double busMaxSpeed, double bikeMaxSpeed) throws Exception {
+	public Main(Date timestamp, String sumocfg, double busMaxSpeed, double bikeMaxSpeed) throws Exception {
 		this.conn = SumoConnect(sumocfg);
-		this.kpi = new Kpi(conn);
+		this.kpi = new Kpi(conn, timestamp);
 		this.simParameters = new SimulationParameters(busMaxSpeed, bikeMaxSpeed);
 		subscribe();
 	}
@@ -38,10 +42,14 @@ public class Main implements Observer {
 			sumocfg = args[0];
 		}
 
+		// timestamp must be the same across all simulation runs. It is used for
+		// the file name of the data logs.
+		Date timestamp = new Date();
+
 		long startTime = System.nanoTime();
 
-		for (int i = 0; i < 1; i++) {
-			Main m = new Main(sumocfg, 8.3, 4.7);
+		for (double busSpeed = 5.0; busSpeed < 9.0; busSpeed += 0.4) {
+			Main m = new Main(timestamp, sumocfg, busSpeed, 4.7);
 			m.runSimulation();
 		}
 
@@ -57,7 +65,6 @@ public class Main implements Observer {
 		// number is 0 we are done.
 		while ((int) (conn.do_job_get(Simulation.getMinExpectedNumber())) > 0) {
 			sim.step();
-			Thread.sleep(10);
 		}
 		conn.close();
 	}
@@ -66,7 +73,7 @@ public class Main implements Observer {
 		SumoTraciConnection conn = new SumoTraciConnection(SUMO_BIN, sumocfg);
 		conn.addOption("step-length", STEP_LENGTH + "");
 		conn.addOption("start", "true"); // start simulation at startup
-		conn.addOption("log", "out/log.txt");
+		conn.addOption("log", SimulationParameters.OUT_DIR + "/log.txt");
 		conn.runServer();
 		conn.setOrder(1);
 		return conn;

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -13,9 +14,11 @@ import de.tudresden.sumo.util.SumoCommand;
 import de.tudresden.sumo.cmd.Simulation;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
+import main.SimulationParameters;
 import math.geom2d.line.LineSegment2D;
 
 import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 
 import util.*;
 
@@ -27,14 +30,24 @@ public class Kpi {
 	Map<String, List<Double[]>> accelerations = new HashMap<>();
 	Map<String, List<Double[]>> speeds = new HashMap<>();
 
-	private final static String OUT_DIR = "out";
+	private final static String DISTANCES_BASE = "/distances";
+	private final static String ACCELERATIONS_BASE = "/accelerations";
+	private final static String SPEEDS_BASE = "/speeds";
 
-	private final FileWriter distancesFile = new FileWriter(OUT_DIR + "/distances.txt", false);
-	private final FileWriter accelerationsFile = new FileWriter(OUT_DIR + "/accelerations.txt", false);
-	private final FileWriter speedsFile = new FileWriter(OUT_DIR + "/speeds.txt", false);
+	private final FileWriter distancesFile;
+	private final FileWriter accelerationsFile;
+	private final FileWriter speedsFile;
 
-	public Kpi(SumoTraciConnection connection) throws Exception {
+	public Kpi(SumoTraciConnection connection, Date timestamp) throws Exception {
 		this.conn = connection;
+
+		String pattern = "yyyy-MM-dd-HH-mm-ss";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String dateStr = simpleDateFormat.format(timestamp);
+
+		distancesFile = new FileWriter(SimulationParameters.OUT_DIR + DISTANCES_BASE + dateStr + ".txt", true);
+		accelerationsFile = new FileWriter(SimulationParameters.OUT_DIR + ACCELERATIONS_BASE + dateStr + ".txt", true);
+		speedsFile = new FileWriter(SimulationParameters.OUT_DIR + SPEEDS_BASE + dateStr + ".txt", true);
 	}
 
 	public void addBus(String vehicleID) {
