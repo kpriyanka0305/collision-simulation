@@ -24,7 +24,7 @@ import util.*;
 
 public class Kpi {
 	SumoTraciConnection conn;
-	Set<String> activeBuses = new HashSet<>();
+	Map<String, Double> activeBuses = new HashMap<>();
 	Set<String> activeBikes = new HashSet<>();
 	Map<String, Map<String, List<Double[]>>> distances = new HashMap<>();
 	Map<String, List<Double[]>> accelerations = new HashMap<>();
@@ -50,18 +50,18 @@ public class Kpi {
 		speedsFile = new FileWriter(SimulationParameters.OUT_DIR + SPEEDS_BASE + dateStr + ".txt", true);
 	}
 
-	public void addBus(String vehicleID) {
-		activeBuses.add(vehicleID);
+	public void addBus(String vehicleID, double busMaxSpeed) {
+		activeBuses.put(vehicleID, busMaxSpeed);
 		distances.put(vehicleID, new HashMap<>());
 		accelerations.put(vehicleID, new ArrayList<>());
 		speeds.put(vehicleID, new ArrayList<>());
 	}
 
 	public void removeBus(String busID) {
-		activeBuses.remove(busID);
 		writeDistanceGraph(busID);
 		writeAccelGraph(busID);
 		writeSpeedGraph(busID);
+		activeBuses.remove(busID);
 	}
 
 	public void addBike(String vehicleID) {
@@ -104,7 +104,7 @@ public class Kpi {
 	}
 
 	public void checkKPIs() throws Exception {
-		for (String bus : activeBuses) {
+		for (String bus : activeBuses.keySet()) {
 			updateAcceleration(bus);
 			updateSpeed(bus);
 			for (String bike : activeBikes) {
@@ -115,9 +115,10 @@ public class Kpi {
 
 	private void writeDistanceGraph(String busID) {
 		try {
+			double busMaxSpeed = activeBuses.get(busID);
 			for (Map.Entry<String, List<Double[]>> dist : distances.get(busID).entrySet()) {
 				distancesFile.append("\n\n");
-				distancesFile.append("\"distance " + busID + " " + dist.getKey() + "\"\n");
+				distancesFile.append("\"bus max speed " + String.format("%.1f", busMaxSpeed) + "\"\n");
 				for (Double[] dataPoint : dist.getValue()) {
 					distancesFile.append(dataPoint[0] + " " + dataPoint[1] + "\n");
 				}

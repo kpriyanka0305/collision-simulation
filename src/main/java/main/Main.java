@@ -5,6 +5,7 @@ import kpi.Kpi;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import agent.*;
 import de.tudresden.sumo.cmd.Vehicle;
@@ -24,6 +25,9 @@ public class Main implements Observer {
 	static final double STEP_LENGTH = 0.1;
 	static final String BUS_PREFIX = "bus";
 	static final String BIKE_PREFIX = "bicycle";
+
+	static final double busMaxSpeedSigma = 2.0;
+	static final double busMaxSpeed = 8.3;
 
 	private SumoTraciConnection conn;
 	private Kpi kpi;
@@ -48,7 +52,10 @@ public class Main implements Observer {
 
 		long startTime = System.nanoTime();
 
-		for (double busSpeed = 5.0; busSpeed < 9.0; busSpeed += 0.4) {
+		Random r = new Random();
+//		for (double busSpeed = 5.0; busSpeed < 9.0; busSpeed += 0.4) { 
+		for (int i = 0; i < 20; i++) {
+			double busSpeed = r.nextGaussian() * busMaxSpeedSigma + busMaxSpeed;
 			Main m = new Main(timestamp, sumocfg, busSpeed, 4.7);
 			m.runSimulation();
 		}
@@ -97,7 +104,7 @@ public class Main implements Observer {
 						for (String vehicleID : ssl) {
 							if (vehicleID.startsWith(BUS_PREFIX)) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.busMaxSpeed));
-								kpi.addBus(vehicleID);
+								kpi.addBus(vehicleID, simParameters.busMaxSpeed);
 							} else if (vehicleID.startsWith(BIKE_PREFIX)) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.bikeMaxSpeed));
 								kpi.addBike(vehicleID);
