@@ -21,8 +21,8 @@ import de.tudresden.sumo.util.Observer;
 import de.tudresden.ws.container.SumoStringList;
 
 public class Main implements Observer {
-	static final String SUMO_BIN = "sumo";
-	static final String CONFIG_FILE = "data/hard-braking-connected.sumocfg";
+	static final String SUMO_BIN = "sumo-gui";
+	static final String CONFIG_FILE = "data/hard-braking-conventional.sumocfg";
 	static final double STEP_LENGTH = 0.1;
 	static final String BUS_PREFIX = "bus";
 	static final String BIKE_PREFIX = "bicycle";
@@ -82,8 +82,8 @@ public class Main implements Observer {
 	}
 
 	private void runSimulation() throws Exception {
-		agent.Simulation sim = new SimWarningService(conn, kpi, simParameters);
-//		agent.Simulation sim = new SimChaos(conn, kpi);
+//		agent.Simulation sim = new SimWarningService(conn, kpi, simParameters);
+		agent.Simulation sim = new SimChaos(conn, kpi);
 		// getMinExpectedNumber returns present and future vehicles. If that
 		// number is 0 we are done.
 		while ((int) (conn.do_job_get(Simulation.getMinExpectedNumber())) > 0) {
