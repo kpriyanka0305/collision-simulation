@@ -10,7 +10,7 @@ stats DIST_FILE name 'DISTS' nooutput
 
 #set logscale y 2
 
-set title "distance between bus and bicycle over time, with varying bus speeds"
+set title "distance between bus and bicycle over time"
 set xlabel "time (s)"
 set ylabel "distance (m)"
 

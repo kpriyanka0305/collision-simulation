@@ -55,7 +55,8 @@ public class Main implements Observer {
 
 		Stopwatch totalTime = new Stopwatch();
 
-		monteCarloSimulation(sumocfg, timestamp);
+//		monteCarloSimulation(sumocfg, timestamp);
+		crispSimulation(sumocfg, timestamp);
 
 		totalTime.stop();
 		totalTime.printTime("total time");
