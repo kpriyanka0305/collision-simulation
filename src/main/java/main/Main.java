@@ -2,6 +2,7 @@ package main;
 
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
+import util.Stopwatch;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,13 +53,12 @@ public class Main implements Observer {
 		// the file name of the data logs.
 		Date timestamp = new Date();
 
-		long startTime = System.nanoTime();
+		Stopwatch totalTime = new Stopwatch();
 
 		monteCarloSimulation(sumocfg, timestamp);
 
-		long endTime = System.nanoTime();
-		long duration = (endTime - startTime);
-		System.out.println("elapsed time: " + duration / 1000000 + " ms");
+		totalTime.stop();
+		totalTime.printTime("total time");
 	}
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
@@ -69,9 +69,14 @@ public class Main implements Observer {
 	private static void monteCarloSimulation(String sumocfg, Date timestamp) throws Exception {
 		Random r = new Random();
 		for (int i = 0; i < 10; i++) {
+			Stopwatch singleRun = new Stopwatch();
+
 			double busSpeed = r.nextGaussian() * busMaxSpeedSigma + busMaxSpeed;
 			Main m = new Main(timestamp, sumocfg, busSpeed, bicycleMaxSpeed);
 			m.runSimulation();
+
+			singleRun.stop();
+			singleRun.printTime("lap time");
 		}
 	}
 
