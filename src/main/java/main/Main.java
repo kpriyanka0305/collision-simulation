@@ -62,7 +62,7 @@ public class Main implements Observer {
 	}
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
-		Main m = new Main(timestamp, sumocfg, busMaxSpeed, 4.7);
+		Main m = new Main(timestamp, sumocfg, busMaxSpeed, bicycleMaxSpeed);
 		m.runSimulation();
 	}
 
