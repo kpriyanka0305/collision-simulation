@@ -21,13 +21,13 @@ import de.tudresden.sumo.util.Observer;
 import de.tudresden.ws.container.SumoStringList;
 
 public class Main implements Observer {
-	static final String SUMO_BIN = "sumo-gui";
+	static final String SUMO_BIN = "sumo";
 	static final String CONFIG_FILE = "data/hard-braking-conventional.sumocfg";
 	static final double STEP_LENGTH = 0.1;
 	static final String BUS_PREFIX = "bus";
 	static final String BIKE_PREFIX = "bicycle";
 
-	static final double busMaxSpeedSigma = 1.0;
+	static final double busMaxSpeedSigma = 2.0;
 	static final double busMaxSpeed = 8.3;
 
 	static final double bicycleMaxSpeed = 4.7;
@@ -55,8 +55,8 @@ public class Main implements Observer {
 
 		Stopwatch totalTime = new Stopwatch();
 
-//		monteCarloSimulation(sumocfg, timestamp);
-		crispSimulation(sumocfg, timestamp);
+		monteCarloSimulation(sumocfg, timestamp);
+//		crispSimulation(sumocfg, timestamp);
 
 		totalTime.stop();
 		totalTime.printTime("total time");
