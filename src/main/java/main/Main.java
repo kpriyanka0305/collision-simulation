@@ -26,8 +26,10 @@ public class Main implements Observer {
 	static final String BUS_PREFIX = "bus";
 	static final String BIKE_PREFIX = "bicycle";
 
-	static final double busMaxSpeedSigma = 2.0;
+	static final double busMaxSpeedSigma = 1.0;
 	static final double busMaxSpeed = 8.3;
+
+	static final double bicycleMaxSpeed = 4.7;
 
 	private SumoTraciConnection conn;
 	private Kpi kpi;
@@ -52,17 +54,25 @@ public class Main implements Observer {
 
 		long startTime = System.nanoTime();
 
-		Random r = new Random();
-//		for (double busSpeed = 5.0; busSpeed < 9.0; busSpeed += 0.4) { 
-		for (int i = 0; i < 20; i++) {
-			double busSpeed = r.nextGaussian() * busMaxSpeedSigma + busMaxSpeed;
-			Main m = new Main(timestamp, sumocfg, busSpeed, 4.7);
-			m.runSimulation();
-		}
+		monteCarloSimulation(sumocfg, timestamp);
 
 		long endTime = System.nanoTime();
 		long duration = (endTime - startTime);
 		System.out.println("elapsed time: " + duration / 1000000 + " ms");
+	}
+
+	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
+		Main m = new Main(timestamp, sumocfg, busMaxSpeed, 4.7);
+		m.runSimulation();
+	}
+
+	private static void monteCarloSimulation(String sumocfg, Date timestamp) throws Exception {
+		Random r = new Random();
+		for (int i = 0; i < 10; i++) {
+			double busSpeed = r.nextGaussian() * busMaxSpeedSigma + busMaxSpeed;
+			Main m = new Main(timestamp, sumocfg, busSpeed, bicycleMaxSpeed);
+			m.runSimulation();
+		}
 	}
 
 	private void runSimulation() throws Exception {
