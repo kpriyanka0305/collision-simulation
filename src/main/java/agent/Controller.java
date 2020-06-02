@@ -135,11 +135,9 @@ public class Controller {
 
 	private void addRSU(RSU element) {
 		allRSU.add(element);
-		System.out.println("RSU Connected to the Controller!");
 	}
 
 	private void addCamera(Camera element) {
 		allCamera.add(element);
-		System.out.println("Camera Connected to the Controller!");
 	}
 }

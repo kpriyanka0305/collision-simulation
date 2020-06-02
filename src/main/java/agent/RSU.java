@@ -27,7 +27,6 @@ public class RSU {
 		drawRSU();
 
 		controller.RSUConnect(this);
-		System.out.println("RSU spawned");
 	}
 
 	public void WarnRSU(String name) throws Exception {

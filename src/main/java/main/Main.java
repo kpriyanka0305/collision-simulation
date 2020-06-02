@@ -125,7 +125,6 @@ public class Main implements Observer {
 					SumoStringList ssl = (SumoStringList) so.object;
 					if (ssl.size() > 0) {
 						for (String vehicleID : ssl) {
-							System.out.println("Arrived vehicle: " + vehicleID);
 							if (vehicleID.startsWith(BUS_PREFIX)) {
 								kpi.removeBus(vehicleID);
 							} else if (vehicleID.startsWith(BIKE_PREFIX)) {

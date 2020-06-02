@@ -65,7 +65,6 @@ public class SimWarningService extends Simulation {
 				if (!allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
 					OBU obu = new OBU(v, conn, controller, simParams);
 					allOBUs.add(obu);
-					System.out.println(v + " ENTERED");
 				}
 			} else if (type.contains("bicycle-distracted")) {
 				double distanceToJunction = (Double) (vehData.get("distanceToJunction"));
@@ -95,7 +94,6 @@ public class SimWarningService extends Simulation {
 			}
 
 			if (!flag) {
-				System.out.println(obu.getName() + " REMOVED");
 				controller.OBUDisconnect(obu.getName());
 				allOBUs.removeIf((o) -> o.getName().equals(obu.getName()));
 				break;
