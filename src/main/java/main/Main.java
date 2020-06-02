@@ -27,7 +27,7 @@ public class Main implements Observer {
 	static final String BUS_PREFIX = "bus";
 	static final String BIKE_PREFIX = "bicycle";
 
-	static final double busMaxSpeedSigma = 2.0;
+	static final double busMaxSpeedSigma = 1.0;
 	static final double busMaxSpeed = 8.3;
 
 	static final double bicycleMaxSpeed = 4.7;
