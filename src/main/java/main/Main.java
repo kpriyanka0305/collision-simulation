@@ -22,13 +22,13 @@ import de.tudresden.ws.container.SumoStringList;
 
 public class Main implements Observer {
 	static final String SUMO_BIN = "sumo";
-	static final String CONFIG_FILE = "data/hard-braking-conventional.sumocfg";
+	static final String CONFIG_FILE = "data/hard-braking-connected.sumocfg";
 	static final double STEP_LENGTH = 0.1;
 	static final String BUS_PREFIX = "bus";
 	static final String BIKE_PREFIX = "bicycle";
 
-	static final double busMaxSpeedSigma = 1.0;
-	static final double busMaxSpeed = 8.3;
+	static final double busMaxSpeedSigma = 2.0;
+	static final double busMaxSpeedMean = 8.3;
 
 	static final double bicycleMaxSpeed = 4.7;
 
@@ -63,31 +63,33 @@ public class Main implements Observer {
 	}
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
-		Main m = new Main(timestamp, sumocfg, busMaxSpeed, bicycleMaxSpeed);
+		Main m = new Main(timestamp, sumocfg, busMaxSpeedMean, bicycleMaxSpeed);
 		m.runSimulation();
 	}
 
 	private static void monteCarloSimulation(String sumocfg, Date timestamp) throws Exception {
 		Random r = new Random();
 		for (int i = 0; i < 10; i++) {
+//		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.2) {
 			Stopwatch singleRun = new Stopwatch();
 
-			double busSpeed = r.nextGaussian() * busMaxSpeedSigma + busMaxSpeed;
-			Main m = new Main(timestamp, sumocfg, busSpeed, bicycleMaxSpeed);
+			double busMaxSpeed = (r.nextGaussian() * busMaxSpeedSigma) + busMaxSpeedMean;
+			Main m = new Main(timestamp, sumocfg, busMaxSpeed, bicycleMaxSpeed);
 			m.runSimulation();
 
 			singleRun.stop();
-			singleRun.printTime("lap time");
+			singleRun.printTime("lap time " + i);
 		}
 	}
 
 	private void runSimulation() throws Exception {
-//		agent.Simulation sim = new SimWarningService(conn, kpi, simParameters);
-		agent.Simulation sim = new SimChaos(conn, kpi);
+		agent.Simulation sim = new SimWarningService(conn, kpi, simParameters);
+//		agent.Simulation sim = new SimChaos(conn, kpi);
 		// getMinExpectedNumber returns present and future vehicles. If that
 		// number is 0 we are done.
 		while ((int) (conn.do_job_get(Simulation.getMinExpectedNumber())) > 0) {
 			sim.step();
+//			Thread.sleep(30);
 		}
 		conn.close();
 	}
