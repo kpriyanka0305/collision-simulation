@@ -69,7 +69,7 @@ public class Main implements Observer {
 
 	private static void monteCarloSimulation(String sumocfg, Date timestamp) throws Exception {
 		Random r = new Random();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 50; i++) {
 //		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.2) {
 			Stopwatch singleRun = new Stopwatch();
 

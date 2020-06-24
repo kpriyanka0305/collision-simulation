@@ -18,6 +18,7 @@ import main.SimulationParameters;
 import math.geom2d.line.LineSegment2D;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import util.*;
@@ -29,14 +30,17 @@ public class Kpi {
 	Map<String, Map<String, List<Double[]>>> distances = new HashMap<>();
 	Map<String, List<Double[]>> accelerations = new HashMap<>();
 	Map<String, List<Double[]>> speeds = new HashMap<>();
+	IntegerHistogram waitingTimeHistogram = new IntegerHistogram();
 
 	private final static String DISTANCES_BASE = "/distances";
 	private final static String ACCELERATIONS_BASE = "/accelerations";
 	private final static String SPEEDS_BASE = "/speeds";
+	private final static String SPEEDS_HISTOGRAM_BASE = "/speeds-histogram";
 
 	private final FileWriter distancesFile;
 	private final FileWriter accelerationsFile;
 	private final FileWriter speedsFile;
+	private final FileWriter speedsHistogramFile;
 
 	public Kpi(SumoTraciConnection connection, Date timestamp) throws Exception {
 		this.conn = connection;
@@ -48,6 +52,8 @@ public class Kpi {
 		distancesFile = new FileWriter(SimulationParameters.OUT_DIR + DISTANCES_BASE + dateStr + ".txt", true);
 		accelerationsFile = new FileWriter(SimulationParameters.OUT_DIR + ACCELERATIONS_BASE + dateStr + ".txt", true);
 		speedsFile = new FileWriter(SimulationParameters.OUT_DIR + SPEEDS_BASE + dateStr + ".txt", true);
+		speedsHistogramFile = new FileWriter(SimulationParameters.OUT_DIR + SPEEDS_HISTOGRAM_BASE + dateStr + ".txt",
+				true);
 	}
 
 	public void addBus(String vehicleID, double busMaxSpeed) {
@@ -61,6 +67,7 @@ public class Kpi {
 		writeDistanceGraph(busID);
 		writeAccelGraph(busID);
 		writeSpeedGraph(busID);
+		waitingTimeHistogram.add(calculateWaitingTime(busID));
 		activeBuses.remove(busID);
 	}
 
@@ -70,6 +77,19 @@ public class Kpi {
 
 	public void removeBike(String vehicleID) {
 		activeBikes.remove(vehicleID);
+	}
+
+	// call this function after the simulation is finished
+	public void simulationFinished() {
+		try {
+			writeSpeedsHistogramGraph();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void writeSpeedsHistogramGraph() throws IOException {
+		speedsHistogramFile.append("\n\n");
 	}
 
 	private void updateMinimalDistance(String busID, String bikeID) throws Exception {
@@ -159,5 +179,17 @@ public class Kpi {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+	}
+
+	private int calculateWaitingTime(String busID) {
+		int totalWaitingTimeTicks = 0;
+		for (Double[] dataPoint : speeds.get(busID)) {
+			if (dataPoint[1] <= 0.000001) {
+				// bus speed at that point in time was 0
+				totalWaitingTimeTicks += 1;
+			}
+//				speedsFile.append(dataPoint[0] + " " + dataPoint[1] + "\n");
+		}
+		return totalWaitingTimeTicks;
 	}
 }
