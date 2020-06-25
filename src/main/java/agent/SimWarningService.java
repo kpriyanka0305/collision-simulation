@@ -52,12 +52,6 @@ public class SimWarningService extends Simulation {
 		@SuppressWarnings("unchecked")
 		List<String> vehicles = (List<String>) (conn.do_job_get(Vehicle.getIDList()));
 
-		kpis.checkKPIs();
-
-		for (Camera cam : allCameras) {
-			cam.observeSituation();
-		}
-
 		for (String v : vehicles) {
 			Map<String, Object> vehData = readData(v);
 			String type = (String) (vehData.get("type"));
@@ -99,6 +93,12 @@ public class SimWarningService extends Simulation {
 				break;
 			}
 		}
+
+		for (Camera cam : allCameras) {
+			cam.observeSituation();
+		}
+
+		kpis.checkKPIs();
 	}
 
 	private void spawnElements() throws Exception {
