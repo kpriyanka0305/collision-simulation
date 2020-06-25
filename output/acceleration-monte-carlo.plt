@@ -1,5 +1,5 @@
 # To be called like this:
-#    $ gnuplot -c collision-monte-carlo.plt distances2020-05-29-15-18-53.txt accelerations2020-05-29-15-18-53.txt
+#    $ gnuplot -c acceleration-monte-carlo.plt distances2020-05-29-15-18-53.txt accelerations2020-05-29-15-18-53.txt
 
 set terminal pdfcairo
 set output 'acceleration.pdf'
