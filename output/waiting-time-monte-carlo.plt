@@ -12,6 +12,8 @@ set style fill solid
 
 set yrange [0:]
 
+set title "bus wait times (" . WAITTIME_FILE . ")"
+
 #set title "distance bus bicycle / bus acceleration (" . ARG1 . ")"
 #set xlabel "time (s)"
 #set ylabel "distance (m)"
