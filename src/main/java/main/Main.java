@@ -25,10 +25,11 @@ import de.tudresden.ws.container.SumoStringList;
 public class Main implements Observer {
 	static final String SUMO_BIN = "sumo";
 	static final String CONFIG_FILE = "data/hard-braking-connected.sumocfg";
+	// simulation step length is in seconds
 	static final double STEP_LENGTH = 0.1;
 	static final String BUS_PREFIX = "bus";
 	static final String BIKE_PREFIX = "bicycle";
-	
+
 	// how often the monte carlo simulation should be run
 	static final int NUM_MONTE_CARLO_RUNS = 50;
 
@@ -42,7 +43,8 @@ public class Main implements Observer {
 	private SimulationParameters simParameters;
 	private Optional<IntegerHistogram> busWaitingTimes = Optional.empty();
 
-	public Main(Date timestamp, String sumocfg, Optional<IntegerHistogram> busWaitingTimes, double busMaxSpeed, double bikeMaxSpeed) throws Exception {
+	public Main(Date timestamp, String sumocfg, Optional<IntegerHistogram> busWaitingTimes, double busMaxSpeed,
+			double bikeMaxSpeed) throws Exception {
 		this.conn = SumoConnect(sumocfg);
 		this.kpi = new Kpi(conn, timestamp);
 		this.simParameters = new SimulationParameters(busMaxSpeed, bikeMaxSpeed);
@@ -78,7 +80,7 @@ public class Main implements Observer {
 		Random r = new Random();
 		IntegerHistogram busWaitingTimes = new IntegerHistogram();
 		for (int i = 0; i < NUM_MONTE_CARLO_RUNS; i++) {
-//		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.2) {
+//		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.1) {
 			Stopwatch singleRun = new Stopwatch();
 
 			double busMaxSpeed = (r.nextGaussian() * busMaxSpeedSigma) + busMaxSpeedMean;
