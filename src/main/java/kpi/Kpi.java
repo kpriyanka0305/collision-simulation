@@ -30,30 +30,31 @@ public class Kpi {
 	Map<String, Map<String, List<Double[]>>> distances = new HashMap<>();
 	Map<String, List<Double[]>> accelerations = new HashMap<>();
 	Map<String, List<Double[]>> speeds = new HashMap<>();
-	IntegerHistogram waitingTimeHistogram = new IntegerHistogram();
 
 	private final static String DISTANCES_BASE = "/distances";
 	private final static String ACCELERATIONS_BASE = "/accelerations";
 	private final static String SPEEDS_BASE = "/speeds";
-	private final static String SPEEDS_HISTOGRAM_BASE = "/speeds-histogram";
+	private final static String WAITING_TIME_BASE = "/waitingTime";
 
 	private final FileWriter distancesFile;
 	private final FileWriter accelerationsFile;
 	private final FileWriter speedsFile;
-	private final FileWriter speedsHistogramFile;
 
 	public Kpi(SumoTraciConnection connection, Date timestamp) throws Exception {
 		this.conn = connection;
 
+		distancesFile = new FileWriter(mkFileName(timestamp, DISTANCES_BASE), true);
+		accelerationsFile = new FileWriter(mkFileName(timestamp, ACCELERATIONS_BASE), true);
+		speedsFile = new FileWriter(mkFileName(timestamp, SPEEDS_BASE), true);
+	}
+
+	public static String mkFileName(Date timestamp, String baseFileName)
+	{
 		String pattern = "yyyy-MM-dd-HH-mm-ss";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		String dateStr = simpleDateFormat.format(timestamp);
 
-		distancesFile = new FileWriter(SimulationParameters.OUT_DIR + DISTANCES_BASE + dateStr + ".txt", true);
-		accelerationsFile = new FileWriter(SimulationParameters.OUT_DIR + ACCELERATIONS_BASE + dateStr + ".txt", true);
-		speedsFile = new FileWriter(SimulationParameters.OUT_DIR + SPEEDS_BASE + dateStr + ".txt", true);
-		speedsHistogramFile = new FileWriter(SimulationParameters.OUT_DIR + SPEEDS_HISTOGRAM_BASE + dateStr + ".txt",
-				true);
+		return SimulationParameters.OUT_DIR + baseFileName + dateStr + ".txt";
 	}
 
 	public void addBus(String vehicleID, double busMaxSpeed) {
@@ -67,7 +68,6 @@ public class Kpi {
 		writeDistanceGraph(busID);
 		writeAccelGraph(busID);
 		writeSpeedGraph(busID);
-		waitingTimeHistogram.add(calculateWaitingTime(busID));
 		activeBuses.remove(busID);
 	}
 
@@ -77,19 +77,6 @@ public class Kpi {
 
 	public void removeBike(String vehicleID) {
 		activeBikes.remove(vehicleID);
-	}
-
-	// call this function after the simulation is finished
-	public void simulationFinished() {
-		try {
-			writeSpeedsHistogramGraph();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void writeSpeedsHistogramGraph() throws IOException {
-		speedsHistogramFile.append("\n\n");
 	}
 
 	private void updateMinimalDistance(String busID, String bikeID) throws Exception {
@@ -130,6 +117,20 @@ public class Kpi {
 			for (String bike : activeBikes) {
 				updateMinimalDistance(bus, bike);
 			}
+		}
+	}
+
+	// waiting time histogram is tracked outside of KPI, because it needs to collect
+	// data across multiple runs. The file writing function is still here, because
+	// it is similar to the other ones.
+	public static void writeSpeedsHistogramGraph(Date timestamp, IntegerHistogram busWaitingTimes) {
+		try {
+			FileWriter waitingTimeFile = new FileWriter(mkFileName(timestamp, WAITING_TIME_BASE), true);
+			waitingTimeFile.append(busWaitingTimes.prettyPrint());
+			waitingTimeFile.close();
+		} catch (IOException e) {
+			System.err.println("could not write waiting time file");
+			e.printStackTrace();
 		}
 	}
 
@@ -181,7 +182,7 @@ public class Kpi {
 		}
 	}
 
-	private int calculateWaitingTime(String busID) {
+	public int getWaitingTime(String busID) {
 		int totalWaitingTimeTicks = 0;
 		for (Double[] dataPoint : speeds.get(busID)) {
 			if (dataPoint[1] <= 0.000001) {

@@ -2,10 +2,12 @@ package main;
 
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
+import util.IntegerHistogram;
 import util.Stopwatch;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Random;
 
 import agent.*;
@@ -26,6 +28,9 @@ public class Main implements Observer {
 	static final double STEP_LENGTH = 0.1;
 	static final String BUS_PREFIX = "bus";
 	static final String BIKE_PREFIX = "bicycle";
+	
+	// how often the monte carlo simulation should be run
+	static final int NUM_MONTE_CARLO_RUNS = 50;
 
 	static final double busMaxSpeedSigma = 2.0;
 	static final double busMaxSpeedMean = 8.3;
@@ -35,11 +40,13 @@ public class Main implements Observer {
 	private SumoTraciConnection conn;
 	private Kpi kpi;
 	private SimulationParameters simParameters;
+	private Optional<IntegerHistogram> busWaitingTimes = Optional.empty();
 
-	public Main(Date timestamp, String sumocfg, double busMaxSpeed, double bikeMaxSpeed) throws Exception {
+	public Main(Date timestamp, String sumocfg, Optional<IntegerHistogram> busWaitingTimes, double busMaxSpeed, double bikeMaxSpeed) throws Exception {
 		this.conn = SumoConnect(sumocfg);
 		this.kpi = new Kpi(conn, timestamp);
 		this.simParameters = new SimulationParameters(busMaxSpeed, bikeMaxSpeed);
+		this.busWaitingTimes = busWaitingTimes;
 		subscribe();
 	}
 
@@ -63,23 +70,25 @@ public class Main implements Observer {
 	}
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
-		Main m = new Main(timestamp, sumocfg, busMaxSpeedMean, bicycleMaxSpeed);
+		Main m = new Main(timestamp, sumocfg, Optional.empty(), busMaxSpeedMean, bicycleMaxSpeed);
 		m.runSimulation();
 	}
 
 	private static void monteCarloSimulation(String sumocfg, Date timestamp) throws Exception {
 		Random r = new Random();
-		for (int i = 0; i < 50; i++) {
+		IntegerHistogram busWaitingTimes = new IntegerHistogram();
+		for (int i = 0; i < NUM_MONTE_CARLO_RUNS; i++) {
 //		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.2) {
 			Stopwatch singleRun = new Stopwatch();
 
 			double busMaxSpeed = (r.nextGaussian() * busMaxSpeedSigma) + busMaxSpeedMean;
-			Main m = new Main(timestamp, sumocfg, busMaxSpeed, bicycleMaxSpeed);
+			Main m = new Main(timestamp, sumocfg, Optional.of(busWaitingTimes), busMaxSpeed, bicycleMaxSpeed);
 			m.runSimulation();
 
 			singleRun.stop();
 			singleRun.printTime("lap time " + i);
 		}
+		Kpi.writeSpeedsHistogramGraph(timestamp, busWaitingTimes);
 	}
 
 	private void runSimulation() throws Exception {
@@ -134,6 +143,7 @@ public class Main implements Observer {
 					if (ssl.size() > 0) {
 						for (String vehicleID : ssl) {
 							if (vehicleID.startsWith(BUS_PREFIX)) {
+								busWaitingTimes.ifPresent(h -> h.add(kpi.getWaitingTime(vehicleID)));
 								kpi.removeBus(vehicleID);
 							} else if (vehicleID.startsWith(BIKE_PREFIX)) {
 								kpi.removeBike(vehicleID);
