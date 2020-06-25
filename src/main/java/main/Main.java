@@ -5,7 +5,6 @@ import kpi.Kpi;
 import util.IntegerHistogram;
 import util.Stopwatch;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Random;
