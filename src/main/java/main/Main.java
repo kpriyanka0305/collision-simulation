@@ -23,20 +23,6 @@ import de.tudresden.sumo.util.Observer;
 import de.tudresden.ws.container.SumoStringList;
 
 public class Main implements Observer {
-	static final String SUMO_BIN = "sumo";
-	static final String CONFIG_FILE = "data/hard-braking-connected.sumocfg";
-	// simulation step length is in seconds
-	static final double STEP_LENGTH = 0.1;
-	static final String BUS_PREFIX = "bus";
-	static final String BIKE_PREFIX = "bicycle";
-
-	// how often the monte carlo simulation should be run
-	static final int NUM_MONTE_CARLO_RUNS = 50;
-
-	static final double busMaxSpeedSigma = 2.0;
-	static final double busMaxSpeedMean = 8.3;
-
-	static final double bicycleMaxSpeed = 4.7;
 
 	private SumoTraciConnection conn;
 	private Kpi kpi;
@@ -53,7 +39,7 @@ public class Main implements Observer {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String sumocfg = CONFIG_FILE;
+		String sumocfg = SimulationParameters.CONFIG_FILE;
 		if (args.length > 0) {
 			sumocfg = args[0];
 		}
@@ -64,27 +50,27 @@ public class Main implements Observer {
 
 		Stopwatch totalTime = new Stopwatch();
 
-		monteCarloSimulation(sumocfg, timestamp);
-//		crispSimulation(sumocfg, timestamp);
+//		monteCarloSimulation(sumocfg, timestamp);
+		crispSimulation(sumocfg, timestamp);
 
 		totalTime.stop();
 		totalTime.printTime("total time");
 	}
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
-		Main m = new Main(timestamp, sumocfg, Optional.empty(), busMaxSpeedMean, bicycleMaxSpeed);
+		Main m = new Main(timestamp, sumocfg, Optional.empty(), SimulationParameters.busMaxSpeedMean, SimulationParameters.bicycleMaxSpeed);
 		m.runSimulation();
 	}
 
 	private static void monteCarloSimulation(String sumocfg, Date timestamp) throws Exception {
 		Random r = new Random();
 		IntegerHistogram busWaitingTimes = new IntegerHistogram();
-		for (int i = 0; i < NUM_MONTE_CARLO_RUNS; i++) {
+		for (int i = 0; i < SimulationParameters.NUM_MONTE_CARLO_RUNS; i++) {
 //		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.1) {
 			Stopwatch singleRun = new Stopwatch();
 
-			double busMaxSpeed = (r.nextGaussian() * busMaxSpeedSigma) + busMaxSpeedMean;
-			Main m = new Main(timestamp, sumocfg, Optional.of(busWaitingTimes), busMaxSpeed, bicycleMaxSpeed);
+			double busMaxSpeed = (r.nextGaussian() * SimulationParameters.busMaxSpeedSigma) + SimulationParameters.busMaxSpeedMean;
+			Main m = new Main(timestamp, sumocfg, Optional.of(busWaitingTimes), busMaxSpeed, SimulationParameters.bicycleMaxSpeed);
 			m.runSimulation();
 
 			singleRun.stop();
@@ -106,8 +92,8 @@ public class Main implements Observer {
 	}
 
 	public static SumoTraciConnection SumoConnect(String sumocfg) throws Exception {
-		SumoTraciConnection conn = new SumoTraciConnection(SUMO_BIN, sumocfg);
-		conn.addOption("step-length", STEP_LENGTH + "");
+		SumoTraciConnection conn = new SumoTraciConnection(SimulationParameters.SUMO_BIN, sumocfg);
+		conn.addOption("step-length", SimulationParameters.STEP_LENGTH + "");
 		conn.addOption("start", "true"); // start simulation at startup
 		conn.addOption("log", SimulationParameters.OUT_DIR + "/log.txt");
 		conn.runServer();
@@ -131,10 +117,10 @@ public class Main implements Observer {
 					SumoStringList ssl = (SumoStringList) so.object;
 					if (ssl.size() > 0) {
 						for (String vehicleID : ssl) {
-							if (vehicleID.startsWith(BUS_PREFIX)) {
+							if (vehicleID.startsWith(SimulationParameters.BUS_PREFIX)) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.busMaxSpeed));
 								kpi.addBus(vehicleID, simParameters.busMaxSpeed);
-							} else if (vehicleID.startsWith(BIKE_PREFIX)) {
+							} else if (vehicleID.startsWith(SimulationParameters.BIKE_PREFIX)) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.bikeMaxSpeed));
 								kpi.addBike(vehicleID);
 							}
@@ -144,10 +130,10 @@ public class Main implements Observer {
 					SumoStringList ssl = (SumoStringList) so.object;
 					if (ssl.size() > 0) {
 						for (String vehicleID : ssl) {
-							if (vehicleID.startsWith(BUS_PREFIX)) {
+							if (vehicleID.startsWith(SimulationParameters.BUS_PREFIX)) {
 								busWaitingTimes.ifPresent(h -> h.add(kpi.getWaitingTime(vehicleID)));
 								kpi.removeBus(vehicleID);
-							} else if (vehicleID.startsWith(BIKE_PREFIX)) {
+							} else if (vehicleID.startsWith(SimulationParameters.BIKE_PREFIX)) {
 								kpi.removeBike(vehicleID);
 							}
 						}
