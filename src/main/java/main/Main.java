@@ -58,7 +58,8 @@ public class Main implements Observer {
 	}
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
-		Main m = new Main(timestamp, sumocfg, Optional.empty(), SimulationParameters.busMaxSpeedMean, SimulationParameters.bicycleMaxSpeed);
+		Main m = new Main(timestamp, sumocfg, Optional.empty(), SimulationParameters.busMaxSpeedMean,
+				SimulationParameters.bicycleMaxSpeed);
 		m.runSimulation();
 	}
 
@@ -69,8 +70,10 @@ public class Main implements Observer {
 //		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.1) {
 			Stopwatch singleRun = new Stopwatch();
 
-			double busMaxSpeed = (r.nextGaussian() * SimulationParameters.busMaxSpeedSigma) + SimulationParameters.busMaxSpeedMean;
-			Main m = new Main(timestamp, sumocfg, Optional.of(busWaitingTimes), busMaxSpeed, SimulationParameters.bicycleMaxSpeed);
+			double busMaxSpeed = (r.nextGaussian() * SimulationParameters.busMaxSpeedSigma)
+					+ SimulationParameters.busMaxSpeedMean;
+			Main m = new Main(timestamp, sumocfg, Optional.of(busWaitingTimes), busMaxSpeed,
+					SimulationParameters.bicycleMaxSpeed);
 			m.runSimulation();
 
 			singleRun.stop();
@@ -97,6 +100,7 @@ public class Main implements Observer {
 		conn.addOption("start", "true"); // start simulation at startup
 		conn.addOption("log", SimulationParameters.OUT_DIR + "/log.txt");
 		conn.runServer();
+		// Mandatory when using multiple clients. I'm not sure what this is doing here.
 		conn.setOrder(1);
 		return conn;
 	}
