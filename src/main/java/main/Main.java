@@ -30,7 +30,7 @@ public class Main implements Observer {
 
 	public Main(Date timestamp, String sumocfg, Optional<IntegerHistogram> busWaitingTimes, double busMaxSpeed,
 			double bikeMaxSpeed) throws Exception {
-		this.simParameters = new SimulationParameters(busMaxSpeed, bikeMaxSpeed);
+		this.simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed, bikeMaxSpeed);
 		this.conn = SumoConnect(sumocfg, simParameters);
 		this.kpi = new Kpi(conn, timestamp);
 		this.busWaitingTimes = busWaitingTimes;
@@ -49,8 +49,8 @@ public class Main implements Observer {
 
 		Stopwatch totalTime = new Stopwatch();
 
-//		monteCarloSimulation(sumocfg, timestamp);
-		crispSimulation(sumocfg, timestamp);
+		monteCarloSimulation(sumocfg, timestamp);
+//		crispSimulation(sumocfg, timestamp);
 
 		totalTime.stop();
 		totalTime.printTime("total time");
@@ -58,7 +58,7 @@ public class Main implements Observer {
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
 		Main m = new Main(timestamp, sumocfg, Optional.empty(), SimulationParameters.busMaxSpeedMean,
-				SimulationParameters.bicycleMaxSpeed);
+				SimulationParameters.bicycleMaxSpeedMean);
 		m.runSimulation();
 	}
 
@@ -71,8 +71,9 @@ public class Main implements Observer {
 
 			double busMaxSpeed = (r.nextGaussian() * SimulationParameters.busMaxSpeedSigma)
 					+ SimulationParameters.busMaxSpeedMean;
-			Main m = new Main(timestamp, sumocfg, Optional.of(busWaitingTimes), busMaxSpeed,
-					SimulationParameters.bicycleMaxSpeed);
+			double bikeMaxSpeed = (r.nextGaussian() * SimulationParameters.bicycleMaxSpeedSigma)
+					+ SimulationParameters.bicycleMaxSpeedMean;
+			Main m = new Main(timestamp, sumocfg, Optional.of(busWaitingTimes), busMaxSpeed, bikeMaxSpeed);
 			m.runSimulation();
 
 			singleRun.stop();
