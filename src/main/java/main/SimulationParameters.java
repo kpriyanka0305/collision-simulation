@@ -20,9 +20,9 @@ public class SimulationParameters {
 	static final String CONFIG_FILE = "data/hard-braking-connected.sumocfg";
 	// simulation step length is in seconds
 	static final double STEP_LENGTH = 0.1;
-	private final double stepDelay;
+	private final long stepDelay;
 
-	public double getStepDelay() {
+	public long getStepDelay() {
 		return stepDelay;
 	}
 
@@ -45,11 +45,11 @@ public class SimulationParameters {
 		switch (uiType) {
 		case Headless:
 			sumoBin = SUMO_CLI_BIN;
-			stepDelay = 0.0;
+			stepDelay = 0;
 			break;
 		case GUI:
 			sumoBin = SUMO_GUI_BIN;
-			stepDelay = 30.0;
+			stepDelay = 30;
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown UserInterfaceType");

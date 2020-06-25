@@ -89,7 +89,7 @@ public class Main implements Observer {
 		// number is 0 we are done.
 		while ((int) (conn.do_job_get(Simulation.getMinExpectedNumber())) > 0) {
 			sim.step();
-//			Thread.sleep(30);
+			Thread.sleep(simParameters.getStepDelay());
 		}
 		conn.close();
 	}
