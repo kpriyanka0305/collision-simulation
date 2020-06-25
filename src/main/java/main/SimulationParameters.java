@@ -7,24 +7,12 @@ public class SimulationParameters {
 
 	static final String SUMO_GUI_BIN = "sumo-gui";
 	static final String SUMO_CLI_BIN = "sumo";
-	private String sumoBin = SUMO_CLI_BIN;
-
-	public void setSumoBin(String sumoBin) {
-		this.sumoBin = sumoBin;
-	}
-
-	public String getSumoBin() {
-		return sumoBin;
-	}
+	private final String sumoBin;
 
 	static final String CONFIG_FILE = "data/hard-braking-connected.sumocfg";
 	// simulation step length is in seconds
 	static final double STEP_LENGTH = 0.1;
 	private final long stepDelay;
-
-	public long getStepDelay() {
-		return stepDelay;
-	}
 
 	// how often the monte carlo simulation should be run
 	public static final int NUM_MONTE_CARLO_RUNS = 10;
@@ -37,6 +25,14 @@ public class SimulationParameters {
 
 	public final double busMaxSpeed;
 	public final double bikeMaxSpeed;
+
+	public String getSumoBin() {
+		return sumoBin;
+	}
+
+	public long getStepDelay() {
+		return stepDelay;
+	}
 
 	public SimulationParameters(UserInterfaceType uiType, double busMaxSpeed, double bikeMaxSpeed) {
 		this.busMaxSpeed = busMaxSpeed;
