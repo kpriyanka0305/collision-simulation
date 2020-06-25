@@ -30,9 +30,9 @@ public class Main implements Observer {
 
 	public Main(Date timestamp, String sumocfg, Optional<IntegerHistogram> busWaitingTimes, double busMaxSpeed,
 			double bikeMaxSpeed) throws Exception {
-		this.conn = SumoConnect(sumocfg);
-		this.kpi = new Kpi(conn, timestamp);
 		this.simParameters = new SimulationParameters(busMaxSpeed, bikeMaxSpeed);
+		this.conn = SumoConnect(sumocfg, simParameters);
+		this.kpi = new Kpi(conn, timestamp);
 		this.busWaitingTimes = busWaitingTimes;
 		subscribe();
 	}
@@ -93,8 +93,8 @@ public class Main implements Observer {
 		conn.close();
 	}
 
-	public static SumoTraciConnection SumoConnect(String sumocfg) throws Exception {
-		SumoTraciConnection conn = new SumoTraciConnection(SimulationParameters.SUMO_BIN, sumocfg);
+	public static SumoTraciConnection SumoConnect(String sumocfg, SimulationParameters params) throws Exception {
+		SumoTraciConnection conn = new SumoTraciConnection(params.getSumoBin(), sumocfg);
 		conn.addOption("step-length", SimulationParameters.STEP_LENGTH + "");
 		conn.addOption("start", "true"); // start simulation at startup
 		conn.addOption("log", SimulationParameters.OUT_DIR + "/log.txt");
