@@ -27,7 +27,7 @@ public class SimulationStatistics {
 	}
 
 	public void busArrived(Kpi kpi, String vehicleID) {
-		int busWaitingTime = kpi.getWaitingTime(vehicleID);
+		long busWaitingTime = kpi.getWaitingTime(vehicleID);
 		busWaitingTimes.add(busWaitingTime);
 		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed, busWaitingTime * SimulationParameters.STEP_LENGTH));
 		return;

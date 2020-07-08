@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IntegerHistogram {
-	private Map<Integer, Integer> histogram;
+	private Map<Long, Integer> histogram;
 
-	private static Integer increment(Integer key, Integer oldValue) {
+	private static Integer increment(Long key, Integer oldValue) {
 		if (oldValue != null) {
 			return oldValue + 1;
 		} else {
@@ -18,7 +18,7 @@ public class IntegerHistogram {
 		this.histogram = new HashMap<>();
 	}
 
-	public void add(Integer value) {
+	public void add(Long value) {
 		histogram.compute(value, IntegerHistogram::increment);
 	}
 

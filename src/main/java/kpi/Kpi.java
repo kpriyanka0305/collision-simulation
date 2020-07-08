@@ -180,15 +180,8 @@ public class Kpi {
 		}
 	}
 
-	public int getWaitingTime(String busID) {
-		int totalWaitingTimeTicks = 0;
-		for (Double[] dataPoint : speeds.get(busID)) {
-			if (dataPoint[1] <= 0.000001) {
-				// bus speed at that point in time was 0
-				totalWaitingTimeTicks += 1;
-			}
-//				speedsFile.append(dataPoint[0] + " " + dataPoint[1] + "\n");
-		}
+	public long getWaitingTime(String busID) {
+		long totalWaitingTimeTicks = speeds.get(busID).stream().skip(1).filter(dataPoint -> dataPoint[1] <= 0.000001).count();
 		return totalWaitingTimeTicks;
 	}
 }
