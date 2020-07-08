@@ -1,32 +1,29 @@
 package kpi;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
+import de.tudresden.sumo.cmd.Simulation;
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.util.SumoCommand;
-import de.tudresden.sumo.cmd.Simulation;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
 import main.SimulationParameters;
 import math.geom2d.line.LineSegment2D;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-
-import util.*;
+import util.IntegerHistogram;
+import util.Util;
 
 public class Kpi {
 	SumoTraciConnection conn;
 	Map<String, Double> activeBuses = new HashMap<>();
-	Set<String> activeBikes = new HashSet<>();
+	Map<String, Double> activeBikes = new HashMap<>();
 	Map<String, Map<String, List<Double[]>>> distances = new HashMap<>();
 	Map<String, List<Double[]>> accelerations = new HashMap<>();
 	Map<String, List<Double[]>> speeds = new HashMap<>();
@@ -71,8 +68,8 @@ public class Kpi {
 		activeBuses.remove(busID);
 	}
 
-	public void addBike(String vehicleID) {
-		activeBikes.add(vehicleID);
+	public void addBike(String vehicleID, double bikeMaxSpeed) {
+		activeBikes.put(vehicleID, bikeMaxSpeed);
 	}
 
 	public void removeBike(String vehicleID) {
@@ -114,7 +111,7 @@ public class Kpi {
 		for (String bus : activeBuses.keySet()) {
 			updateAcceleration(bus);
 			updateSpeed(bus);
-			for (String bike : activeBikes) {
+			for (String bike : activeBikes.keySet()) {
 				updateMinimalDistance(bus, bike);
 			}
 		}
@@ -123,6 +120,7 @@ public class Kpi {
 	// waiting time histogram is tracked outside of KPI, because it needs to collect
 	// data across multiple runs. The file writing function is still here, because
 	// it is similar to the other ones.
+	// TODO: move this to SimulationStatistics
 	public static void writeSpeedsHistogramGraph(Date timestamp, IntegerHistogram busWaitingTimes) {
 		try {
 			FileWriter waitingTimeFile = new FileWriter(mkFileName(timestamp, WAITING_TIME_BASE), true);

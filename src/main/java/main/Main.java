@@ -1,17 +1,12 @@
 package main;
 
-import it.polito.appeal.traci.SumoTraciConnection;
-import kpi.Kpi;
-import util.IntegerHistogram;
-import util.Stopwatch;
-
 import java.util.Date;
 import java.util.Optional;
 import java.util.Random;
 
-import agent.*;
-import de.tudresden.sumo.cmd.Vehicle;
+import agent.SimWarningService;
 import de.tudresden.sumo.cmd.Simulation;
+import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.subscription.ResponseType;
 import de.tudresden.sumo.subscription.SubscribtionVariable;
@@ -20,20 +15,24 @@ import de.tudresden.sumo.subscription.VariableSubscription;
 import de.tudresden.sumo.util.Observable;
 import de.tudresden.sumo.util.Observer;
 import de.tudresden.ws.container.SumoStringList;
+import it.polito.appeal.traci.SumoTraciConnection;
+import kpi.Kpi;
+import kpi.SimulationStatistics;
+import util.Stopwatch;
 
 public class Main implements Observer {
 
 	private SumoTraciConnection conn;
 	private Kpi kpi;
 	private SimulationParameters simParameters;
-	private Optional<IntegerHistogram> busWaitingTimes = Optional.empty();
+	private Optional<SimulationStatistics> statistics = Optional.empty();
 
-	public Main(Date timestamp, String sumocfg, Optional<IntegerHistogram> busWaitingTimes, double busMaxSpeed,
+	public Main(Date timestamp, String sumocfg, Optional<SimulationStatistics> statistics, double busMaxSpeed,
 			double bikeMaxSpeed) throws Exception {
 		this.simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed, bikeMaxSpeed);
 		this.conn = SumoConnect(sumocfg, simParameters);
 		this.kpi = new Kpi(conn, timestamp);
-		this.busWaitingTimes = busWaitingTimes;
+		this.statistics = statistics;
 		subscribe();
 	}
 
@@ -64,7 +63,7 @@ public class Main implements Observer {
 
 	private static void monteCarloSimulation(String sumocfg, Date timestamp) throws Exception {
 		Random r = new Random();
-		IntegerHistogram busWaitingTimes = new IntegerHistogram();
+		SimulationStatistics statistics = new SimulationStatistics();
 		for (int i = 0; i < SimulationParameters.NUM_MONTE_CARLO_RUNS; i++) {
 //		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.1) {
 			Stopwatch singleRun = new Stopwatch();
@@ -73,13 +72,13 @@ public class Main implements Observer {
 					+ SimulationParameters.busMaxSpeedMean;
 			double bikeMaxSpeed = (r.nextGaussian() * SimulationParameters.bicycleMaxSpeedSigma)
 					+ SimulationParameters.bicycleMaxSpeedMean;
-			Main m = new Main(timestamp, sumocfg, Optional.of(busWaitingTimes), busMaxSpeed, bikeMaxSpeed);
+			Main m = new Main(timestamp, sumocfg, Optional.of(statistics), busMaxSpeed, bikeMaxSpeed);
 			m.runSimulation();
 
 			singleRun.stop();
 			singleRun.printTime("lap time " + i);
 		}
-		Kpi.writeSpeedsHistogramGraph(timestamp, busWaitingTimes);
+//		Kpi.writeSpeedsHistogramGraph(timestamp, busWaitingTimes);
 	}
 
 	private void runSimulation() throws Exception {
@@ -124,9 +123,11 @@ public class Main implements Observer {
 							if (vehicleID.startsWith(SimulationParameters.BUS_PREFIX)) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.busMaxSpeed));
 								kpi.addBus(vehicleID, simParameters.busMaxSpeed);
+								statistics.ifPresent(s -> s.setCurrentBusMaxSpeed(simParameters.busMaxSpeed));
 							} else if (vehicleID.startsWith(SimulationParameters.BIKE_PREFIX)) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.bikeMaxSpeed));
-								kpi.addBike(vehicleID);
+								kpi.addBike(vehicleID, simParameters.bikeMaxSpeed);
+								statistics.ifPresent(s -> s.setCurrentBikeMaxSpeed(simParameters.bikeMaxSpeed));
 							}
 						}
 					}
@@ -135,7 +136,8 @@ public class Main implements Observer {
 					if (ssl.size() > 0) {
 						for (String vehicleID : ssl) {
 							if (vehicleID.startsWith(SimulationParameters.BUS_PREFIX)) {
-								busWaitingTimes.ifPresent(h -> h.add(kpi.getWaitingTime(vehicleID)));
+								// must be called before kpi.removeBus
+								statistics.ifPresent(s -> s.busArrived(kpi, vehicleID));
 								kpi.removeBus(vehicleID);
 							} else if (vehicleID.startsWith(SimulationParameters.BIKE_PREFIX)) {
 								kpi.removeBike(vehicleID);
