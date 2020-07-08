@@ -1,4 +1,5 @@
 target/
 .settings/
 output/*.txt
+output/*.csv
 output/*.pdf
