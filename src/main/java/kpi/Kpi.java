@@ -2,7 +2,6 @@ package kpi;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,7 +14,6 @@ import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.util.SumoCommand;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
-import main.SimulationParameters;
 import math.geom2d.line.LineSegment2D;
 import util.IntegerHistogram;
 import util.Util;
@@ -28,10 +26,12 @@ public class Kpi {
 	Map<String, List<Double[]>> accelerations = new HashMap<>();
 	Map<String, List<Double[]>> speeds = new HashMap<>();
 
-	private final static String DISTANCES_BASE = "/distances";
-	private final static String ACCELERATIONS_BASE = "/accelerations";
-	private final static String SPEEDS_BASE = "/speeds";
-	private final static String WAITING_TIME_BASE = "/waitingTime";
+	// TODO: move these to a more logical place
+	public final static String DISTANCES_BASE = "/distances";
+	public final static String ACCELERATIONS_BASE = "/accelerations";
+	public final static String SPEEDS_BASE = "/speeds";
+	public final static String WAITING_TIME_BASE = "/waitingTime";
+	public final static String WAITING_TIME_TABLE_BASE = "/waitingTimeTable";
 
 	private final FileWriter distancesFile;
 	private final FileWriter accelerationsFile;
@@ -40,18 +40,9 @@ public class Kpi {
 	public Kpi(SumoTraciConnection connection, Date timestamp) throws Exception {
 		this.conn = connection;
 
-		distancesFile = new FileWriter(mkFileName(timestamp, DISTANCES_BASE), true);
-		accelerationsFile = new FileWriter(mkFileName(timestamp, ACCELERATIONS_BASE), true);
-		speedsFile = new FileWriter(mkFileName(timestamp, SPEEDS_BASE), true);
-	}
-
-	public static String mkFileName(Date timestamp, String baseFileName)
-	{
-		String pattern = "yyyy-MM-dd-HH-mm-ss";
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		String dateStr = simpleDateFormat.format(timestamp);
-
-		return SimulationParameters.OUT_DIR + baseFileName + dateStr + ".txt";
+		distancesFile = new FileWriter(Util.mkFileName(timestamp, DISTANCES_BASE), true);
+		accelerationsFile = new FileWriter(Util.mkFileName(timestamp, ACCELERATIONS_BASE), true);
+		speedsFile = new FileWriter(Util.mkFileName(timestamp, SPEEDS_BASE), true);
 	}
 
 	public void addBus(String vehicleID, double busMaxSpeed) {
@@ -123,7 +114,7 @@ public class Kpi {
 	// TODO: move this to SimulationStatistics
 	public static void writeSpeedsHistogramGraph(Date timestamp, IntegerHistogram busWaitingTimes) {
 		try {
-			FileWriter waitingTimeFile = new FileWriter(mkFileName(timestamp, WAITING_TIME_BASE), true);
+			FileWriter waitingTimeFile = new FileWriter(Util.mkFileName(timestamp, WAITING_TIME_BASE), true);
 			waitingTimeFile.append(busWaitingTimes.prettyPrint());
 			waitingTimeFile.close();
 		} catch (IOException e) {

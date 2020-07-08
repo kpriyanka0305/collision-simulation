@@ -1,6 +1,11 @@
 package util;
 
 import math.geom2d.line.LineSegment2D;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import main.SimulationParameters;
 import math.geom2d.*;
 
 public class Util {
@@ -17,5 +22,18 @@ public class Util {
 				// rotate by another 90 degrees.
 				.rotate(busStart, Angle2D.M_PI_2);
 		return new LineSegment2D(busStart, busEnd);
+	}
+
+	public static String mkFileName(Date timestamp, String baseFileName) {
+		return mkFileName(timestamp, baseFileName, ".txt");
+	}
+
+	public static String mkFileName(Date timestamp, String baseFileName, String extension)
+	{
+		String pattern = "yyyy-MM-dd-HH-mm-ss";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String dateStr = simpleDateFormat.format(timestamp);
+
+		return SimulationParameters.OUT_DIR + baseFileName + dateStr + extension;
 	}
 }
