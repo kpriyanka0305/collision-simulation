@@ -3,12 +3,16 @@
 set terminal pdfcairo
 set output 'collision.pdf'
 
+#set terminal qt persist
+
 #load 'set1.pal'
 
 DIST_FILE = ARG1
 stats DIST_FILE name 'DISTS' nooutput
 
+set yrange [0:]
 #set logscale y 2
+#set grid
 
 set title "distance between bus and bicycle over time"
 set xlabel "time (s)"
