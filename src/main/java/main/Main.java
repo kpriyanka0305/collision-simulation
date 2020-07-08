@@ -28,8 +28,8 @@ public class Main implements Observer {
 	private Optional<SimulationStatistics> statistics = Optional.empty();
 
 	public Main(Date timestamp, String sumocfg, Optional<SimulationStatistics> statistics, double busMaxSpeed,
-			double bikeMaxSpeed) throws Exception {
-		this.simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed, bikeMaxSpeed);
+			double bikeMaxSpeed, boolean defectiveITS) throws Exception {
+		this.simParameters = new SimulationParameters(UserInterfaceType.GUI, busMaxSpeed, bikeMaxSpeed, defectiveITS);
 		this.conn = SumoConnect(sumocfg, simParameters);
 		this.kpi = new Kpi(conn, timestamp);
 		this.statistics = statistics;
@@ -57,7 +57,7 @@ public class Main implements Observer {
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
 		Main m = new Main(timestamp, sumocfg, Optional.empty(), SimulationParameters.busMaxSpeedMean,
-				SimulationParameters.bicycleMaxSpeedMean);
+				SimulationParameters.bicycleMaxSpeedMean, true);
 		m.runSimulation();
 	}
 
@@ -72,7 +72,7 @@ public class Main implements Observer {
 					+ SimulationParameters.busMaxSpeedMean;
 			double bikeMaxSpeed = (r.nextGaussian() * SimulationParameters.bicycleMaxSpeedSigma)
 					+ SimulationParameters.bicycleMaxSpeedMean;
-			Main m = new Main(timestamp, sumocfg, Optional.of(statistics), busMaxSpeed, bikeMaxSpeed);
+			Main m = new Main(timestamp, sumocfg, Optional.of(statistics), busMaxSpeed, bikeMaxSpeed, false);
 			m.runSimulation();
 
 			singleRun.stop();

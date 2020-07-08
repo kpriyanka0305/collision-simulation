@@ -9,7 +9,7 @@ public class SimulationParameters {
 	static final String SUMO_CLI_BIN = "sumo";
 	private final String sumoBin;
 
-	static final String CONFIG_FILE = "data/hard-braking-connected.sumocfg";
+	static final String CONFIG_FILE = "data/hard-braking-conventional.sumocfg";
 	// simulation step length is in seconds
 	public static final double STEP_LENGTH = 0.3;
 	private final long stepDelay;
@@ -25,6 +25,7 @@ public class SimulationParameters {
 
 	public final double busMaxSpeed;
 	public final double bikeMaxSpeed;
+	public final boolean defectiveITS;
 
 	public String getSumoBin() {
 		return sumoBin;
@@ -34,9 +35,10 @@ public class SimulationParameters {
 		return stepDelay;
 	}
 
-	public SimulationParameters(UserInterfaceType uiType, double busMaxSpeed, double bikeMaxSpeed) {
+	public SimulationParameters(UserInterfaceType uiType, double busMaxSpeed, double bikeMaxSpeed, boolean defectiveITS) {
 		this.busMaxSpeed = busMaxSpeed;
 		this.bikeMaxSpeed = bikeMaxSpeed;
+		this.defectiveITS = defectiveITS;
 
 		switch (uiType) {
 		case Headless:

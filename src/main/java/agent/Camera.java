@@ -38,9 +38,12 @@ public class Camera {
 	private SumoTraciConnection conn;
 
 	private Controller controller;
+	
+	// A defective camera does not detect any vehicles
+	private boolean defective;
 
 	public Camera(String name, SumoTraciConnection conn, double x, double y, double size, double height, int angle,
-			Controller controller) throws Exception {
+			Controller controller, boolean defective) throws Exception {
 		// BASE
 		this.name = name;
 		this.conn = conn;
@@ -57,6 +60,8 @@ public class Camera {
 
 		// THESE ARE FOR COLLISION POINT
 		this.cameraPosition = new SumoPosition2D(2.28, 0.88);
+		
+		this.defective = defective;
 
 		drawCamera();
 		drawFOV();
@@ -66,6 +71,11 @@ public class Camera {
 	}
 
 	public void observeSituation() throws Exception {
+		
+		if( defective ) {
+			return;
+		}
+
 		@SuppressWarnings("unchecked")
 		List<String> vehicleIDs = (List<String>) (conn.do_job_get(Vehicle.getIDList()));
 
