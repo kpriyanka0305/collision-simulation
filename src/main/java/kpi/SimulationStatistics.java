@@ -11,6 +11,7 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
 import main.SimulationParameters;
 import util.IntegerHistogram;
+import util.Util;
 
 public class SimulationStatistics {
 	private IntegerHistogram busWaitingTimes = new IntegerHistogram();
@@ -36,7 +37,7 @@ public class SimulationStatistics {
 	public void writeStatisticsTable(Date timestamp) {
 		Writer writer;
 		try {
-			writer = new FileWriter("yourfile.csv");
+			writer = new FileWriter(Util.mkFileName(timestamp, Kpi.WAITING_TIME_TABLE_BASE, ".csv"));
 			StatefulBeanToCsv<SingleRunStatistics> beanToCsv = new StatefulBeanToCsvBuilder<SingleRunStatistics>(writer).build();
 			beanToCsv.write(runs);
 			writer.close();
