@@ -37,6 +37,7 @@ public class SimulationStatistics {
 	public void writeStatisticsTable(Date timestamp) {
 		Writer writer;
 		try {
+			runs.sort((s1, s2) -> Double.compare(s1.getBusWaitingTime(), s2.getBusWaitingTime()));
 			writer = new FileWriter(Util.mkFileName(timestamp, Kpi.WAITING_TIME_TABLE_BASE, ".csv"));
 			StatefulBeanToCsv<SingleRunStatistics> beanToCsv = new StatefulBeanToCsvBuilder<SingleRunStatistics>(writer).build();
 			beanToCsv.write(runs);
