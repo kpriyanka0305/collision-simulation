@@ -171,6 +171,7 @@ public class Kpi {
 		}
 	}
 
+	// The number of simulation steps where the bus speed of the given bus was 0
 	public long getWaitingTime(String busID) {
 		long totalWaitingTimeTicks = speeds.get(busID).stream().skip(1).filter(dataPoint -> dataPoint[1] <= 0.000001).count();
 		return totalWaitingTimeTicks;
