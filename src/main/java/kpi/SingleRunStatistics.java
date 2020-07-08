@@ -1,11 +1,22 @@
 package kpi;
 
-public class SingleRunStatistics {
-	private final double bikeMaxSpeed;
-	private final double busMaxSpeed;
-	private final int busWaitingTime;
+import com.opencsv.bean.CsvBindByName;
 
-	public SingleRunStatistics(double currentBikeMaxSpeed, double currentBusMaxSpeed, int busWaitingTime) {
+public class SingleRunStatistics {
+	@CsvBindByName
+	private final double bikeMaxSpeed;
+	@CsvBindByName
+	private final double busMaxSpeed;
+	@CsvBindByName
+	private final double busWaitingTime;
+
+	public SingleRunStatistics() {
+		this.bikeMaxSpeed = 0;
+		this.busMaxSpeed = 0;
+		this.busWaitingTime = 0;
+	}
+
+	public SingleRunStatistics(double currentBikeMaxSpeed, double currentBusMaxSpeed, double busWaitingTime) {
 		this.bikeMaxSpeed = currentBikeMaxSpeed;
 		this.busMaxSpeed = currentBusMaxSpeed;
 		this.busWaitingTime = busWaitingTime;
@@ -19,7 +30,7 @@ public class SingleRunStatistics {
 		return busMaxSpeed;
 	}
 
-	public int getBusWaitingTime() {
+	public double getBusWaitingTime() {
 		return busWaitingTime;
 	}
 

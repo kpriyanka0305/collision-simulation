@@ -28,6 +28,13 @@
 		    <version>1.0</version>
 		</dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
+    <dependency>
+        <groupId>com.opencsv</groupId>
+        <artifactId>opencsv</artifactId>
+        <version>5.2</version>
+    </dependency>
+
     <!-- junit 5, unit test -->
     <dependency>
         <groupId>org.junit.jupiter</groupId>

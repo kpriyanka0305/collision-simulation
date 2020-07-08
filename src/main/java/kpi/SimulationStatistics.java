@@ -1,9 +1,16 @@
 package kpi;
 
+import java.io.FileWriter;
+import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import util.*;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+
+import main.SimulationParameters;
+import util.IntegerHistogram;
 
 public class SimulationStatistics {
 	private IntegerHistogram busWaitingTimes = new IntegerHistogram();
@@ -22,12 +29,21 @@ public class SimulationStatistics {
 	public void busArrived(Kpi kpi, String vehicleID) {
 		int busWaitingTime = kpi.getWaitingTime(vehicleID);
 		busWaitingTimes.add(busWaitingTime);
-		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed, busWaitingTime));
+		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed, busWaitingTime * SimulationParameters.STEP_LENGTH));
 		return;
 	}
-	
-	public void writeStatisticsTable() {
-		
+
+	public void writeStatisticsTable(Date timestamp) {
+		Writer writer;
+		try {
+			writer = new FileWriter("yourfile.csv");
+			StatefulBeanToCsv<SingleRunStatistics> beanToCsv = new StatefulBeanToCsvBuilder<SingleRunStatistics>(writer).build();
+			beanToCsv.write(runs);
+			writer.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

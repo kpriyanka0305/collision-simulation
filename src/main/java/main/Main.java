@@ -79,6 +79,7 @@ public class Main implements Observer {
 			singleRun.printTime("lap time " + i);
 		}
 //		Kpi.writeSpeedsHistogramGraph(timestamp, busWaitingTimes);
+		statistics.writeStatisticsTable(timestamp);
 	}
 
 	private void runSimulation() throws Exception {
