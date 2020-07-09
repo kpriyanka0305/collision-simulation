@@ -98,6 +98,7 @@ public class Main implements Observer {
 
 	public static SumoTraciConnection SumoConnect(String sumocfg, SimulationParameters params) throws Exception {
 		SumoTraciConnection conn = new SumoTraciConnection(params.getSumoBin(), sumocfg);
+		conn.addOption("quit-on-end", "true");
 		conn.addOption("step-length", SimulationParameters.STEP_LENGTH + "");
 		conn.addOption("start", "true"); // start simulation at startup
 		conn.addOption("log", SimulationParameters.OUT_DIR + "/log.txt");
