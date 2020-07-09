@@ -11,7 +11,10 @@ public class SimulationParameters {
 
 	static final String CONFIG_FILE = "data/hard-braking-conventional.sumocfg";
 	// simulation step length is in seconds
-	public static final double STEP_LENGTH = 0.3;
+	public static final double STEP_LENGTH = 0.1;
+	
+	public final long GUI_STEP_DELAY = 10;
+	public final long HEADLESS_STEP_DELAY = 0;
 	private final long stepDelay;
 
 	// how often the monte carlo simulation should be run
@@ -45,11 +48,11 @@ public class SimulationParameters {
 		switch (uiType) {
 		case Headless:
 			sumoBin = SUMO_CLI_BIN;
-			stepDelay = 0;
+			stepDelay = HEADLESS_STEP_DELAY;
 			break;
 		case GUI:
 			sumoBin = SUMO_GUI_BIN;
-			stepDelay = 30;
+			stepDelay = GUI_STEP_DELAY;
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown UserInterfaceType");
