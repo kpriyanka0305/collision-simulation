@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
 
 import de.tudresden.sumo.cmd.Simulation;
 import de.tudresden.sumo.cmd.Vehicle;
@@ -173,7 +176,53 @@ public class Kpi {
 
 	// The number of simulation steps where the bus speed of the given bus was 0
 	public long getWaitingTime(String busID) {
-		long totalWaitingTimeTicks = speeds.get(busID).stream().skip(1).filter(dataPoint -> dataPoint[1] <= 0.000001).count();
+		long totalWaitingTimeTicks = speeds.get(busID).stream().skip(1).filter(dataPoint -> dataPoint[1] <= 0.000001)
+				.count();
 		return totalWaitingTimeTicks;
+	}
+
+	// Given a trace of bus accelerations and distances between bus and one
+	// bike, determine if there was a hard braking event between them.
+	// A hard braking event is a point in time where the bus brakes while a bike is
+	// very close.
+	private Optional<Double> findHardBraking(List<Double[]> busAccelerations, List<Double[]> distances,
+			double nearCollisionThreshold) {
+		Iterator<Double[]> itAccel = busAccelerations.iterator();
+		Iterator<Double[]> itDist = distances.iterator();
+
+		if (itAccel.hasNext() && itDist.hasNext()) {
+			Double[] accel = itAccel.next();
+			Double[] dist = itDist.next();
+			do {
+				if (Math.abs(accel[0] - dist[0]) < 0.0001) {
+					// time stamps are identical
+
+					if (accel[1] < 0 && dist[1] <= nearCollisionThreshold)
+						return Optional.of(accel[0]);
+
+					accel = itAccel.next();
+					dist = itDist.next();
+				} else if (accel[0] < dist[0]) {
+					// accel needs to be advanced
+					accel = itAccel.next();
+				} else if (accel[0] > dist[0]) {
+					// dist needs to be advanced
+					dist = itDist.next();
+				}
+			} while (itAccel.hasNext() && itDist.hasNext());
+		}
+
+		return Optional.empty();
+	}
+
+	public Optional<Double> anyHardBrakings(String busID, double nearCollisionThreshold) {
+		List<Double[]> accels = accelerations.get(busID);
+		for (Entry<String, List<Double[]>> dists : distances.get(busID).entrySet()) {
+			Optional<Double> result = findHardBraking(accels, dists.getValue(), nearCollisionThreshold);
+			if (result.isPresent()) {
+				return result;
+			}
+		}
+		return Optional.empty();
 	}
 }

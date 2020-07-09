@@ -27,9 +27,8 @@ public class Main implements Observer {
 	private SimulationParameters simParameters;
 	private Optional<SimulationStatistics> statistics = Optional.empty();
 
-	public Main(Date timestamp, String sumocfg, Optional<SimulationStatistics> statistics, double busMaxSpeed,
-			double bikeMaxSpeed, boolean defectiveITS) throws Exception {
-		this.simParameters = new SimulationParameters(UserInterfaceType.GUI, busMaxSpeed, bikeMaxSpeed, defectiveITS);
+	public Main(Date timestamp, String sumocfg, SimulationParameters simParams, Optional<SimulationStatistics> statistics) throws Exception {
+		this.simParameters = simParameters;
 		this.conn = SumoConnect(sumocfg, simParameters);
 		this.kpi = new Kpi(conn, timestamp);
 		this.statistics = statistics;
@@ -56,9 +55,11 @@ public class Main implements Observer {
 	}
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
-		Main m = new Main(timestamp, sumocfg, Optional.empty(), SimulationParameters.busMaxSpeedMean,
-				SimulationParameters.bicycleMaxSpeedMean, true);
+		SimulationParameters simParams = new SimulationParameters(UserInterfaceType.GUI, SimulationParameters.busMaxSpeedMean, SimulationParameters.bicycleMaxSpeedMean, false);
+		SimulationStatistics statistics = new SimulationStatistics();
+		Main m = new Main(timestamp, sumocfg, simParams, Optional.of(statistics));
 		m.runSimulation();
+		statistics.writeStatisticsTable(timestamp);
 	}
 
 	private static void monteCarloSimulation(String sumocfg, Date timestamp) throws Exception {
@@ -72,7 +73,8 @@ public class Main implements Observer {
 					+ SimulationParameters.busMaxSpeedMean;
 			double bikeMaxSpeed = (r.nextGaussian() * SimulationParameters.bicycleMaxSpeedSigma)
 					+ SimulationParameters.bicycleMaxSpeedMean;
-			Main m = new Main(timestamp, sumocfg, Optional.of(statistics), busMaxSpeed, bikeMaxSpeed, false);
+			SimulationParameters simParams = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed, bikeMaxSpeed, false);
+			Main m = new Main(timestamp, sumocfg, simParams, Optional.of(statistics));
 			m.runSimulation();
 
 			singleRun.stop();

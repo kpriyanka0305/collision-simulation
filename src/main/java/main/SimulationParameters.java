@@ -23,6 +23,8 @@ public class SimulationParameters {
 	static final double bicycleMaxSpeedMean = 4.7;
 	static final double bicycleMaxSpeedSigma = 1.5;
 
+	public static final double NEAR_COLLISION_DISTANCE = 2.0;
+
 	public final double busMaxSpeed;
 	public final double bikeMaxSpeed;
 	public final boolean defectiveITS;
