@@ -28,8 +28,7 @@ public class Util {
 		return mkFileName(timestamp, baseFileName, ".txt");
 	}
 
-	public static String mkFileName(Date timestamp, String baseFileName, String extension)
-	{
+	public static String mkFileName(Date timestamp, String baseFileName, String extension) {
 		String pattern = "yyyy-MM-dd-HH-mm-ss";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		String dateStr = simpleDateFormat.format(timestamp);
