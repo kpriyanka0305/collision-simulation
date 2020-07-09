@@ -11,19 +11,23 @@ public class SingleRunStatistics {
 	private final double busWaitingTime;
 	@CsvBindByName(column = "Hard Braking")
 	private final boolean hardBrakingHappened;
+	@CsvBindByName(column = "ITS Defective")
+	private final boolean defectiveITS;
 
 	public SingleRunStatistics() {
 		this.bikeMaxSpeed = 0;
 		this.busMaxSpeed = 0;
 		this.busWaitingTime = 0;
 		this.hardBrakingHappened = false;
+		this.defectiveITS = false;
 	}
 
-	public SingleRunStatistics(double currentBikeMaxSpeed, double currentBusMaxSpeed, double busWaitingTime, boolean hardBrakingHappened) {
+	public SingleRunStatistics(double currentBikeMaxSpeed, double currentBusMaxSpeed, double busWaitingTime, boolean hardBrakingHappened, boolean itsDefective) {
 		this.bikeMaxSpeed = currentBikeMaxSpeed;
 		this.busMaxSpeed = currentBusMaxSpeed;
 		this.busWaitingTime = busWaitingTime;
 		this.hardBrakingHappened = hardBrakingHappened;
+		this.defectiveITS = itsDefective;
 	}
 
 	public double getBikeMaxSpeed() {
@@ -42,4 +46,7 @@ public class SingleRunStatistics {
 		return hardBrakingHappened;
 	}
 
+	public boolean isDefectiveITS() {
+		return defectiveITS;
+	}
 }

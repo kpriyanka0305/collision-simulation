@@ -73,7 +73,8 @@ public class Main implements Observer {
 					+ SimulationParameters.busMaxSpeedMean;
 			double bikeMaxSpeed = (r.nextGaussian() * SimulationParameters.bicycleMaxSpeedSigma)
 					+ SimulationParameters.bicycleMaxSpeedMean;
-			SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed, bikeMaxSpeed, false);
+			SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed, bikeMaxSpeed, true);
+			statistics.setCurrentSimParameters(simParameters);
 			Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
 			m.runSimulation();
 

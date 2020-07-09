@@ -16,8 +16,14 @@ import util.Util;
 public class SimulationStatistics {
 	private IntegerHistogram busWaitingTimes = new IntegerHistogram();
 	private List<SingleRunStatistics> runs = new ArrayList<>();
+	// TODO: these are also in SimulationParameters, no need to duplicate here
 	private double currentBikeMaxSpeed = 0;
 	private double currentBusMaxSpeed = 0;
+	private SimulationParameters currentSimParameters = null;
+
+	public void setCurrentSimParameters(SimulationParameters currentSimParameters) {
+		this.currentSimParameters = currentSimParameters;
+	}
 
 	public void setCurrentBikeMaxSpeed(double currentBikeMaxSpeed) {
 		this.currentBikeMaxSpeed = currentBikeMaxSpeed;
@@ -26,12 +32,12 @@ public class SimulationStatistics {
 	public void setCurrentBusMaxSpeed(double currentBusMaxSpeed) {
 		this.currentBusMaxSpeed = currentBusMaxSpeed;
 	}
-
+	
 	public void busArrived(Kpi kpi, String busID) {
 		long busWaitingTime = kpi.getWaitingTime(busID);
 		busWaitingTimes.add(busWaitingTime);
 		boolean anyHardBrakings = kpi.anyHardBrakings(busID, SimulationParameters.NEAR_COLLISION_DISTANCE).isPresent();
-		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed, busWaitingTime * SimulationParameters.STEP_LENGTH, anyHardBrakings));
+		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed, busWaitingTime * SimulationParameters.STEP_LENGTH, anyHardBrakings, currentSimParameters.defectiveITS));
 		return;
 	}
 
