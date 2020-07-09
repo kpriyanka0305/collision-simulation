@@ -23,12 +23,12 @@ public class SimWarningService extends Simulation {
 
 	private Kpi kpis;
 	private Controller controller;
-	private final SimulationParameters simParams;
+	private final SimulationParameters simParameters;
 
-	public SimWarningService(SumoTraciConnection conn, Kpi kpis, SimulationParameters simParams) throws Exception {
+	public SimWarningService(SumoTraciConnection conn, Kpi kpis, SimulationParameters simParameters) throws Exception {
 		this.conn = conn;
 		this.kpis = kpis;
-		this.simParams = simParams;
+		this.simParameters = simParameters;
 
 		RsusStatus.put("East", false);
 		RsusStatus.put("West", false);
@@ -57,7 +57,7 @@ public class SimWarningService extends Simulation {
 			String type = (String) (vehData.get("type"));
 			if (type.contains("bus")) {
 				if (!allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
-					OBU obu = new OBU(v, conn, controller, simParams);
+					OBU obu = new OBU(v, conn, controller, simParameters);
 					allOBUs.add(obu);
 				}
 			} else if (type.contains("bicycle-distracted")) {
@@ -71,7 +71,7 @@ public class SimWarningService extends Simulation {
 					}
 				} else {
 					if (speed == 0) {
-						conn.do_job_set(Vehicle.setSpeed(v, simParams.bikeMaxSpeed));
+						conn.do_job_set(Vehicle.setSpeed(v, simParameters.bikeMaxSpeed));
 					}
 				}
 			}
@@ -104,7 +104,7 @@ public class SimWarningService extends Simulation {
 	private void spawnElements() throws Exception {
 		controller = new Controller();
 		allRSUs.add(new RSU("East", 15.5, -10.5, conn, controller, this));
-		allCameras.add(new Camera("CameraOne", conn, -15.0, 0.0, 2.0, 0.7, 4, controller, simParams.defectiveITS));
+		allCameras.add(new Camera("CameraOne", conn, -15.0, 0.0, 2.0, 0.7, 4, controller, simParameters.defectiveITS));
 	}
 
 	private Map<String, Object> readData(String id) throws Exception {

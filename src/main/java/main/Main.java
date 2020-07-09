@@ -27,7 +27,7 @@ public class Main implements Observer {
 	private SimulationParameters simParameters;
 	private Optional<SimulationStatistics> statistics = Optional.empty();
 
-	public Main(Date timestamp, String sumocfg, SimulationParameters simParams, Optional<SimulationStatistics> statistics) throws Exception {
+	public Main(Date timestamp, String sumocfg, SimulationParameters simParameters, Optional<SimulationStatistics> statistics) throws Exception {
 		this.simParameters = simParameters;
 		this.conn = SumoConnect(sumocfg, simParameters);
 		this.kpi = new Kpi(conn, timestamp);
@@ -55,9 +55,9 @@ public class Main implements Observer {
 	}
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
-		SimulationParameters simParams = new SimulationParameters(UserInterfaceType.GUI, SimulationParameters.busMaxSpeedMean, SimulationParameters.bicycleMaxSpeedMean, false);
+		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI, SimulationParameters.busMaxSpeedMean, SimulationParameters.bicycleMaxSpeedMean, false);
 		SimulationStatistics statistics = new SimulationStatistics();
-		Main m = new Main(timestamp, sumocfg, simParams, Optional.of(statistics));
+		Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
 		m.runSimulation();
 		statistics.writeStatisticsTable(timestamp);
 	}
@@ -73,8 +73,8 @@ public class Main implements Observer {
 					+ SimulationParameters.busMaxSpeedMean;
 			double bikeMaxSpeed = (r.nextGaussian() * SimulationParameters.bicycleMaxSpeedSigma)
 					+ SimulationParameters.bicycleMaxSpeedMean;
-			SimulationParameters simParams = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed, bikeMaxSpeed, false);
-			Main m = new Main(timestamp, sumocfg, simParams, Optional.of(statistics));
+			SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed, bikeMaxSpeed, false);
+			Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
 			m.runSimulation();
 
 			singleRun.stop();

@@ -10,13 +10,13 @@ public class OBU {
 	private String name;
 	private String type;
 	private SumoTraciConnection conn;
-	private SimulationParameters simParams;
+	private SimulationParameters simParameters;
 
-	public OBU(String name, SumoTraciConnection conn, Controller controller, SimulationParameters simParams)
+	public OBU(String name, SumoTraciConnection conn, Controller controller, SimulationParameters simParameters)
 			throws Exception {
 		this.name = name;
 		this.conn = conn;
-		this.simParams = simParams;
+		this.simParameters = simParameters;
 		this.type = (String) (conn.do_job_get(Vehicle.getTypeID(name)));
 		controller.OBUConnect(this);
 	}
@@ -46,6 +46,6 @@ public class OBU {
 		} else {
 			conn.do_job_set(Vehicle.setColor(name, new SumoColor(255, 255, 0, 255)));
 		}
-		conn.do_job_set(Vehicle.setSpeed(name, simParams.busMaxSpeed));
+		conn.do_job_set(Vehicle.setSpeed(name, simParameters.busMaxSpeed));
 	}
 }
