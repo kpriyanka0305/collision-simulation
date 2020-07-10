@@ -56,7 +56,7 @@ public class Main implements Observer {
 	}
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
-		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI, SimulationParameters.busMaxSpeedMean, SimulationParameters.bicycleMaxSpeedMean, false);
+		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI, SimulationParameters.BUS_MAX_SPEED_MEAN, SimulationParameters.BIKE_MAX_SPEED_MEAN, false);
 		SimulationStatistics statistics = new SimulationStatistics();
 		statistics.setCurrentSimParameters(simParameters);
 		Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
@@ -74,10 +74,10 @@ public class Main implements Observer {
 //		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.1) {
 			Stopwatch singleRun = new Stopwatch();
 
-			double busMaxSpeed = makeRandomSpeed(r, SimulationParameters.busMaxSpeedMean,
-					SimulationParameters.busMaxSpeedSigma);
-			double bikeMaxSpeed = makeRandomSpeed(r, SimulationParameters.bicycleMaxSpeedMean,
-					SimulationParameters.bicycleMaxSpeedSigma);
+			double busMaxSpeed = makeRandomSpeed(r, SimulationParameters.BUS_MAX_SPEED_MEAN,
+					SimulationParameters.BUS_MAX_SPEED_SIGMA);
+			double bikeMaxSpeed = makeRandomSpeed(r, SimulationParameters.BIKE_MAX_SPEED_MEAN,
+					SimulationParameters.BIKE_MAX_SPEED_SIGMA);
 			boolean defectiveITS = makeRandomBoolean(r, SimulationParameters.DEFECTIVE_ITS_PROBABILITY);
 			SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed,
 					bikeMaxSpeed, defectiveITS);

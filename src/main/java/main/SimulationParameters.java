@@ -20,11 +20,11 @@ public class SimulationParameters {
 	// how often the monte carlo simulation should be run
 	public static final int NUM_MONTE_CARLO_RUNS = 10;
 
-	static final double busMaxSpeedSigma = 2.0;
-	static final double busMaxSpeedMean = 8.3;
+	static final double BUS_MAX_SPEED_SIGMA = 2.0;
+	static final double BUS_MAX_SPEED_MEAN = 8.3;
 
-	static final double bicycleMaxSpeedMean = 4.7;
-	static final double bicycleMaxSpeedSigma = 1.5;
+	static final double BIKE_MAX_SPEED_SIGMA = 1.5;
+	static final double BIKE_MAX_SPEED_MEAN = 4.7;
 
 	public static final double DEFECTIVE_ITS_PROBABILITY = 0.5;
 
