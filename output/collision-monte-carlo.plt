@@ -11,9 +11,10 @@ DIST_FILE = ARG1
 stats DIST_FILE name 'DISTS' nooutput
 
 set yrange [0:]
-#set logscale y 2
+set logscale y 2
 #set grid
 
+set key off
 set title "distance between bus and bicycle over time (" . DIST_FILE . ")"
 set xlabel "time (s)"
 set ylabel "distance (m)"
