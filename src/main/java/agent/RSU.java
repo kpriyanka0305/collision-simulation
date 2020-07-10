@@ -59,6 +59,6 @@ public class RSU {
 		RSUObject.add(new SumoPosition2D(x - size / 2, y - size / 2));
 		RSUObject.add(new SumoPosition2D(x + size / 2, y - size / 2));
 
-		conn.do_job_set(Polygon.add(name, RSUObject, new SumoColor(0, 255, 0, 255), true, "Square", -2));
+		conn.do_job_set(Polygon.add(name, RSUObject, new SumoColor(0, 255, 0, 255), true, "Square", -1));
 	}
 }
