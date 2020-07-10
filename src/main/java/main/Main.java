@@ -64,6 +64,9 @@ public class Main implements Observer {
 
 	private static void monteCarloSimulation(String sumocfg, Date timestamp) throws Exception {
 		Random r = new Random();
+		long seed = r.nextLong();
+		System.out.println("seed: " + seed);
+		r.setSeed(seed);
 		SimulationStatistics statistics = new SimulationStatistics();
 		for (int i = 0; i < SimulationParameters.NUM_MONTE_CARLO_RUNS; i++) {
 //		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.1) {
