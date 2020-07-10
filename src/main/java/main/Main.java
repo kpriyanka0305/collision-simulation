@@ -27,7 +27,8 @@ public class Main implements Observer {
 	private SimulationParameters simParameters;
 	private Optional<SimulationStatistics> statistics = Optional.empty();
 
-	public Main(Date timestamp, String sumocfg, SimulationParameters simParameters, Optional<SimulationStatistics> statistics) throws Exception {
+	public Main(Date timestamp, String sumocfg, SimulationParameters simParameters,
+			Optional<SimulationStatistics> statistics) throws Exception {
 		this.simParameters = simParameters;
 		this.conn = SumoConnect(sumocfg, simParameters);
 		this.kpi = new Kpi(conn, timestamp);
