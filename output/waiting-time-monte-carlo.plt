@@ -7,7 +7,7 @@ set output 'waiting-time.pdf'
 WAITTIME_FILE = ARG1
 #stats WAITTIME_FILE name 'WAITTIMES' nooutput
 
-set boxwidth 0.5
+set boxwidth 0.5 relative
 set style fill solid
 
 set yrange [0:]

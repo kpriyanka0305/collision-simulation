@@ -1,7 +1,10 @@
 package util;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
 public class IntegerHistogram {
 	private Map<Long, Integer> histogram;
@@ -13,7 +16,7 @@ public class IntegerHistogram {
 			return 1;
 		}
 	}
-	
+
 	public IntegerHistogram() {
 		this.histogram = new HashMap<>();
 	}
@@ -22,9 +25,15 @@ public class IntegerHistogram {
 		histogram.compute(value, IntegerHistogram::increment);
 	}
 
-	public String prettyPrint() {
+	public String prettyPrint(Function<Long, ? extends Object> preprocessKey) {
 		StringBuilder result = new StringBuilder();
-		histogram.forEach((key, value) -> result.append(key).append(" ").append(value).append("\n"));
+		// This padding with zero values is needed for gnuplot to draw nice box diagrams.
+		long minimum = Collections.min(histogram.keySet());
+		long maximum = Collections.max(histogram.keySet());
+		for (long i = minimum; i <= maximum; ++i) {
+			int value = histogram.getOrDefault(i, 0);
+			result.append(preprocessKey.apply(i)).append(" ").append(value).append("\n");
+		}
 		return result.toString();
 	}
 }
