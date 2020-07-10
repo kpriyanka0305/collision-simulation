@@ -78,8 +78,9 @@ public class Main implements Observer {
 					SimulationParameters.busMaxSpeedSigma);
 			double bikeMaxSpeed = makeRandomSpeed(r, SimulationParameters.bicycleMaxSpeedMean,
 					SimulationParameters.bicycleMaxSpeedSigma);
+			boolean defectiveITS = makeRandomBoolean(r, SimulationParameters.DEFECTIVE_ITS_PROBABILITY);
 			SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed,
-					bikeMaxSpeed, true);
+					bikeMaxSpeed, defectiveITS);
 			statistics.setCurrentSimParameters(simParameters);
 			Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
 			m.runSimulation();
@@ -99,6 +100,14 @@ public class Main implements Observer {
 			result = (r.nextGaussian() * sigma) + mean;
 		} while (result < 0.0000001);
 		return result;
+	}
+
+	// returns a boolean that is true with probability p
+	private static boolean makeRandomBoolean(Random r, double p) throws IllegalArgumentException {
+		if( p < 0 || p > 1 ) {
+			throw new IllegalArgumentException("p must be between 0 and 1");
+		}
+		return r.nextDouble() < p;
 	}
 
 	private void runSimulation() throws Exception {
