@@ -1,7 +1,6 @@
 package kpi;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,7 +18,6 @@ import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
 import main.SimulationParameters;
 import math.geom2d.line.LineSegment2D;
-import util.IntegerHistogram;
 import util.Util;
 
 public class Kpi {
