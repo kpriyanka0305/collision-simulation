@@ -73,11 +73,12 @@ public class Main implements Observer {
 //		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.1) {
 			Stopwatch singleRun = new Stopwatch();
 
-			double busMaxSpeed = (r.nextGaussian() * SimulationParameters.busMaxSpeedSigma)
-					+ SimulationParameters.busMaxSpeedMean;
-			double bikeMaxSpeed = (r.nextGaussian() * SimulationParameters.bicycleMaxSpeedSigma)
-					+ SimulationParameters.bicycleMaxSpeedMean;
-			SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed, bikeMaxSpeed, true);
+			double busMaxSpeed = makeRandomSpeed(r, SimulationParameters.busMaxSpeedMean,
+					SimulationParameters.busMaxSpeedSigma);
+			double bikeMaxSpeed = makeRandomSpeed(r, SimulationParameters.bicycleMaxSpeedMean,
+					SimulationParameters.bicycleMaxSpeedSigma);
+			SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed,
+					bikeMaxSpeed, true);
 			statistics.setCurrentSimParameters(simParameters);
 			Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
 			m.runSimulation();
@@ -87,6 +88,15 @@ public class Main implements Observer {
 		}
 //		Kpi.writeSpeedsHistogramGraph(timestamp, busWaitingTimes);
 		statistics.writeStatisticsTable(timestamp);
+	}
+
+	// returns a non-null positive number of the normal distribution
+	private static double makeRandomSpeed(Random r, double mean, double sigma) {
+		double result = -1;
+		do {
+			result = (r.nextGaussian() * sigma) + mean;
+		} while (result < 0.0000001);
+		return result;
 	}
 
 	private void runSimulation() throws Exception {
