@@ -17,6 +17,7 @@ import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.util.SumoCommand;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
+import main.SimulationParameters;
 import math.geom2d.line.LineSegment2D;
 import util.IntegerHistogram;
 import util.Util;
@@ -29,13 +30,6 @@ public class Kpi {
 	Map<String, List<Double[]>> accelerations = new HashMap<>();
 	Map<String, List<Double[]>> speeds = new HashMap<>();
 
-	// TODO: move these to a more logical place
-	public final static String DISTANCES_BASE = "/distances";
-	public final static String ACCELERATIONS_BASE = "/accelerations";
-	public final static String SPEEDS_BASE = "/speeds";
-	public final static String WAITING_TIME_BASE = "/waitingTime";
-	public final static String WAITING_TIME_TABLE_BASE = "/waitingTimeTable";
-
 	private final FileWriter distancesFile;
 	private final FileWriter accelerationsFile;
 	private final FileWriter speedsFile;
@@ -43,9 +37,9 @@ public class Kpi {
 	public Kpi(SumoTraciConnection connection, Date timestamp) throws Exception {
 		this.conn = connection;
 
-		distancesFile = new FileWriter(Util.mkFileName(timestamp, DISTANCES_BASE), true);
-		accelerationsFile = new FileWriter(Util.mkFileName(timestamp, ACCELERATIONS_BASE), true);
-		speedsFile = new FileWriter(Util.mkFileName(timestamp, SPEEDS_BASE), true);
+		distancesFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.DISTANCES_BASE), true);
+		accelerationsFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.ACCELERATIONS_BASE), true);
+		speedsFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.SPEEDS_BASE), true);
 	}
 
 	public void addBus(String vehicleID, double busMaxSpeed) {
@@ -108,21 +102,6 @@ public class Kpi {
 			for (String bike : activeBikes.keySet()) {
 				updateMinimalDistance(bus, bike);
 			}
-		}
-	}
-
-	// waiting time histogram is tracked outside of KPI, because it needs to collect
-	// data across multiple runs. The file writing function is still here, because
-	// it is similar to the other ones.
-	// TODO: move this to SimulationStatistics
-	public static void writeSpeedsHistogramGraph(Date timestamp, IntegerHistogram busWaitingTimes) {
-		try {
-			FileWriter waitingTimeFile = new FileWriter(Util.mkFileName(timestamp, WAITING_TIME_BASE), true);
-			waitingTimeFile.append(busWaitingTimes.prettyPrint());
-			waitingTimeFile.close();
-		} catch (IOException e) {
-			System.err.println("could not write waiting time file");
-			e.printStackTrace();
 		}
 	}
 

@@ -34,6 +34,12 @@ public class SimulationParameters {
 	public final double bikeMaxSpeed;
 	public final boolean defectiveITS;
 
+	public final static String DISTANCES_BASE = "/distances";
+	public final static String ACCELERATIONS_BASE = "/accelerations";
+	public final static String SPEEDS_BASE = "/speeds";
+	public final static String WAITING_TIME_BASE = "/waitingTime";
+	public final static String WAITING_TIME_TABLE_BASE = "/waitingTimeTable";
+
 	public String getSumoBin() {
 		return sumoBin;
 	}

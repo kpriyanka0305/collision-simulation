@@ -1,6 +1,7 @@
 package kpi;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,6 +9,8 @@ import java.util.List;
 
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 import main.SimulationParameters;
 import util.IntegerHistogram;
@@ -32,25 +35,44 @@ public class SimulationStatistics {
 	public void setCurrentBusMaxSpeed(double currentBusMaxSpeed) {
 		this.currentBusMaxSpeed = currentBusMaxSpeed;
 	}
-	
+
 	public void busArrived(Kpi kpi, String busID) {
 		long busWaitingTime = kpi.getWaitingTime(busID);
 		busWaitingTimes.add(busWaitingTime);
 		boolean anyHardBrakings = kpi.anyHardBrakings(busID, SimulationParameters.NEAR_COLLISION_DISTANCE).isPresent();
-		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed, busWaitingTime * SimulationParameters.STEP_LENGTH, anyHardBrakings, currentSimParameters.defectiveITS));
+		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed,
+				busWaitingTime * SimulationParameters.STEP_LENGTH, anyHardBrakings, currentSimParameters.defectiveITS));
 		return;
 	}
 
-	public void writeStatisticsTable(Date timestamp) {
-		Writer writer;
+	public void writeStatistics(Date timestamp) {
+		writeSpeedsHistogramGraph(timestamp);
+		writeStatisticsTable(timestamp);
+	}
+
+	public void writeSpeedsHistogramGraph(Date timestamp) {
+		FileWriter waitingTimeFile;
 		try {
+			waitingTimeFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.WAITING_TIME_BASE), true);
+			waitingTimeFile.append(busWaitingTimes.prettyPrint());
+			waitingTimeFile.close();
+		} catch (IOException e) {
+			System.err.println("could not write speeds histogram file");
+			e.printStackTrace();
+		}
+	}
+
+	public void writeStatisticsTable(Date timestamp) {
+		try {
+			Writer writer;
 			runs.sort((s1, s2) -> Double.compare(s1.getBusWaitingTime(), s2.getBusWaitingTime()));
-			writer = new FileWriter(Util.mkFileName(timestamp, Kpi.WAITING_TIME_TABLE_BASE, ".csv"));
-			StatefulBeanToCsv<SingleRunStatistics> beanToCsv = new StatefulBeanToCsvBuilder<SingleRunStatistics>(writer).build();
+			writer = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.WAITING_TIME_TABLE_BASE, ".csv"));
+			StatefulBeanToCsv<SingleRunStatistics> beanToCsv = new StatefulBeanToCsvBuilder<SingleRunStatistics>(writer)
+					.build();
 			beanToCsv.write(runs);
 			writer.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch (IOException | CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {
+			System.err.println("could not write statistics table");
 			e.printStackTrace();
 		}
 	}

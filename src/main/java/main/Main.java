@@ -88,9 +88,7 @@ public class Main implements Observer {
 			singleRun.stop();
 			singleRun.printTime("lap time " + i);
 		}
-		// TODO: put this code in statistics and revive it
-//		Kpi.writeSpeedsHistogramGraph(timestamp, busWaitingTimes);
-		statistics.writeStatisticsTable(timestamp);
+		statistics.writeStatistics(timestamp);
 	}
 
 	// returns a non-null positive number of the normal distribution
