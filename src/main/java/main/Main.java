@@ -57,6 +57,7 @@ public class Main implements Observer {
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
 		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI, SimulationParameters.busMaxSpeedMean, SimulationParameters.bicycleMaxSpeedMean, false);
 		SimulationStatistics statistics = new SimulationStatistics();
+		statistics.setCurrentSimParameters(simParameters);
 		Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
 		m.runSimulation();
 		statistics.writeStatisticsTable(timestamp);
