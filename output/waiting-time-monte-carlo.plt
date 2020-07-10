@@ -10,13 +10,14 @@ WAITTIME_FILE = ARG1
 set boxwidth 0.5 relative
 set style fill solid
 
+set logscale y 2
 set yrange [0:]
 
 set title "bus wait times (" . WAITTIME_FILE . ")"
 
 #set title "distance bus bicycle / bus acceleration (" . ARG1 . ")"
-#set xlabel "time (s)"
-#set ylabel "distance (m)"
+set xlabel "wait time (s)"
+set ylabel "number of buses"
 #set y2label "acceleration (m/s^2)"
 
 plot WAITTIME_FILE with boxes title "bus wait times"
