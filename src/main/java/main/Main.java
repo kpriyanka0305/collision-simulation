@@ -86,6 +86,7 @@ public class Main implements Observer {
 			singleRun.stop();
 			singleRun.printTime("lap time " + i);
 		}
+		// TODO: put this code in statistics and revive it
 //		Kpi.writeSpeedsHistogramGraph(timestamp, busWaitingTimes);
 		statistics.writeStatisticsTable(timestamp);
 	}
