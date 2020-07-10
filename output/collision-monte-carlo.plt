@@ -19,4 +19,4 @@ set xlabel "time (s)"
 set ylabel "distance (m)"
 
 plot for [i=0:DISTS_blocks-1] DIST_FILE index i with lines title columnheader(1), \
-  2 title "near collision distance"
+  2 title "near collision distance" linestyle 0
