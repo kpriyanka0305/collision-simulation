@@ -1,3 +1,10 @@
 <edges>
-  <edge id="Stationsplein0to1" from="Stationsplein0" to="Stationsplein1" />
+  <edge id="StationspleinSEto1" from="StationspleinSE" to="StationspleinSW" />
+  <!--<edge id="Stationsplein2toSW" from="Stationsplein2" to="StationspleinSW" />-->
+  <edge id="StationspleinNWtoSW" from="StationspleinNW" to="StationspleinSW" />
+  <edge id="StationspleinSEto5" from="StationspleinSE" to="StationspleinNE" />
+  <edge id="StationspleinSWto4" from="StationspleinSW" to="StationswegW" />
+  <edge id="StationspleinNEto3" from="StationspleinNE" to="StationspleinNW" />
+
+  <edge id="StationswegEtoStationspleinSE" from="StationswegE" to="StationspleinSE" />
 </edges>

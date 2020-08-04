@@ -1,4 +1,9 @@
 <nodes>
-  <node id="Stationsplein0" x="5.480361" y="51.441712" />
-  <node id="Stationsplein1" x="5.479754" y="51.441630" />
+  <node id="StationspleinSE" x="5.480361" y="51.441712" type="unregulated" />
+  <node id="StationspleinSW" x="5.479754" y="51.441630" type="unregulated" />
+  <node id="StationspleinNW" x="5.479755" y="51.442023" type="unregulated" />
+  <node id="StationspleinNE" x="5.480235" y="51.442058" type="unregulated" />
+
+  <node id="StationswegW" x="5.478725" y="51.441522" type="unregulated" />
+  <node id="StationswegE" x="5.480914" y="51.441786" type="unregulated" />
 </nodes>
