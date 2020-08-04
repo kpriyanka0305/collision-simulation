@@ -1,2 +1,2 @@
-geo.net.xml : geo.nod.xml geo.edg.xml
-	netconvert --simple-projection --node-files=geo.nod.xml --edge-files=geo.edg.xml --output-file=geo.net.xml
+stationsplein.net.xml : stationsplein.nod.xml stationsplein.edg.xml
+	netconvert --simple-projection --node-files=stationsplein.nod.xml --edge-files=stationsplein.edg.xml --output-file=stationsplein.net.xml
