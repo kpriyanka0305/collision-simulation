@@ -43,7 +43,7 @@ Compile collision-simulation
 - Compile and run with maven
 
       $ mvn compile
-      $ mvn exec:java -Dexec.mainClass=Main
+      $ mvn exec:java -Dexec.mainClass=main.Main
 
 - Alternatively, generate eclipse project from mvn
 
