@@ -23,10 +23,9 @@ Install latest stable SUMO
       $ export PATH="$PATH_TO_SUMO_SOURCE_DIR/bin:$PATH"
 
 
-Install SARL matching your SUMO version
+Install TRAAS matching your SUMO version
 ---------------------------------------
 
-- SARL needs jdk-11 or older. SARL does not work with jdk-13.
 - Go to sumo/tools/contributed/traas/
 
       $ cd sumo/tools/contributed/traas
