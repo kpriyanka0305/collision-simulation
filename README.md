@@ -14,7 +14,7 @@ Install latest stable SUMO
       $ git clone github.com:eclipse/sumo.git
       $ cd sumo
       $ git checkout -b v1_6_0 v1_6_0
-      $ cd build/cmake
+      $ cd build/cmake-build
       $ cmake ../..
       $ make -j3
 
