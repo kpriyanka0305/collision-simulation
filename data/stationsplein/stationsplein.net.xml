@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on Tue Aug  4 15:15:21 2020 by Eclipse SUMO netconvert Version 1.6.0
+<!-- generated on Wed Aug  5 16:58:28 2020 by Eclipse SUMO netconvert Version 1.6.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
@@ -26,67 +26,80 @@
 
 <net version="1.6" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
 
-    <location netOffset="-380153.45,-5717004.99" convBoundary="0.00,0.00,149.69,59.57" origBoundary="5.478725,51.441522,5.480914,51.442058" projParameter="-"/>
+    <location netOffset="-380153.45,-5716997.99" convBoundary="0.00,0.00,149.69,66.57" origBoundary="5.478725,51.441459,5.480914,51.442058" projParameter="-"/>
 
     <edge id=":StationspleinNE_0" function="internal">
-        <lane id=":StationspleinNE_0_0" index="0" speed="3.92" length="2.26" shape="101.84,60.03 101.59,60.58 101.22,60.95 100.73,61.15 100.12,61.16"/>
+        <lane id=":StationspleinNE_0_0" index="0" speed="3.92" length="2.26" shape="101.84,67.03 101.59,67.58 101.22,67.96 100.73,68.15 100.12,68.16"/>
     </edge>
     <edge id=":StationspleinNW_0" function="internal">
-        <lane id=":StationspleinNW_0_0" index="0" speed="3.91" length="2.50" shape="67.11,57.27 66.45,57.09 66.00,56.75 65.75,56.24 65.70,55.56"/>
+        <lane id=":StationspleinNW_0_0" index="0" speed="7.34" length="11.37" shape="70.91,64.72 67.22,63.95 64.63,62.67 63.16,60.85 62.79,58.51"/>
+    </edge>
+    <edge id=":StationspleinNW_1" function="internal">
+        <lane id=":StationspleinNW_1_0" index="0" speed="6.51" length="8.75" shape="70.91,64.72 68.61,64.11 67.02,62.91 66.14,61.12 65.98,58.75"/>
     </edge>
     <edge id=":StationspleinSE_0" function="internal">
-        <lane id=":StationspleinSE_0_0" index="0" speed="13.89" length="10.60" shape="116.24,30.24 105.88,27.98"/>
+        <lane id=":StationspleinSE_0_0" index="0" speed="13.89" length="10.60" shape="116.24,37.24 105.88,34.98"/>
     </edge>
     <edge id=":StationspleinSE_1" function="internal">
-        <lane id=":StationspleinSE_1_0" index="0" speed="7.42" length="11.31" shape="116.92,27.11 114.66,27.17 112.69,28.39 111.01,30.78 109.61,34.33"/>
+        <lane id=":StationspleinSE_1_0" index="0" speed="7.42" length="11.31" shape="116.92,34.12 114.66,34.17 112.69,35.40 111.01,37.78 109.61,41.33"/>
     </edge>
     <edge id=":StationspleinSE_2" function="internal">
-        <lane id=":StationspleinSE_2_0" index="0" speed="13.89" length="10.59" shape="116.92,27.11 106.57,24.85"/>
-        <lane id=":StationspleinSE_2_1" index="1" speed="13.89" length="10.59" shape="117.60,23.99 107.26,21.73"/>
+        <lane id=":StationspleinSE_2_0" index="0" speed="13.89" length="10.59" shape="116.92,34.12 106.57,31.85"/>
+        <lane id=":StationspleinSE_2_1" index="1" speed="13.89" length="10.59" shape="117.60,30.99 107.26,28.73"/>
     </edge>
     <edge id=":StationspleinSW_0" function="internal">
-        <lane id=":StationspleinSW_0_0" index="0" speed="13.89" length="10.72" shape="73.69,20.89 63.31,18.89"/>
-        <lane id=":StationspleinSW_0_1" index="1" speed="13.89" length="10.72" shape="74.37,17.77 63.85,15.74"/>
-        <lane id=":StationspleinSW_0_2" index="2" speed="13.89" length="10.72" shape="75.06,14.64 64.38,12.58"/>
+        <lane id=":StationspleinSW_0_0" index="0" speed="13.89" length="13.93" shape="73.69,27.90 60.14,25.36"/>
+        <lane id=":StationspleinSW_0_1" index="1" speed="13.89" length="13.93" shape="74.37,24.77 60.68,22.20"/>
+        <lane id=":StationspleinSW_0_2" index="2" speed="13.89" length="13.93" shape="75.06,21.65 61.22,19.05"/>
     </edge>
     <edge id=":StationspleinSW_3" function="internal">
-        <lane id=":StationspleinSW_3_0" index="0" speed="7.45" length="11.29" shape="67.93,25.18 67.91,21.35 67.23,18.50 65.87,16.63 63.85,15.74"/>
+        <lane id=":StationspleinSW_3_0" index="0" speed="13.89" length="17.94" shape="64.74,31.95 65.63,26.22 67.10,21.92 68.77,18.40 70.30,15.04"/>
+    </edge>
+    <edge id=":StationspleinSW_4" function="internal">
+        <lane id=":StationspleinSW_4_0" index="0" speed="8.18" length="13.79" shape="67.93,32.19 67.71,28.32 66.43,25.37 64.09,23.33 60.68,22.20"/>
     </edge>
 
     <edge id="StationspleinNEtoNW" from="StationspleinNE" to="StationspleinNW" priority="-1">
-        <lane id="StationspleinNEtoNW_0" index="0" speed="13.89" length="33.24" shape="100.12,61.16 67.11,57.27"/>
+        <lane id="StationspleinNEtoNW_0" index="0" speed="13.89" length="29.42" shape="100.12,68.16 70.91,64.72"/>
     </edge>
     <edge id="StationspleinNWtoSW" from="StationspleinNW" to="StationspleinSW" priority="-1">
-        <lane id="StationspleinNWtoSW_0" index="0" speed="13.89" length="30.46" shape="65.70,55.56 67.93,25.18"/>
+        <lane id="StationspleinNWtoSW_0" index="0" speed="13.89" length="26.63" shape="62.79,58.51 64.74,31.95"/>
+        <lane id="StationspleinNWtoSW_1" index="1" speed="13.89" length="26.63" shape="65.98,58.75 67.93,32.19"/>
     </edge>
     <edge id="StationspleinSEtoNE" from="StationspleinSE" to="StationspleinNE" priority="-1">
-        <lane id="StationspleinSEtoNE_0" index="0" speed="13.89" length="26.85" shape="109.61,34.33 101.84,60.03"/>
+        <lane id="StationspleinSEtoNE_0" index="0" speed="13.89" length="26.85" shape="109.61,41.33 101.84,67.03"/>
     </edge>
     <edge id="StationspleinSEtoSW" from="StationspleinSE" to="StationspleinSW" priority="-1">
-        <lane id="StationspleinSEtoSW_0" index="0" speed="13.89" length="32.97" shape="105.88,27.98 73.69,20.89"/>
-        <lane id="StationspleinSEtoSW_1" index="1" speed="13.89" length="32.97" shape="106.57,24.85 74.37,17.77"/>
-        <lane id="StationspleinSEtoSW_2" index="2" speed="13.89" length="32.97" shape="107.26,21.73 75.06,14.64"/>
+        <lane id="StationspleinSEtoSW_0" index="0" speed="13.89" length="32.97" shape="105.88,34.98 73.69,27.90"/>
+        <lane id="StationspleinSEtoSW_1" index="1" speed="13.89" length="32.97" shape="106.57,31.85 74.37,24.77"/>
+        <lane id="StationspleinSEtoSW_2" index="2" speed="13.89" length="32.97" shape="107.26,28.73 75.06,21.65"/>
+    </edge>
+    <edge id="StationspleinSWtoStationspleinPedestrianS" from="StationspleinSW" to="StationspleinPedestrianS" priority="-1">
+        <lane id="StationspleinSWtoStationspleinPedestrianS_0" index="0" speed="13.89" length="16.71" shape="70.30,15.04 76.26,-0.57"/>
     </edge>
     <edge id="StationspleinSWtoStationswegW" from="StationspleinSW" to="StationswegW" priority="-1">
-        <lane id="StationspleinSWtoStationswegW_0" index="0" speed="13.89" length="65.58" shape="63.31,18.89 -1.34,7.89"/>
-        <lane id="StationspleinSWtoStationswegW_1" index="1" speed="13.89" length="65.58" shape="63.85,15.74 -0.81,4.73"/>
-        <lane id="StationspleinSWtoStationswegW_2" index="2" speed="13.89" length="65.58" shape="64.38,12.58 -0.27,1.58"/>
+        <lane id="StationspleinSWtoStationswegW_0" index="0" speed="13.89" length="62.37" shape="60.14,25.36 -1.34,14.89"/>
+        <lane id="StationspleinSWtoStationswegW_1" index="1" speed="13.89" length="62.37" shape="60.68,22.20 -0.81,11.73"/>
+        <lane id="StationspleinSWtoStationswegW_2" index="2" speed="13.89" length="62.37" shape="61.22,19.05 -0.27,8.58"/>
     </edge>
     <edge id="StationswegEtoStationspleinSE" from="StationswegE" to="StationspleinSE" priority="-1">
-        <lane id="StationswegEtoStationspleinSE_0" index="0" speed="13.89" length="32.50" shape="147.99,37.16 116.24,30.24"/>
-        <lane id="StationswegEtoStationspleinSE_1" index="1" speed="13.89" length="32.50" shape="148.67,34.03 116.92,27.11"/>
-        <lane id="StationswegEtoStationspleinSE_2" index="2" speed="13.89" length="32.50" shape="149.35,30.90 117.60,23.99"/>
+        <lane id="StationswegEtoStationspleinSE_0" index="0" speed="13.89" length="32.50" shape="147.99,44.16 116.24,37.24"/>
+        <lane id="StationswegEtoStationspleinSE_1" index="1" speed="13.89" length="32.50" shape="148.67,41.03 116.92,34.12"/>
+        <lane id="StationswegEtoStationspleinSE_2" index="2" speed="13.89" length="32.50" shape="149.35,37.90 117.60,30.99"/>
     </edge>
 
-    <junction id="StationspleinNE" type="unregulated" x="100.31" y="59.57" incLanes="StationspleinSEtoNE_0" intLanes=":StationspleinNE_0_0" shape="103.38,60.49 100.31,59.57 99.94,62.75 101.50,62.64 102.13,62.34 102.65,61.89 103.06,61.27"/>
-    <junction id="StationspleinNW" type="unregulated" x="67.30" y="55.68" incLanes="StationspleinNEtoNW_0" intLanes=":StationspleinNW_0_0" shape="66.92,58.86 67.30,55.68 64.11,55.45 64.32,57.18 64.70,57.83 65.26,58.32 66.00,58.66"/>
-    <junction id="StationspleinSE" type="unregulated" x="111.94" y="21.12" incLanes="StationswegEtoStationspleinSE_0 StationswegEtoStationspleinSE_1 StationswegEtoStationspleinSE_2" intLanes=":StationspleinSE_0_0 :StationspleinSE_1_0 :StationspleinSE_2_0 :StationspleinSE_2_1" shape="115.90,31.80 117.94,22.42 107.60,20.16 105.54,29.54 107.43,30.37 107.98,31.02 108.27,31.82 108.31,32.77 108.08,33.87 111.14,34.80 112.18,32.78 112.90,32.16 113.76,31.79 114.76,31.67"/>
-    <junction id="StationspleinSW" type="unregulated" x="70.50" y="12.00" incLanes="StationspleinSEtoSW_0 StationspleinSEtoSW_1 StationspleinSEtoSW_2 StationspleinNWtoSW_0" intLanes=":StationspleinSW_0_0 :StationspleinSW_0_1 :StationspleinSW_0_2 :StationspleinSW_3_0" shape="73.34,22.46 75.40,13.08 64.65,11.01 63.04,20.47 65.00,21.25 65.66,21.93 66.10,22.79 66.32,23.83 66.33,25.07 69.53,25.30 70.07,23.37 70.61,22.78 71.34,22.43 72.25,22.32"/>
-    <junction id="StationswegE" type="dead_end" x="149.69" y="29.34" incLanes="" intLanes="" shape="149.69,29.34 147.65,38.72"/>
-    <junction id="StationswegW" type="dead_end" x="0.00" y="0.00" incLanes="StationspleinSWtoStationswegW_0 StationspleinSWtoStationswegW_1 StationspleinSWtoStationswegW_2" intLanes="" shape="-1.61,9.46 -0.00,-0.00"/>
+    <junction id="StationspleinNE" type="unregulated" x="100.31" y="66.57" incLanes="StationspleinSEtoNE_0" intLanes=":StationspleinNE_0_0" shape="103.38,67.50 100.31,66.57 99.94,69.75 101.50,69.64 102.13,69.34 102.65,68.89 103.06,68.27"/>
+    <junction id="StationspleinNW" type="unregulated" x="67.30" y="62.68" incLanes="StationspleinNEtoNW_0" intLanes=":StationspleinNW_0_0 :StationspleinNW_1_0" shape="70.72,66.31 71.10,63.13 69.02,62.46 68.32,61.84 67.84,61.03 67.60,60.04 67.58,58.86 61.19,58.40 61.32,60.48 62.03,62.27 63.33,63.74 65.21,64.90 67.68,65.76"/>
+    <junction id="StationspleinPedestrianS" type="dead_end" x="77.75" y="0.00" incLanes="StationspleinSWtoStationspleinPedestrianS_0" intLanes="" shape="74.76,-1.14 77.75,0.00"/>
+    <junction id="StationspleinSE" type="unregulated" x="111.94" y="28.12" incLanes="StationswegEtoStationspleinSE_0 StationswegEtoStationspleinSE_1 StationswegEtoStationspleinSE_2" intLanes=":StationspleinSE_0_0 :StationspleinSE_1_0 :StationspleinSE_2_0 :StationspleinSE_2_1" shape="115.90,38.81 117.94,29.43 107.60,27.16 105.54,36.54 107.43,37.37 107.98,38.02 108.27,38.82 108.31,39.77 108.08,40.87 111.14,41.80 112.18,39.79 112.90,39.16 113.76,38.79 114.76,38.67"/>
+    <junction id="StationspleinSW" type="unregulated" x="70.50" y="19.00" incLanes="StationspleinSEtoSW_0 StationspleinSEtoSW_1 StationspleinSEtoSW_2 StationspleinNWtoSW_0 StationspleinNWtoSW_1" intLanes=":StationspleinSW_0_0 :StationspleinSW_0_1 :StationspleinSW_0_2 :StationspleinSW_3_0 :StationspleinSW_4_0" shape="73.34,29.46 75.40,20.08 72.82,19.11 72.05,18.42 71.62,17.61 71.54,16.68 71.80,15.61 68.81,14.47 67.32,16.57 66.21,17.21 64.88,17.57 63.30,17.66 61.48,17.47 59.87,26.93 61.83,27.75 62.48,28.46 62.92,29.38 63.14,30.51 63.14,31.84 69.53,32.30 70.07,30.38 70.61,29.78 71.34,29.43 72.25,29.32"/>
+    <junction id="StationswegE" type="dead_end" x="149.69" y="36.34" incLanes="" intLanes="" shape="149.69,36.34 147.65,45.72"/>
+    <junction id="StationswegW" type="dead_end" x="0.00" y="7.00" incLanes="StationspleinSWtoStationswegW_0 StationspleinSWtoStationswegW_1 StationspleinSWtoStationswegW_2" intLanes="" shape="-1.61,16.47 0.00,7.00"/>
 
     <connection from="StationspleinNEtoNW" to="StationspleinNWtoSW" fromLane="0" toLane="0" via=":StationspleinNW_0_0" dir="l" state="M"/>
-    <connection from="StationspleinNWtoSW" to="StationspleinSWtoStationswegW" fromLane="0" toLane="1" via=":StationspleinSW_3_0" dir="r" state="M"/>
+    <connection from="StationspleinNEtoNW" to="StationspleinNWtoSW" fromLane="0" toLane="1" via=":StationspleinNW_1_0" dir="l" state="M"/>
+    <connection from="StationspleinNWtoSW" to="StationspleinSWtoStationspleinPedestrianS" fromLane="0" toLane="0" via=":StationspleinSW_3_0" dir="s" state="M"/>
+    <connection from="StationspleinNWtoSW" to="StationspleinSWtoStationswegW" fromLane="1" toLane="1" via=":StationspleinSW_4_0" dir="r" state="M"/>
     <connection from="StationspleinSEtoNE" to="StationspleinNEtoNW" fromLane="0" toLane="0" via=":StationspleinNE_0_0" dir="l" state="M"/>
     <connection from="StationspleinSEtoSW" to="StationspleinSWtoStationswegW" fromLane="0" toLane="0" via=":StationspleinSW_0_0" dir="s" state="M"/>
     <connection from="StationspleinSEtoSW" to="StationspleinSWtoStationswegW" fromLane="1" toLane="1" via=":StationspleinSW_0_1" dir="s" state="M"/>
@@ -98,6 +111,7 @@
 
     <connection from=":StationspleinNE_0" to="StationspleinNEtoNW" fromLane="0" toLane="0" dir="l" state="M"/>
     <connection from=":StationspleinNW_0" to="StationspleinNWtoSW" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from=":StationspleinNW_1" to="StationspleinNWtoSW" fromLane="0" toLane="1" dir="l" state="M"/>
     <connection from=":StationspleinSE_0" to="StationspleinSEtoSW" fromLane="0" toLane="0" dir="s" state="M"/>
     <connection from=":StationspleinSE_1" to="StationspleinSEtoNE" fromLane="0" toLane="0" dir="r" state="M"/>
     <connection from=":StationspleinSE_2" to="StationspleinSEtoSW" fromLane="0" toLane="1" dir="s" state="M"/>
@@ -105,6 +119,7 @@
     <connection from=":StationspleinSW_0" to="StationspleinSWtoStationswegW" fromLane="0" toLane="0" dir="s" state="M"/>
     <connection from=":StationspleinSW_0" to="StationspleinSWtoStationswegW" fromLane="1" toLane="1" dir="s" state="M"/>
     <connection from=":StationspleinSW_0" to="StationspleinSWtoStationswegW" fromLane="2" toLane="2" dir="s" state="M"/>
-    <connection from=":StationspleinSW_3" to="StationspleinSWtoStationswegW" fromLane="0" toLane="1" dir="r" state="M"/>
+    <connection from=":StationspleinSW_3" to="StationspleinSWtoStationspleinPedestrianS" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":StationspleinSW_4" to="StationspleinSWtoStationswegW" fromLane="0" toLane="1" dir="r" state="M"/>
 
 </net>
