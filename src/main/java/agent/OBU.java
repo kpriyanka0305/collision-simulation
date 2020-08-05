@@ -19,7 +19,6 @@ public class OBU {
 		this.simParameters = simParameters;
 		this.type = (String) (conn.do_job_get(Vehicle.getTypeID(name)));
 		controller.OBUConnect(this);
-		System.out.println("OBU: created for " + name);
 	}
 
 	public String getName() {

@@ -57,7 +57,6 @@ public class SimWarningService extends Simulation {
 			String type = (String) (vehData.get("type"));
 			if (type.contains(SimulationParameters.BUS_PREFIX)) {
 				if (!allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
-					System.out.println("SimWarningService: creating OBU for " + v + " (" + type + ")");
 					OBU obu = new OBU(v, conn, controller, simParameters);
 					allOBUs.add(obu);
 				}
@@ -90,7 +89,6 @@ public class SimWarningService extends Simulation {
 			}
 
 			if (!flag) {
-				System.out.println("SimWarningService: removing OBU for " + obu.getName());
 				controller.OBUDisconnect(obu.getName());
 				allOBUs.removeIf((o) -> o.getName().equals(obu.getName()));
 				break;

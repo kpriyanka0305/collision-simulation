@@ -108,8 +108,6 @@ public class Camera {
 		} else {
 			seconds = 100.0;
 		}
-		
-//		System.out.println("Camera: I see " + vehicleID + " " + distanceToJunction + " " + seconds);
 
 		VehicleData vehicleData = new VehicleData(vehicleID, type, speed, accel, length, distanceToJunction, seconds);
 		return vehicleData;
