@@ -9,7 +9,7 @@ public class SimulationParameters {
 	static final String SUMO_CLI_BIN = "sumo";
 	private final String sumoBin;
 
-	static final String CONFIG_FILE = "data/hard-braking-conventional.sumocfg";
+	static final String CONFIG_FILE = "data/neckerspoel/neckerspoel.sumocfg";
 	// simulation step length is in seconds
 	public static final double STEP_LENGTH = 0.1;
 	
