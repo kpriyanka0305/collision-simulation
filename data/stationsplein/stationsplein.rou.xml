@@ -1,10 +1,13 @@
 <routes>
   <vType accel="0.7" decel="2.4" id="taxi" length="4.0" maxSpeed="8.3" sigma="0.0" />
   <vType accel="1.0" decel="4.8" id="bicycle" length="2.0" maxSpeed="4.7" sigma="0.0" />
+  <vType accel="10" decel="10" id="pedestrian" length="1.0" maxSpeed="1.1" sigma="0.0" color="blue" />
 
   <route id="taxiRoute" edges="StationspleinNWtoSW StationspleinSWtoStationswegW" />
   <route id="bicycleRoute" edges="StationswegEtoStationspleinSE StationspleinSEtoSW StationspleinSWtoStationswegW" />
+  <route id="pedestrianRoute" edges="StationspleinNWtoSW StationspleinSWtoStationspleinPedestrianS" />
 
   <vehicle depart="1" id="bicycle0" route="bicycleRoute" type="bicycle" />
+  <vehicle depart="2" id="pedestrian0" route="pedestrianRoute" type="pedestrian" />
   <vehicle depart="11" id="taxi0" route="taxiRoute" type="taxi" />
 </routes>

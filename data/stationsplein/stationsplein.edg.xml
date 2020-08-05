@@ -1,6 +1,6 @@
 <edges>
   <edge id="StationspleinSEtoSW" from="StationspleinSE" to="StationspleinSW" numLanes="3" />
-  <edge id="StationspleinNWtoSW" from="StationspleinNW" to="StationspleinSW" />
+  <edge id="StationspleinNWtoSW" from="StationspleinNW" to="StationspleinSW" numLanes="2" />
   <edge id="StationspleinSEtoNE" from="StationspleinSE" to="StationspleinNE" />
   <edge id="StationspleinNEtoNW" from="StationspleinNE" to="StationspleinNW" />
 
@@ -9,5 +9,9 @@
   />
   <edge id="StationswegEtoStationspleinSE" from="StationswegE" to="StationspleinSE"
     numLanes="3"
+  />
+
+  <edge id="StationspleinSWtoStationspleinPedestrianS" from="StationspleinSW" to="StationspleinPedestrianS"
+    numLanes="1"
   />
 </edges>

@@ -8,5 +8,10 @@
   <connection from="StationswegEtoStationspleinSE" to="StationspleinSEtoNE" fromLane="1" toLane="0"/>
 
   <!-- Stationsplein should connect to middle lane of Stationsweg -->
-  <connection from="StationspleinNWtoSW" to="StationspleinSWtoStationswegW" fromLane="0" toLane="1"/>
+  <connection from="StationspleinNWtoSW" to="StationspleinSWtoStationswegW" fromLane="1" toLane="1"/>
+  <connection from="StationspleinNWtoSW" to="StationspleinSWtoStationspleinPedestrianS" fromLane="0" toLane="0"/>
+
+  <connection from="StationspleinSEtoSW" to="StationspleinSWtoStationswegW" fromLane="0" toLane="0"/>
+  <connection from="StationspleinSEtoSW" to="StationspleinSWtoStationswegW" fromLane="1" toLane="1"/>
+  <connection from="StationspleinSEtoSW" to="StationspleinSWtoStationswegW" fromLane="2" toLane="2"/>
 </connections>

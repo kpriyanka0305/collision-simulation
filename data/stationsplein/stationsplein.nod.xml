@@ -6,4 +6,6 @@
 
   <node id="StationswegW" x="5.478725" y="51.441522" type="unregulated" />
   <node id="StationswegE" x="5.480914" y="51.441786" type="unregulated" />
+
+  <node id="StationspleinPedestrianS" x="5.479838" y="51.441459" type="unregulated" />
 </nodes>
