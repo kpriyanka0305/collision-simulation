@@ -84,6 +84,13 @@ public class Controller {
 				}
 			}
 
+			if (vehicleType.contains(SimulationParameters.PEDESTRIAN_PREFIX)) {
+				if (vehicleSecond <= 10.0) {
+					bicycleSeconds.put(vehicle.getId(), vehicleSecond);
+					bicycleFlag = true;
+				}
+			}
+
 			// BUS
 			if (vehicleType.contains(SimulationParameters.BUS_PREFIX) && vehicleSecond <= 3.5
 					&& vehicleDistance >= 4.0) {
