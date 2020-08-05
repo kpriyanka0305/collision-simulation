@@ -26,14 +26,14 @@ public class Controller {
 	}
 
 	private void warningRSU(Collection<VehicleData> vehicleData) throws Exception {
-		boolean busFlag = false;
+		boolean majorVehicleFlag = false;
 		double defDistance = 32;
 
 		for (VehicleData vehicle : vehicleData) {
 			Double distance = vehicle.getDistance();
 			String vehType = vehicle.getType();
 			if (vehType.contains("bus")) {
-				busFlag = true;
+				majorVehicleFlag = true;
 				if (distance < defDistance) {
 					for (RSU rsu : allRSU) {
 						rsu.WarnRSU("East");
@@ -41,7 +41,7 @@ public class Controller {
 				}
 			}
 		}
-		if (busFlag == false) {
+		if (majorVehicleFlag == false) {
 			for (RSU rsu : allRSU) {
 				rsu.ClearRSU("East");
 			}
@@ -49,8 +49,8 @@ public class Controller {
 	}
 
 	private void warningOBU(Collection<VehicleData> vehicleData) throws Exception {
-		boolean busFlag = false;
-		boolean bicycleFlag = false;
+		boolean majorVehicleFlag = false;
+		boolean minorVehicleFlag = false;
 
 		String vehicleType;
 		double vehicleSecond;
@@ -66,14 +66,14 @@ public class Controller {
 			// BICYCLE
 			if (vehicleType.contains(SimulationParameters.BIKE_PREFIX)) {
 				if (vehicleSecond <= 3.5 && vehicleDistance >= 2.0) {
-					bicycleFlag = true;
+					minorVehicleFlag = true;
 				}
 			}
 
 			// PEDESTRIAN
 			if (vehicleType.contains(SimulationParameters.PEDESTRIAN_PREFIX)) {
 				if (vehicleSecond <= 10.0) {
-					bicycleFlag = true;
+					minorVehicleFlag = true;
 				}
 			}
 
@@ -81,18 +81,18 @@ public class Controller {
 			if (vehicleType.contains(SimulationParameters.BUS_PREFIX)) {
 				if (vehicleSecond <= 3.5) {
 					busIDList.add(vehicle.getId());
-					busFlag = true;
+					majorVehicleFlag = true;
 				}
 			}
 		}
 
-		if (busFlag && bicycleFlag) {
+		if (majorVehicleFlag && minorVehicleFlag) {
 			for (String busID : busIDList) {
 				for (OBU obu : allOBU) {
 					obu.WarnOBU(busID);
 				}
 			}
-		} else if (!bicycleFlag) {
+		} else if (!minorVehicleFlag) {
 			for (OBU obu : allOBU) {
 				obu.tempClean();
 			}
