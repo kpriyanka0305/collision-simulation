@@ -2,8 +2,8 @@ package main;
 
 public class SimulationParameters {
 	public final static String OUT_DIR = "output";
-	static final String BUS_PREFIX = "taxi";
-	static final String BIKE_PREFIX = "bicycle";
+	public static final String BUS_PREFIX = "taxi";
+	public static final String BIKE_PREFIX = "bicycle";
 
 	static final String SUMO_GUI_BIN = "sumo-gui";
 	static final String SUMO_CLI_BIN = "sumo";

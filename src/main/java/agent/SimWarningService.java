@@ -55,11 +55,13 @@ public class SimWarningService extends Simulation {
 		for (String v : vehicles) {
 			Map<String, Object> vehData = readData(v);
 			String type = (String) (vehData.get("type"));
-			if (type.contains("bus")) {
+			if (type.contains(SimulationParameters.BUS_PREFIX)) {
 				if (!allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
+					System.out.println("SimWarningService: creating OBU for " + v + " (" + type + ")");
 					OBU obu = new OBU(v, conn, controller, simParameters);
 					allOBUs.add(obu);
 				}
+			// TODO: this clause is still specific to the Neckerspoel scenario. Need to generalize it.
 			} else if (type.contains("bicycle-distracted")) {
 				double distanceToJunction = (Double) (vehData.get("distanceToJunction"));
 				double speed = (Double) (vehData.get("speed"));
@@ -88,6 +90,7 @@ public class SimWarningService extends Simulation {
 			}
 
 			if (!flag) {
+				System.out.println("SimWarningService: removing OBU for " + obu.getName());
 				controller.OBUDisconnect(obu.getName());
 				allOBUs.removeIf((o) -> o.getName().equals(obu.getName()));
 				break;
@@ -109,6 +112,7 @@ public class SimWarningService extends Simulation {
 
 	private Map<String, Object> readData(String id) throws Exception {
 		SumoPosition2D vehiclePosition = (SumoPosition2D) (conn.do_job_get(Vehicle.getPosition(id)));
+		// TODO: This code is specific to a scenario. Need to generalize.
 		SumoPosition2D junctionPosition = (SumoPosition2D) (conn.do_job_get(Junction.getPosition("StationspleinSW")));
 		String type = (String) (conn.do_job_get(Vehicle.getTypeID(id)));
 		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(id)));

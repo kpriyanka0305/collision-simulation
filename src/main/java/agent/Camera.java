@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import de.tudresden.sumo.cmd.Junction;
 import de.tudresden.sumo.cmd.Polygon;
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.ws.container.SumoColor;
@@ -83,7 +84,7 @@ public class Camera {
 		for (String v : vehicleIDs) {
 			SumoPosition2D sumoPosition = (SumoPosition2D) (conn.do_job_get(Vehicle.getPosition(v)));
 			Point2D vehiclePosition = new Point2D(sumoPosition.x, sumoPosition.y);
-
+			
 			if (fieldOfView.contains(vehiclePosition)) {
 				vehicleData.add(readData(v, vehiclePosition));
 			}
@@ -96,17 +97,21 @@ public class Camera {
 		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(vehicleID)));
 		double length = (Double) (conn.do_job_get(Vehicle.getLength(vehicleID)));
 		double accel = (Double) (conn.do_job_get(Vehicle.getAccel(vehicleID)));
-		Point2D cameraLocation = new Point2D(cameraPosition.x, cameraPosition.y);
-		double distanceToCamera = cameraLocation.distance(vehiclePosition) - length / 2;
+		// TODO: This code is specific to a scenario. Need to generalize.
+		SumoPosition2D junctionPositionSumo = (SumoPosition2D) (conn.do_job_get(Junction.getPosition("StationspleinSW")));
+		Point2D junctionPosition = new Point2D(junctionPositionSumo.x, junctionPositionSumo.y);
+		double distanceToJunction = junctionPosition.distance(vehiclePosition) - length / 2;
 		double seconds;
 
 		if (speed > 0) {
-			seconds = distanceToCamera / speed;
+			seconds = distanceToJunction / speed;
 		} else {
 			seconds = 100.0;
 		}
+		
+//		System.out.println("Camera: I see " + vehicleID + " " + distanceToJunction + " " + seconds);
 
-		VehicleData vehicleData = new VehicleData(vehicleID, type, speed, accel, length, distanceToCamera, seconds);
+		VehicleData vehicleData = new VehicleData(vehicleID, type, speed, accel, length, distanceToJunction, seconds);
 		return vehicleData;
 	}
 

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import main.SimulationParameters;
+
 public class Controller {
 	private List<RSU> allRSU = new ArrayList<RSU>(); // all *RSU* that are connected to the *Controller*
 	private List<Camera> allCamera = new ArrayList<Camera>(); // all *Camera* that are connected to the *Controller*
@@ -73,15 +75,15 @@ public class Controller {
 			extraSecond = vehicleSecond + (vehicleLength / vehicleSpeed);
 
 			// BICYCLE
-			if (vehicleType.contains("bicycle") && vehicleSecond <= 3.5 && vehicleDistance >= 2.0) {
+			if (vehicleType.contains(SimulationParameters.BIKE_PREFIX) && vehicleSecond <= 3.5 && vehicleDistance >= 2.0) {
 				bicycleSeconds.put(vehicle.getId(), vehicleSecond);
 				bicycleFlag = true;
-			} else if (vehicleType.contains("bicycle") && vehicleDistance < 2.0) {
+			} else if (vehicleType.contains(SimulationParameters.BIKE_PREFIX) && vehicleDistance < 2.0) {
 				bicycleSeconds.remove(vehicle.getId());
 			}
 
 			// BUS
-			if (vehicleType.contains("bus") && vehicleSecond <= 3.5 && vehicleDistance >= 4.0) {
+			if (vehicleType.contains(SimulationParameters.BUS_PREFIX) && vehicleSecond <= 3.5 && vehicleDistance >= 4.0) {
 				for (Double vs : bicycleSeconds.values()) {
 					if ((almostEqual(vehicleSecond, vs, 0.75) || almostEqual(extraSecond, vs, 0.75))
 							|| (vs > vehicleSecond && vs < extraSecond)) {
