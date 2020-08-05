@@ -22,7 +22,8 @@ public class SingleRunStatistics {
 		this.defectiveITS = false;
 	}
 
-	public SingleRunStatistics(double currentBikeMaxSpeed, double currentBusMaxSpeed, double busWaitingTime, boolean hardBrakingHappened, boolean itsDefective) {
+	public SingleRunStatistics(double currentBikeMaxSpeed, double currentBusMaxSpeed, double busWaitingTime,
+			boolean hardBrakingHappened, boolean itsDefective) {
 		this.bikeMaxSpeed = currentBikeMaxSpeed;
 		this.busMaxSpeed = currentBusMaxSpeed;
 		this.busWaitingTime = busWaitingTime;

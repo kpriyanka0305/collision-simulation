@@ -12,7 +12,7 @@ public class SimulationParameters {
 	static final String CONFIG_FILE = "data/stationsplein/stationsplein.sumocfg";
 	// simulation step length is in seconds
 	public static final double STEP_LENGTH = 0.1;
-	
+
 	public final long GUI_STEP_DELAY = 10;
 	public final long HEADLESS_STEP_DELAY = 0;
 	private final long stepDelay;
@@ -48,7 +48,8 @@ public class SimulationParameters {
 		return stepDelay;
 	}
 
-	public SimulationParameters(UserInterfaceType uiType, double busMaxSpeed, double bikeMaxSpeed, boolean defectiveITS) {
+	public SimulationParameters(UserInterfaceType uiType, double busMaxSpeed, double bikeMaxSpeed,
+			boolean defectiveITS) {
 		this.busMaxSpeed = busMaxSpeed;
 		this.bikeMaxSpeed = bikeMaxSpeed;
 		this.defectiveITS = defectiveITS;

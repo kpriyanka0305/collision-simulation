@@ -48,15 +48,16 @@ public class Main implements Observer {
 
 		Stopwatch totalTime = new Stopwatch();
 
-		monteCarloSimulation(sumocfg, timestamp);
-//		crispSimulation(sumocfg, timestamp);
+//		monteCarloSimulation(sumocfg, timestamp);
+		crispSimulation(sumocfg, timestamp);
 
 		totalTime.stop();
 		totalTime.printTime("total time");
 	}
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
-		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI, SimulationParameters.BUS_MAX_SPEED_MEAN, SimulationParameters.BIKE_MAX_SPEED_MEAN, false);
+		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI,
+				SimulationParameters.BUS_MAX_SPEED_MEAN, SimulationParameters.BIKE_MAX_SPEED_MEAN, false);
 		SimulationStatistics statistics = new SimulationStatistics();
 		statistics.setCurrentSimParameters(simParameters);
 		Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
@@ -102,7 +103,7 @@ public class Main implements Observer {
 
 	// returns a boolean that is true with probability p
 	private static boolean makeRandomBoolean(Random r, double p) throws IllegalArgumentException {
-		if( p < 0 || p > 1 ) {
+		if (p < 0 || p > 1) {
 			throw new IllegalArgumentException("p must be between 0 and 1");
 		}
 		return r.nextDouble() < p;

@@ -14,7 +14,7 @@ public class Histogram {
 			return 1;
 		}
 	}
-	
+
 	public Histogram() {
 		this(1.0);
 	}
@@ -30,10 +30,11 @@ public class Histogram {
 	}
 
 	public String prettyPrint() {
-		long numEntries = histogram.values().stream().reduce(0, (x,y) -> x + y);
+		long numEntries = histogram.values().stream().reduce(0, (x, y) -> x + y);
 		double factor = numEntries * binSize;
 		StringBuilder result = new StringBuilder();
-		histogram.forEach((key, value) -> result.append(key * binSize).append(" ").append((double)(value) / factor).append("\n"));
+		histogram.forEach((key, value) -> result.append(key * binSize).append(" ").append((double) (value) / factor)
+				.append("\n"));
 		return result.toString();
 	}
 }

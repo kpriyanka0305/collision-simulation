@@ -54,7 +54,8 @@ public class SimulationStatistics {
 		FileWriter waitingTimeFile;
 		try {
 			waitingTimeFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.WAITING_TIME_BASE), true);
-			waitingTimeFile.append(busWaitingTimes.prettyPrint(waitTimeSteps -> waitTimeSteps * SimulationParameters.STEP_LENGTH));
+			waitingTimeFile.append(
+					busWaitingTimes.prettyPrint(waitTimeSteps -> waitTimeSteps * SimulationParameters.STEP_LENGTH));
 			waitingTimeFile.close();
 		} catch (IOException e) {
 			System.err.println("could not write speeds histogram file");

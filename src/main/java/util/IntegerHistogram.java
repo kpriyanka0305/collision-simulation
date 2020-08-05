@@ -27,7 +27,8 @@ public class IntegerHistogram {
 
 	public String prettyPrint(Function<Long, ? extends Object> preprocessKey) {
 		StringBuilder result = new StringBuilder();
-		// This padding with zero values is needed for gnuplot to draw nice box diagrams.
+		// This padding with zero values is needed for gnuplot to draw nice box
+		// diagrams.
 		long minimum = Collections.min(histogram.keySet());
 		long maximum = Collections.max(histogram.keySet());
 		for (long i = minimum; i <= maximum; ++i) {

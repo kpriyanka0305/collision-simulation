@@ -60,7 +60,8 @@ public class SimWarningService extends Simulation {
 					OBU obu = new OBU(v, conn, controller, simParameters);
 					allOBUs.add(obu);
 				}
-			// TODO: this clause is still specific to the Neckerspoel scenario. Need to generalize it.
+				// TODO: this clause is still specific to the Neckerspoel scenario. Need to
+				// generalize it.
 			} else if (type.contains("bicycle-distracted")) {
 				double distanceToJunction = (Double) (vehData.get("distanceToJunction"));
 				double speed = (Double) (vehData.get("speed"));
@@ -105,7 +106,8 @@ public class SimWarningService extends Simulation {
 	private void spawnElements() throws Exception {
 		controller = new Controller();
 //		allRSUs.add(new RSU("East", 15.5, -10.5, conn, controller, this));
-		allCameras.add(new Camera("CameraOne", conn, /* x */ 99.0, /* y */ -13.0, /* size */ 2.0, /* height */ 0.7, /* angle */ 110, controller, simParameters.defectiveITS));
+		allCameras.add(new Camera("CameraOne", conn, /* x */ 99.0, /* y */ -13.0, /* size */ 2.0, /* height */ 0.7,
+				/* angle */ 110, controller, simParameters.defectiveITS));
 	}
 
 	private Map<String, Object> readData(String id) throws Exception {

@@ -39,7 +39,7 @@ public class Camera {
 	private SumoTraciConnection conn;
 
 	private Controller controller;
-	
+
 	// A defective camera does not detect any vehicles
 	private boolean defective;
 
@@ -61,7 +61,7 @@ public class Camera {
 
 		// THESE ARE FOR COLLISION POINT
 		this.cameraPosition = new SumoPosition2D(2.28, 0.88);
-		
+
 		this.defective = defective;
 
 		drawCamera();
@@ -72,8 +72,8 @@ public class Camera {
 	}
 
 	public void observeSituation() throws Exception {
-		
-		if( defective ) {
+
+		if (defective) {
 			return;
 		}
 
@@ -84,7 +84,7 @@ public class Camera {
 		for (String v : vehicleIDs) {
 			SumoPosition2D sumoPosition = (SumoPosition2D) (conn.do_job_get(Vehicle.getPosition(v)));
 			Point2D vehiclePosition = new Point2D(sumoPosition.x, sumoPosition.y);
-			
+
 			if (fieldOfView.contains(vehiclePosition)) {
 				vehicleData.add(readData(v, vehiclePosition));
 			}
@@ -98,7 +98,8 @@ public class Camera {
 		double length = (Double) (conn.do_job_get(Vehicle.getLength(vehicleID)));
 		double accel = (Double) (conn.do_job_get(Vehicle.getAccel(vehicleID)));
 		// TODO: This code is specific to a scenario. Need to generalize.
-		SumoPosition2D junctionPositionSumo = (SumoPosition2D) (conn.do_job_get(Junction.getPosition("StationspleinSW")));
+		SumoPosition2D junctionPositionSumo = (SumoPosition2D) (conn
+				.do_job_get(Junction.getPosition("StationspleinSW")));
 		Point2D junctionPosition = new Point2D(junctionPositionSumo.x, junctionPositionSumo.y);
 		double distanceToJunction = junctionPosition.distance(vehiclePosition) - length / 2;
 		double seconds;
