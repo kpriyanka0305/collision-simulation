@@ -13,8 +13,6 @@ public class Controller {
 	private List<Camera> allCamera = new ArrayList<Camera>(); // all *Camera* that are connected to the *Controller*
 	private List<OBU> allOBU = new ArrayList<OBU>(); // all *OBU* that are connected to the *Controller*
 
-	private Map<String, Double> bicycleSeconds = new HashMap<String, Double>();
-
 	public void SendAllDataCamera(Collection<VehicleData> vehicleData) throws Exception {
 		// Warning RSU
 		if (vehicleData.isEmpty()) {
@@ -77,29 +75,22 @@ public class Controller {
 			// BICYCLE
 			if (vehicleType.contains(SimulationParameters.BIKE_PREFIX)) {
 				if (vehicleSecond <= 3.5 && vehicleDistance >= 2.0) {
-					bicycleSeconds.put(vehicle.getId(), vehicleSecond);
 					bicycleFlag = true;
-				} else if (vehicleDistance < 2.0) {
-					bicycleSeconds.remove(vehicle.getId());
 				}
 			}
 
+			// PEDESTRIAN
 			if (vehicleType.contains(SimulationParameters.PEDESTRIAN_PREFIX)) {
 				if (vehicleSecond <= 10.0) {
-					bicycleSeconds.put(vehicle.getId(), vehicleSecond);
 					bicycleFlag = true;
 				}
 			}
 
 			// BUS
-			if (vehicleType.contains(SimulationParameters.BUS_PREFIX) && vehicleSecond <= 3.5
-					&& vehicleDistance >= 4.0) {
-				for (Double vs : bicycleSeconds.values()) {
-					if ((almostEqual(vehicleSecond, vs, 0.75) || almostEqual(extraSecond, vs, 0.75))
-							|| (vs > vehicleSecond && vs < extraSecond)) {
-						busIDList.add(vehicle.getId());
-						busFlag = true;
-					}
+			if (vehicleType.contains(SimulationParameters.BUS_PREFIX)) {
+				if (vehicleSecond <= 3.5) {
+					busIDList.add(vehicle.getId());
+					busFlag = true;
 				}
 			}
 		}
