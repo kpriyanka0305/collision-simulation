@@ -55,10 +55,6 @@ public class Controller {
 		String vehicleType;
 		double vehicleSecond;
 		double vehicleDistance;
-		double vehicleSpeed;
-		double vehicleLength;
-
-		double extraSecond;
 
 		List<String> busIDList = new ArrayList<String>();
 
@@ -66,11 +62,6 @@ public class Controller {
 			vehicleType = vehicle.getType();
 			vehicleSecond = vehicle.getSeconds();
 			vehicleDistance = vehicle.getDistance();
-
-			vehicleSpeed = vehicle.getSpeed();
-			vehicleLength = vehicle.getLength();
-
-			extraSecond = vehicleSecond + (vehicleLength / vehicleSpeed);
 
 			// BICYCLE
 			if (vehicleType.contains(SimulationParameters.BIKE_PREFIX)) {
@@ -106,10 +97,6 @@ public class Controller {
 				obu.tempClean();
 			}
 		}
-	}
-
-	private boolean almostEqual(double a, double b, double eps) {
-		return Math.abs(a - b) < eps;
 	}
 
 	public void OBUDisconnect(String name) {
