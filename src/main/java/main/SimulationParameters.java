@@ -2,14 +2,14 @@ package main;
 
 public class SimulationParameters {
 	public final static String OUT_DIR = "output";
-	static final String BUS_PREFIX = "bus";
+	static final String BUS_PREFIX = "taxi";
 	static final String BIKE_PREFIX = "bicycle";
 
 	static final String SUMO_GUI_BIN = "sumo-gui";
 	static final String SUMO_CLI_BIN = "sumo";
 	private final String sumoBin;
 
-	static final String CONFIG_FILE = "data/neckerspoel/neckerspoel.sumocfg";
+	static final String CONFIG_FILE = "data/stationsplein/stationsplein.sumocfg";
 	// simulation step length is in seconds
 	public static final double STEP_LENGTH = 0.1;
 	
