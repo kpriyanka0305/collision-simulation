@@ -75,12 +75,13 @@ public class Controller {
 			extraSecond = vehicleSecond + (vehicleLength / vehicleSpeed);
 
 			// BICYCLE
-			if (vehicleType.contains(SimulationParameters.BIKE_PREFIX) && vehicleSecond <= 3.5
-					&& vehicleDistance >= 2.0) {
-				bicycleSeconds.put(vehicle.getId(), vehicleSecond);
-				bicycleFlag = true;
-			} else if (vehicleType.contains(SimulationParameters.BIKE_PREFIX) && vehicleDistance < 2.0) {
-				bicycleSeconds.remove(vehicle.getId());
+			if (vehicleType.contains(SimulationParameters.BIKE_PREFIX)) {
+				if (vehicleSecond <= 3.5 && vehicleDistance >= 2.0) {
+					bicycleSeconds.put(vehicle.getId(), vehicleSecond);
+					bicycleFlag = true;
+				} else if (vehicleDistance < 2.0) {
+					bicycleSeconds.remove(vehicle.getId());
+				}
 			}
 
 			// BUS
