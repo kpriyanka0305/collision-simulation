@@ -25,7 +25,7 @@ public class OBU {
 		return name;
 	}
 
-	public void tempClean() throws Exception {
+	public void UnwarnOBU() throws Exception {
 		goDefaultColor();
 	}
 

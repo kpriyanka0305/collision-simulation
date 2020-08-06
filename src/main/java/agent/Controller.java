@@ -94,7 +94,7 @@ public class Controller {
 			}
 		} else if (!minorVehicleFlag) {
 			for (OBU obu : allOBU) {
-				obu.tempClean();
+				obu.UnwarnOBU();
 			}
 		}
 	}
