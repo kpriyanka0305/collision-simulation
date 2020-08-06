@@ -65,7 +65,7 @@ public class SimWarningService extends Simulation {
 				// from how Camera does it. This may lead to bugs???
 			} else if (type.contains("bicycle-distracted")) {
 				// We don't want this to happen for now
-				throw new IllegalArgumentException("support for distracted bicycles not implemented");
+				throw new UnsupportedOperationException("support for distracted bicycles not implemented");
 				/*
 				double distanceToJunction = (Double) (vehData.get("distanceToJunction"));
 				double speed = (Double) (vehData.get("speed"));
