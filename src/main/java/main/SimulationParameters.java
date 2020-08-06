@@ -11,6 +11,14 @@ public class SimulationParameters {
 	private final String sumoBin;
 
 	static final String CONFIG_FILE = "data/stationsplein/stationsplein.sumocfg";
+
+	// The center of the junction that the warning system should control.
+	// We don't want to use sumo's position of the junction, because that is not
+	// always in the center. Better to specify it manually. Get the coordinates by
+	// hovering the mouse over the junction center in netedit.
+	public static final double REFERENCE_POINT_X = 67.83;
+	public static final double REFERENCE_POINT_Y = 24.31;
+
 	// simulation step length is in seconds
 	public static final double STEP_LENGTH = 0.1;
 

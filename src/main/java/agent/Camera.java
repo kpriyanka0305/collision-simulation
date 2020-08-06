@@ -11,6 +11,7 @@ import de.tudresden.ws.container.SumoColor;
 import de.tudresden.ws.container.SumoGeometry;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
+import main.SimulationParameters;
 import math.geom2d.Point2D;
 import math.geom2d.polygon.Polygon2D;
 import math.geom2d.polygon.SimplePolygon2D;
@@ -97,10 +98,8 @@ public class Camera {
 		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(vehicleID)));
 		double length = (Double) (conn.do_job_get(Vehicle.getLength(vehicleID)));
 		double accel = (Double) (conn.do_job_get(Vehicle.getAccel(vehicleID)));
-		// TODO: This code is specific to a scenario. Need to generalize.
-		SumoPosition2D junctionPositionSumo = (SumoPosition2D) (conn
-				.do_job_get(Junction.getPosition("StationspleinSW")));
-		Point2D junctionPosition = new Point2D(junctionPositionSumo.x, junctionPositionSumo.y);
+		Point2D junctionPosition = new Point2D(SimulationParameters.REFERENCE_POINT_X,
+				SimulationParameters.REFERENCE_POINT_Y);
 		double distanceToJunction = junctionPosition.distance(vehiclePosition) - length / 2;
 		double seconds;
 
