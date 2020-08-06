@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on Wed Aug  5 16:58:28 2020 by Eclipse SUMO netconvert Version 1.6.0
+<!-- generated on Thu Aug  6 12:30:21 2020 by Eclipse SUMO netconvert Version 1.6.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
@@ -62,14 +62,14 @@
     <edge id="StationspleinNEtoNW" from="StationspleinNE" to="StationspleinNW" priority="-1">
         <lane id="StationspleinNEtoNW_0" index="0" speed="13.89" length="29.42" shape="100.12,68.16 70.91,64.72"/>
     </edge>
-    <edge id="StationspleinNWtoSW" from="StationspleinNW" to="StationspleinSW" priority="-1">
+    <edge id="StationspleinNWtoSW" from="StationspleinNW" to="StationspleinSW" priority="1">
         <lane id="StationspleinNWtoSW_0" index="0" speed="13.89" length="26.63" shape="62.79,58.51 64.74,31.95"/>
         <lane id="StationspleinNWtoSW_1" index="1" speed="13.89" length="26.63" shape="65.98,58.75 67.93,32.19"/>
     </edge>
     <edge id="StationspleinSEtoNE" from="StationspleinSE" to="StationspleinNE" priority="-1">
         <lane id="StationspleinSEtoNE_0" index="0" speed="13.89" length="26.85" shape="109.61,41.33 101.84,67.03"/>
     </edge>
-    <edge id="StationspleinSEtoSW" from="StationspleinSE" to="StationspleinSW" priority="-1">
+    <edge id="StationspleinSEtoSW" from="StationspleinSE" to="StationspleinSW" priority="100">
         <lane id="StationspleinSEtoSW_0" index="0" speed="13.89" length="32.97" shape="105.88,34.98 73.69,27.90"/>
         <lane id="StationspleinSEtoSW_1" index="1" speed="13.89" length="32.97" shape="106.57,31.85 74.37,24.77"/>
         <lane id="StationspleinSEtoSW_2" index="2" speed="13.89" length="32.97" shape="107.26,28.73 75.06,21.65"/>
@@ -92,14 +92,20 @@
     <junction id="StationspleinNW" type="unregulated" x="67.30" y="62.68" incLanes="StationspleinNEtoNW_0" intLanes=":StationspleinNW_0_0 :StationspleinNW_1_0" shape="70.72,66.31 71.10,63.13 69.02,62.46 68.32,61.84 67.84,61.03 67.60,60.04 67.58,58.86 61.19,58.40 61.32,60.48 62.03,62.27 63.33,63.74 65.21,64.90 67.68,65.76"/>
     <junction id="StationspleinPedestrianS" type="dead_end" x="77.75" y="0.00" incLanes="StationspleinSWtoStationspleinPedestrianS_0" intLanes="" shape="74.76,-1.14 77.75,0.00"/>
     <junction id="StationspleinSE" type="unregulated" x="111.94" y="28.12" incLanes="StationswegEtoStationspleinSE_0 StationswegEtoStationspleinSE_1 StationswegEtoStationspleinSE_2" intLanes=":StationspleinSE_0_0 :StationspleinSE_1_0 :StationspleinSE_2_0 :StationspleinSE_2_1" shape="115.90,38.81 117.94,29.43 107.60,27.16 105.54,36.54 107.43,37.37 107.98,38.02 108.27,38.82 108.31,39.77 108.08,40.87 111.14,41.80 112.18,39.79 112.90,39.16 113.76,38.79 114.76,38.67"/>
-    <junction id="StationspleinSW" type="unregulated" x="70.50" y="19.00" incLanes="StationspleinSEtoSW_0 StationspleinSEtoSW_1 StationspleinSEtoSW_2 StationspleinNWtoSW_0 StationspleinNWtoSW_1" intLanes=":StationspleinSW_0_0 :StationspleinSW_0_1 :StationspleinSW_0_2 :StationspleinSW_3_0 :StationspleinSW_4_0" shape="73.34,29.46 75.40,20.08 72.82,19.11 72.05,18.42 71.62,17.61 71.54,16.68 71.80,15.61 68.81,14.47 67.32,16.57 66.21,17.21 64.88,17.57 63.30,17.66 61.48,17.47 59.87,26.93 61.83,27.75 62.48,28.46 62.92,29.38 63.14,30.51 63.14,31.84 69.53,32.30 70.07,30.38 70.61,29.78 71.34,29.43 72.25,29.32"/>
+    <junction id="StationspleinSW" type="priority" x="70.50" y="19.00" incLanes="StationspleinSEtoSW_0 StationspleinSEtoSW_1 StationspleinSEtoSW_2 StationspleinNWtoSW_0 StationspleinNWtoSW_1" intLanes=":StationspleinSW_0_0 :StationspleinSW_0_1 :StationspleinSW_0_2 :StationspleinSW_3_0 :StationspleinSW_4_0" shape="73.34,29.46 75.40,20.08 72.82,19.11 72.05,18.42 71.62,17.61 71.54,16.68 71.80,15.61 68.81,14.47 67.32,16.57 66.21,17.21 64.88,17.57 63.30,17.66 61.48,17.47 59.87,26.93 61.83,27.75 62.48,28.46 62.92,29.38 63.14,30.51 63.14,31.84 69.53,32.30 70.07,30.38 70.61,29.78 71.34,29.43 72.25,29.32">
+        <request index="0" response="00000" foes="11000" cont="0"/>
+        <request index="1" response="00000" foes="11000" cont="0"/>
+        <request index="2" response="00000" foes="11000" cont="0"/>
+        <request index="3" response="00111" foes="10111" cont="0"/>
+        <request index="4" response="01111" foes="01111" cont="0"/>
+    </junction>
     <junction id="StationswegE" type="dead_end" x="149.69" y="36.34" incLanes="" intLanes="" shape="149.69,36.34 147.65,45.72"/>
     <junction id="StationswegW" type="dead_end" x="0.00" y="7.00" incLanes="StationspleinSWtoStationswegW_0 StationspleinSWtoStationswegW_1 StationspleinSWtoStationswegW_2" intLanes="" shape="-1.61,16.47 0.00,7.00"/>
 
     <connection from="StationspleinNEtoNW" to="StationspleinNWtoSW" fromLane="0" toLane="0" via=":StationspleinNW_0_0" dir="l" state="M"/>
     <connection from="StationspleinNEtoNW" to="StationspleinNWtoSW" fromLane="0" toLane="1" via=":StationspleinNW_1_0" dir="l" state="M"/>
-    <connection from="StationspleinNWtoSW" to="StationspleinSWtoStationspleinPedestrianS" fromLane="0" toLane="0" via=":StationspleinSW_3_0" dir="s" state="M"/>
-    <connection from="StationspleinNWtoSW" to="StationspleinSWtoStationswegW" fromLane="1" toLane="1" via=":StationspleinSW_4_0" dir="r" state="M"/>
+    <connection from="StationspleinNWtoSW" to="StationspleinSWtoStationspleinPedestrianS" fromLane="0" toLane="0" via=":StationspleinSW_3_0" dir="s" state="m"/>
+    <connection from="StationspleinNWtoSW" to="StationspleinSWtoStationswegW" fromLane="1" toLane="1" via=":StationspleinSW_4_0" dir="r" state="m"/>
     <connection from="StationspleinSEtoNE" to="StationspleinNEtoNW" fromLane="0" toLane="0" via=":StationspleinNE_0_0" dir="l" state="M"/>
     <connection from="StationspleinSEtoSW" to="StationspleinSWtoStationswegW" fromLane="0" toLane="0" via=":StationspleinSW_0_0" dir="s" state="M"/>
     <connection from="StationspleinSEtoSW" to="StationspleinSWtoStationswegW" fromLane="1" toLane="1" via=":StationspleinSW_0_1" dir="s" state="M"/>

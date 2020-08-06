@@ -1,6 +1,6 @@
 <nodes>
   <node id="StationspleinSE" x="5.480361" y="51.441712" type="unregulated" />
-  <node id="StationspleinSW" x="5.479754" y="51.441630" type="unregulated" />
+  <node id="StationspleinSW" x="5.479754" y="51.441630" type="priority" />
   <node id="StationspleinNW" x="5.479755" y="51.442023" type="unregulated" />
   <node id="StationspleinNE" x="5.480235" y="51.442058" type="unregulated" />
 

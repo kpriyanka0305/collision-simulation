@@ -1,6 +1,6 @@
 <edges>
-  <edge id="StationspleinSEtoSW" from="StationspleinSE" to="StationspleinSW" numLanes="3" />
-  <edge id="StationspleinNWtoSW" from="StationspleinNW" to="StationspleinSW" numLanes="2" />
+  <edge id="StationspleinSEtoSW" from="StationspleinSE" to="StationspleinSW" numLanes="3" priority="100" />
+  <edge id="StationspleinNWtoSW" from="StationspleinNW" to="StationspleinSW" numLanes="2" priority="1" />
   <edge id="StationspleinSEtoNE" from="StationspleinSE" to="StationspleinNE" />
   <edge id="StationspleinNEtoNW" from="StationspleinNE" to="StationspleinNW" />
 
