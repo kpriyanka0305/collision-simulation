@@ -61,8 +61,12 @@ public class SimWarningService extends Simulation {
 					allOBUs.add(obu);
 				}
 				// TODO: this clause is still specific to the Neckerspoel scenario. Need to
-				// generalize it.
+				// generalize it. Also, the calculation of distance to junction is different
+				// from how Camera does it. This may lead to bugs???
 			} else if (type.contains("bicycle-distracted")) {
+				// We don't want this to happen for now
+				throw new IllegalArgumentException("support for distracted bicycles not implemented");
+				/*
 				double distanceToJunction = (Double) (vehData.get("distanceToJunction"));
 				double speed = (Double) (vehData.get("speed"));
 				boolean eastRsu = (Boolean) (RsusStatus.get("East"));
@@ -76,6 +80,7 @@ public class SimWarningService extends Simulation {
 						conn.do_job_set(Vehicle.setSpeed(v, simParameters.bikeMaxSpeed));
 					}
 				}
+				*/
 			}
 		}
 
