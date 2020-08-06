@@ -65,8 +65,7 @@ public class Controller {
 
 			// BICYCLE
 			if (vehicleType.contains(SimulationParameters.BIKE_PREFIX)) {
-				// TODO: simplify
-				if (vehicleSecond <= 3.5 && vehicleDistance >= 2.0) {
+				if (vehicleSecond <= 3.5) {
 					minorVehicleFlag = true;
 				}
 			}
