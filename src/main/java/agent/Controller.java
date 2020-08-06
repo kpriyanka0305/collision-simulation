@@ -12,6 +12,12 @@ public class Controller {
 	private List<RSU> allRSU = new ArrayList<RSU>(); // all *RSU* that are connected to the *Controller*
 	private List<Camera> allCamera = new ArrayList<Camera>(); // all *Camera* that are connected to the *Controller*
 	private List<OBU> allOBU = new ArrayList<OBU>(); // all *OBU* that are connected to the *Controller*
+	
+	private final SimulationParameters simParameters;
+	
+	public Controller(SimulationParameters simParameters) {
+		this.simParameters = simParameters;
+	}
 
 	public void SendAllDataCamera(Collection<VehicleData> vehicleData) throws Exception {
 		// Warning RSU
@@ -64,7 +70,7 @@ public class Controller {
 			vehicleDistance = vehicle.getDistance();
 
 			if (vehicleType.contains(SimulationParameters.BIKE_PREFIX)) {
-				if (vehicleSecond <= 3.5) {
+				if (vehicleSecond <= simParameters.reactionTime) {
 					minorVehicleFlag = true;
 				}
 			} else if (vehicleType.contains(SimulationParameters.PEDESTRIAN_PREFIX)) {
@@ -72,7 +78,7 @@ public class Controller {
 					minorVehicleFlag = true;
 				}
 			} else if (vehicleType.contains(SimulationParameters.BUS_PREFIX)) {
-				if (vehicleSecond <= 3.5) {
+				if (vehicleSecond <= simParameters.reactionTime) {
 					busIDList.add(vehicle.getId());
 					majorVehicleFlag = true;
 				}

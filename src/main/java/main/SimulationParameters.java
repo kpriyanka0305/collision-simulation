@@ -27,21 +27,25 @@ public class SimulationParameters {
 	private final long stepDelay;
 
 	// how often the monte carlo simulation should be run
-	public static final int NUM_MONTE_CARLO_RUNS = 10;
+	public static final int NUM_MONTE_CARLO_RUNS = 50;
 
-	static final double BUS_MAX_SPEED_SIGMA = 2.0;
+	static final double BUS_MAX_SPEED_SIGMA = 0.01;
 	static final double BUS_MAX_SPEED_MEAN = 8.3;
 
-	static final double BIKE_MAX_SPEED_SIGMA = 1.5;
+	static final double BIKE_MAX_SPEED_SIGMA = 0.01;
 	static final double BIKE_MAX_SPEED_MEAN = 4.7;
+	
+	static final double REACTION_TIME_SIGMA = 1.5;
+	static final double REACTION_TIME_MEAN = 3.5;
 
-	public static final double DEFECTIVE_ITS_PROBABILITY = 0.5;
+	public static final double DEFECTIVE_ITS_PROBABILITY = 0.0;
 
 	public static final double NEAR_COLLISION_DISTANCE = 2.0;
 
 	public final double busMaxSpeed;
 	public final double bikeMaxSpeed;
 	public final boolean defectiveITS;
+	public final double reactionTime;
 
 	public final static String DISTANCES_BASE = "/distances";
 	public final static String ACCELERATIONS_BASE = "/accelerations";
@@ -58,10 +62,11 @@ public class SimulationParameters {
 	}
 
 	public SimulationParameters(UserInterfaceType uiType, double busMaxSpeed, double bikeMaxSpeed,
-			boolean defectiveITS) {
+			boolean defectiveITS, double reactionTime) {
 		this.busMaxSpeed = busMaxSpeed;
 		this.bikeMaxSpeed = bikeMaxSpeed;
 		this.defectiveITS = defectiveITS;
+		this.reactionTime = reactionTime;
 
 		switch (uiType) {
 		case Headless:

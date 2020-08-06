@@ -57,7 +57,8 @@ public class Main implements Observer {
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
 		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI,
-				SimulationParameters.BUS_MAX_SPEED_MEAN, SimulationParameters.BIKE_MAX_SPEED_MEAN, false);
+				SimulationParameters.BUS_MAX_SPEED_MEAN, SimulationParameters.BIKE_MAX_SPEED_MEAN, false,
+				SimulationParameters.REACTION_TIME_MEAN);
 		SimulationStatistics statistics = new SimulationStatistics();
 		statistics.setCurrentSimParameters(simParameters);
 		Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
@@ -75,13 +76,15 @@ public class Main implements Observer {
 //		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.1) {
 			Stopwatch singleRun = new Stopwatch();
 
-			double busMaxSpeed = makeRandomSpeed(r, SimulationParameters.BUS_MAX_SPEED_MEAN,
+			double busMaxSpeed = makePositiveRandomDouble(r, SimulationParameters.BUS_MAX_SPEED_MEAN,
 					SimulationParameters.BUS_MAX_SPEED_SIGMA);
-			double bikeMaxSpeed = makeRandomSpeed(r, SimulationParameters.BIKE_MAX_SPEED_MEAN,
+			double bikeMaxSpeed = makePositiveRandomDouble(r, SimulationParameters.BIKE_MAX_SPEED_MEAN,
 					SimulationParameters.BIKE_MAX_SPEED_SIGMA);
+			double reactionTime = makePositiveRandomDouble(r, SimulationParameters.REACTION_TIME_MEAN,
+					SimulationParameters.REACTION_TIME_SIGMA);
 			boolean defectiveITS = makeRandomBoolean(r, SimulationParameters.DEFECTIVE_ITS_PROBABILITY);
 			SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed,
-					bikeMaxSpeed, defectiveITS);
+					bikeMaxSpeed, defectiveITS, reactionTime);
 			statistics.setCurrentSimParameters(simParameters);
 			Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
 			m.runSimulation();
@@ -93,7 +96,7 @@ public class Main implements Observer {
 	}
 
 	// returns a non-null positive number of the normal distribution
-	private static double makeRandomSpeed(Random r, double mean, double sigma) {
+	private static double makePositiveRandomDouble(Random r, double mean, double sigma) {
 		double result = -1;
 		do {
 			result = (r.nextGaussian() * sigma) + mean;

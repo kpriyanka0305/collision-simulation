@@ -109,7 +109,7 @@ public class SimWarningService extends Simulation {
 	}
 
 	private void spawnElements() throws Exception {
-		controller = new Controller();
+		controller = new Controller(simParameters);
 //		allRSUs.add(new RSU("East", 15.5, -10.5, conn, controller, this));
 		allCameras.add(new Camera("CameraOne", conn, /* x */ 99.0, /* y */ -13.0, /* size */ 2.0, /* height */ 0.7,
 				/* angle */ 110, controller, simParameters.defectiveITS));
