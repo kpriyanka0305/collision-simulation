@@ -63,22 +63,15 @@ public class Controller {
 			vehicleSecond = vehicle.getSeconds();
 			vehicleDistance = vehicle.getDistance();
 
-			// BICYCLE
 			if (vehicleType.contains(SimulationParameters.BIKE_PREFIX)) {
 				if (vehicleSecond <= 3.5) {
 					minorVehicleFlag = true;
 				}
-			}
-
-			// PEDESTRIAN
-			if (vehicleType.contains(SimulationParameters.PEDESTRIAN_PREFIX)) {
+			} else if (vehicleType.contains(SimulationParameters.PEDESTRIAN_PREFIX)) {
 				if (vehicleSecond <= 10.0) {
 					minorVehicleFlag = true;
 				}
-			}
-
-			// BUS
-			if (vehicleType.contains(SimulationParameters.BUS_PREFIX)) {
+			} else if (vehicleType.contains(SimulationParameters.BUS_PREFIX)) {
 				if (vehicleSecond <= 3.5) {
 					busIDList.add(vehicle.getId());
 					majorVehicleFlag = true;
