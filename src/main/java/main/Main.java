@@ -57,7 +57,7 @@ public class Main implements Observer {
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
 		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI,
-				SimulationParameters.BUS_MAX_SPEED_MEAN, SimulationParameters.BIKE_MAX_SPEED_MEAN, true);
+				SimulationParameters.BUS_MAX_SPEED_MEAN, SimulationParameters.BIKE_MAX_SPEED_MEAN, false);
 		SimulationStatistics statistics = new SimulationStatistics();
 		statistics.setCurrentSimParameters(simParameters);
 		Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
@@ -151,6 +151,7 @@ public class Main implements Observer {
 						for (String vehicleID : ssl) {
 							if (vehicleID.startsWith(SimulationParameters.BUS_PREFIX)) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.busMaxSpeed));
+								// toggling these two parameters turns a distracted taxi into a observant one
 								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
 								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
 								kpi.addBus(vehicleID, simParameters.busMaxSpeed);
