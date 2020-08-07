@@ -39,9 +39,9 @@ public class SimulationStatistics {
 	public void busArrived(Kpi kpi, String busID) {
 		long busWaitingTime = kpi.getWaitingTime(busID);
 		busWaitingTimes.add(busWaitingTime);
-		boolean anyHardBrakings = kpi.anyHardBrakings(busID, SimulationParameters.NEAR_COLLISION_DISTANCE).isPresent();
+		boolean hardBrakingHappened = kpi.anyHardBrakings(busID, SimulationParameters.NEAR_COLLISION_DISTANCE).isPresent();
 		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed,
-				busWaitingTime * SimulationParameters.STEP_LENGTH, anyHardBrakings, currentSimParameters.defectiveITS));
+				busWaitingTime * SimulationParameters.STEP_LENGTH, hardBrakingHappened, currentSimParameters.defectiveITS));
 		return;
 	}
 
