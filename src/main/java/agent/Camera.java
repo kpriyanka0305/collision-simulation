@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import de.tudresden.sumo.cmd.Junction;
 import de.tudresden.sumo.cmd.Polygon;
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.ws.container.SumoColor;
