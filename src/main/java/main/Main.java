@@ -73,7 +73,6 @@ public class Main implements Observer {
 		r.setSeed(seed);
 		SimulationStatistics statistics = new SimulationStatistics();
 		for (int i = 0; i < SimulationParameters.NUM_MONTE_CARLO_RUNS; i++) {
-//		for (double busSpeed = 5.0; busSpeed < 8.3; busSpeed += 0.1) {
 			Stopwatch singleRun = new Stopwatch();
 
 			double busMaxSpeed = makePositiveRandomDouble(r, SimulationParameters.BUS_MAX_SPEED_MEAN,
