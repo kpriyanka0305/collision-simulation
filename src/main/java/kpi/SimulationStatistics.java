@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
@@ -22,6 +23,7 @@ public class SimulationStatistics {
 	// TODO: these are also in SimulationParameters, no need to duplicate here
 	private double currentBikeMaxSpeed = 0;
 	private double currentBusMaxSpeed = 0;
+	private double currentReactionTime = 0;
 	private SimulationParameters currentSimParameters = null;
 
 	public void setCurrentSimParameters(SimulationParameters currentSimParameters) {
@@ -36,12 +38,19 @@ public class SimulationStatistics {
 		this.currentBusMaxSpeed = currentBusMaxSpeed;
 	}
 
+	public void setCurrentReactionTime(double currentReactionTime) {
+		this.currentReactionTime = currentReactionTime;
+	}
+
 	public void busArrived(Kpi kpi, String busID) {
 		long busWaitingTime = kpi.getWaitingTime(busID);
 		busWaitingTimes.add(busWaitingTime);
-		boolean hardBrakingHappened = kpi.anyHardBrakings(busID, SimulationParameters.NEAR_COLLISION_DISTANCE).isPresent();
-		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed,
-				busWaitingTime * SimulationParameters.STEP_LENGTH, hardBrakingHappened, currentSimParameters.defectiveITS));
+		boolean hardBrakingHappened = kpi.anyHardBrakings(busID, SimulationParameters.NEAR_COLLISION_DISTANCE)
+				.isPresent();
+		Optional<Double> minimumDistance = kpi.getMinimumDistance(busID);
+		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed, currentReactionTime,
+				busWaitingTime * SimulationParameters.STEP_LENGTH, hardBrakingHappened,
+				currentSimParameters.defectiveITS, minimumDistance));
 		return;
 	}
 

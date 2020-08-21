@@ -113,6 +113,7 @@ public class Main implements Observer {
 	}
 
 	private void runSimulation() throws Exception {
+		statistics.ifPresent(s -> s.setCurrentReactionTime(simParameters.reactionTime));
 		agent.Simulation sim = new SimWarningService(conn, kpi, simParameters);
 //		agent.Simulation sim = new SimChaos(conn, kpi);
 		// getMinExpectedNumber returns present and future vehicles. If that

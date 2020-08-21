@@ -202,4 +202,21 @@ public class Kpi {
 		}
 		return Optional.empty();
 	}
+
+	public Optional<Double> getMinimumDistance(String busID) {
+		Optional<Double> result = Optional.empty();
+		Map<String, List<Double[]>> busDistances = distances.get(busID);
+		if (busDistances != null) {
+			for (List<Double[]> bikeDistances : busDistances.values()) {
+				for (Double[] bikeDistance : bikeDistances) {
+					if (result.isPresent()) {
+						result = bikeDistance[1] < result.get() ? Optional.of(bikeDistance[1]) : result;
+					} else {
+						result = Optional.of(bikeDistance[1]);
+					}
+				}
+			}
+		}
+		return result;
+	}
 }
