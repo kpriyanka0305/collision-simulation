@@ -15,11 +15,8 @@ import main.SimulationParameters;
 public class SimWarningService extends Simulation {
 	private SumoTraciConnection conn;
 	private List<OBU> allOBUs = new ArrayList<OBU>();
-	private List<RSU> allRSUs = new ArrayList<RSU>();
 	private List<Camera> allCameras = new ArrayList<Camera>();
 	private Map<String, Boolean> RsusStatus = new HashMap<String, Boolean>();
-	private double rsuDistance = 13.0;
-	private double cyclistRange = 5.0;
 
 	private Kpi kpis;
 	private Controller controller;

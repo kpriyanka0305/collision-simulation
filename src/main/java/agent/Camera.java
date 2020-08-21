@@ -32,9 +32,6 @@ public class Camera {
 	private SumoGeometry cameraObject = new SumoGeometry();
 	private SumoGeometry fovObject = new SumoGeometry();
 
-	// FOR COLLISION
-	private SumoPosition2D cameraPosition;
-
 	// CONNECTION OF COURSE
 	private SumoTraciConnection conn;
 
@@ -58,9 +55,6 @@ public class Camera {
 		// THESE ARE FOR FIELD OF VIEW
 		this.height = height;
 		this.angle = angle;
-
-		// THESE ARE FOR COLLISION POINT
-		this.cameraPosition = new SumoPosition2D(2.28, 0.88);
 
 		this.defective = defective;
 

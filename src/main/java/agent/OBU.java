@@ -10,13 +10,11 @@ public class OBU {
 	private String name;
 	private String type;
 	private SumoTraciConnection conn;
-	private SimulationParameters simParameters;
 
 	public OBU(String name, SumoTraciConnection conn, Controller controller, SimulationParameters simParameters)
 			throws Exception {
 		this.name = name;
 		this.conn = conn;
-		this.simParameters = simParameters;
 		this.type = (String) (conn.do_job_get(Vehicle.getTypeID(name)));
 		controller.OBUConnect(this);
 	}

@@ -58,14 +58,12 @@ public class Controller {
 
 		String vehicleType;
 		double vehicleSecond;
-		double vehicleDistance;
 
 		List<String> busIDList = new ArrayList<String>();
 
 		for (VehicleData vehicle : vehicleData) {
 			vehicleType = vehicle.getType();
 			vehicleSecond = vehicle.getSeconds();
-			vehicleDistance = vehicle.getDistance();
 
 			if (vehicleType.contains(SimulationParameters.BIKE_PREFIX)) {
 				if (vehicleSecond <= simParameters.reactionTime) {
