@@ -73,7 +73,7 @@ public class Controller {
 					minorVehicleFlag = true;
 				}
 			} else if (vehicleType.contains(simParams.getPedestrianPrefix())) {
-				if (vehicleSecond <= 10.0) {
+				if (vehicleSecond <= randomVars.reactionTime) {
 					minorVehicleFlag = true;
 				}
 			} else if (vehicleType.contains(simParams.getBusPrefix())) {

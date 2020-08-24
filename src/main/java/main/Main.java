@@ -45,8 +45,8 @@ public class Main implements Observer {
 		Random r = new Random();
 		long seed = r.nextLong();
 
-//		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, UncertaintyType.Crisp, seed);
-		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.Headless, UncertaintyType.MonteCarlo, seed);
+		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, UncertaintyType.Crisp, seed);
+//		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.Headless, UncertaintyType.MonteCarlo, seed);
 //		SimulationProperties simParams = new SimulationProperties("output/" + "2020-08-24-16-22-33" + "/parameters.properties");
 
 		SimulationStatistics statistics = new SimulationStatistics(simParams);
@@ -132,6 +132,12 @@ public class Main implements Observer {
 								kpi.addBus(vehicleID, randomVars.busMaxSpeed);
 								statistics.setCurrentBusMaxSpeed(randomVars.busMaxSpeed);
 							} else if (vehicleID.startsWith(simParams.getBikePrefix())) {
+								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.bikeMaxSpeed));
+								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
+								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
+								kpi.addBike(vehicleID, randomVars.bikeMaxSpeed);
+								statistics.setCurrentBikeMaxSpeed(randomVars.bikeMaxSpeed);
+							} else if (vehicleID.startsWith(simParams.getPedestrianPrefix())) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.bikeMaxSpeed));
 								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
 								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
