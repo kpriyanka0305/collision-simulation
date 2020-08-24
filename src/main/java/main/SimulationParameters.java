@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Random;
+
 public class SimulationParameters {
 	private final static String OUT_DIR = "output";
 
@@ -35,9 +37,10 @@ public class SimulationParameters {
 
 	// We store the random seed to be able to reproduce runs
 	private final long seed;
+	private Random random;
 
-	public long getSeed() {
-		return seed;
+	public Random getRandom() {
+		return random;
 	}
 
 	// The center of the junction that the warning system should control.
@@ -67,7 +70,7 @@ public class SimulationParameters {
 	private final long stepDelay;
 
 	// how often the monte carlo simulation should be run
-	private static final int NUM_MONTE_CARLO_RUNS = 50;
+	private static final int NUM_MONTE_CARLO_RUNS = 10;
 
 	public int getNumMonteCarloRuns() {
 		return NUM_MONTE_CARLO_RUNS;
@@ -159,6 +162,7 @@ public class SimulationParameters {
 
 	public SimulationParameters(UserInterfaceType uiType, long seed) {
 		this.seed = seed;
+		this.random = new Random(seed);
 
 		switch (uiType) {
 		case Headless:

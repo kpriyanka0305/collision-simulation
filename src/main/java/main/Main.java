@@ -44,8 +44,8 @@ public class Main implements Observer {
 
 		Stopwatch totalTime = new Stopwatch();
 
-		UncertaintyType simulationType = UncertaintyType.Crisp;
-//		UncertaintyType simulationType = UncertaintyType.MonteCarlo;
+//		UncertaintyType simulationType = UncertaintyType.Crisp;
+		UncertaintyType simulationType = UncertaintyType.MonteCarlo;
 		switch (simulationType) {
 		case Crisp:
 			crispSimulation(timestamp);
@@ -58,9 +58,13 @@ public class Main implements Observer {
 	}
 
 	private static void crispSimulation(Date timestamp) throws Exception {
-		SimulationParameters simParams = new SimulationParameters(UserInterfaceType.GUI, 0l);
-		RandomVariables randomVars = new RandomVariables(simParams);
+		Random r = new Random();
+		long seed = r.nextLong();
+
+		SimulationParameters simParams = new SimulationParameters(UserInterfaceType.GUI, seed);
 		SimulationStatistics statistics = new SimulationStatistics(simParams);
+
+		RandomVariables randomVars = new RandomVariables(simParams);
 		statistics.setCurrentRandomVars(randomVars);
 		Main m = new Main(timestamp, simParams, randomVars, statistics);
 		m.runSimulation();
@@ -72,13 +76,13 @@ public class Main implements Observer {
 		long seed = r.nextLong();
 
 		SimulationParameters simParams = new SimulationParameters(UserInterfaceType.Headless, seed);
-		RandomVariables randomVars = new RandomVariables(simParams);
-
 		SimulationStatistics statistics = new SimulationStatistics(simParams);
+
 		for (int i = 0; i < simParams.getNumMonteCarloRuns(); i++) {
 			Stopwatch singleRun = new Stopwatch();
-			statistics.setCurrentRandomVars(randomVars);
 
+			RandomVariables randomVars = new RandomVariables(simParams);
+			statistics.setCurrentRandomVars(randomVars);
 			Main m = new Main(timestamp, simParams, randomVars, statistics);
 			m.runSimulation();
 
