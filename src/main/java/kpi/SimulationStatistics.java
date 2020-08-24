@@ -52,8 +52,7 @@ public class SimulationStatistics {
 	public void busArrived(Kpi kpi, String busID) {
 		long busWaitingTime = kpi.getWaitingTime(busID);
 		busWaitingTimes.add(busWaitingTime);
-		boolean hardBrakingHappened = kpi.anyHardBrakings(busID, simParams.getNearCollisionDistance())
-				.isPresent();
+		boolean hardBrakingHappened = kpi.anyHardBrakings(busID, simParams.getNearCollisionDistance()).isPresent();
 		Optional<Double> minimumDistance = kpi.getMinimumDistance(busID);
 		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed, currentReactionTime,
 				busWaitingTime * simParams.getStepLength(), hardBrakingHappened, randomVars.defectiveITS,
@@ -61,37 +60,25 @@ public class SimulationStatistics {
 		return;
 	}
 
-	public void writeStatistics(Date timestamp) {
+	public void writeStatistics(Date timestamp) throws IOException {
 		writeSimulationParameters(timestamp);
 		writeSpeedsHistogramGraph(timestamp);
 		writeStatisticsTable(timestamp);
 	}
 
-	private void writeSimulationParameters(Date timestamp) {
-		try {
-			String fileName = Util.mkFileName(simParams, timestamp, simParams.getParametersBase());
-			simParams.store(fileName);
-		} catch (IOException e) {
-			System.err.println("could not write parameters file");
-			e.printStackTrace();
-		}
+	private void writeSimulationParameters(Date timestamp) throws IOException {
+		String fileName = Util.mkFileName(simParams, timestamp, simParams.getParametersBase());
+		simParams.store(fileName);
 	}
 
-	public void writeSpeedsHistogramGraph(Date timestamp) {
+	public void writeSpeedsHistogramGraph(Date timestamp) throws IOException {
 		FileWriter waitingTimeFile;
-		try {
-			waitingTimeFile = new FileWriter(Util.mkFileName(simParams, timestamp, simParams.getWaitingTimeBase()),
-					true);
-			waitingTimeFile.append(
-					busWaitingTimes.prettyPrint(waitTimeSteps -> waitTimeSteps * simParams.getStepLength()));
-			waitingTimeFile.close();
-		} catch (IOException e) {
-			System.err.println("could not write speeds histogram file");
-			e.printStackTrace();
-		}
+		waitingTimeFile = new FileWriter(Util.mkFileName(simParams, timestamp, simParams.getWaitingTimeBase()), true);
+		waitingTimeFile.append(busWaitingTimes.prettyPrint(waitTimeSteps -> waitTimeSteps * simParams.getStepLength()));
+		waitingTimeFile.close();
 	}
 
-	public void writeStatisticsTable(Date timestamp) {
+	public void writeStatisticsTable(Date timestamp) throws IOException {
 		try {
 			Writer writer;
 			runs.sort((s1, s2) -> Double.compare(s1.getBusWaitingTime(), s2.getBusWaitingTime()));
@@ -100,9 +87,8 @@ public class SimulationStatistics {
 					.build();
 			beanToCsv.write(runs);
 			writer.close();
-		} catch (IOException | CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {
-			System.err.println("could not write statistics table");
-			e.printStackTrace();
+		} catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {
+			throw new UnsupportedOperationException(e.getMessage());
 		}
 	}
 

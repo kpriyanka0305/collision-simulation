@@ -47,9 +47,9 @@ public class Main implements Observer {
 		Random r = new Random();
 		long seed = r.nextLong();
 
-//		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, UncertaintyType.Crisp, seed);
+		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, UncertaintyType.Crisp, seed);
 //		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.Headless, UncertaintyType.MonteCarlo, seed);
-		SimulationProperties simParams = new SimulationProperties("output/" + "parameters2020-08-24-15-47-06.txt");
+//		SimulationProperties simParams = new SimulationProperties("output/" + "parameters2020-08-24-15-47-06.txt");
 
 		switch (simParams.getUncertaintyType()) {
 		case Crisp: {
@@ -168,8 +168,11 @@ public class Main implements Observer {
 				}
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace(System.out);
+			// Ideally I would want to propagate the exception to terminate the program. But
+			// since update is called from a different thread, and update does not
+			// allow exceptions, I think this is the way to go.
+			System.exit(1);
 		}
 	}
 }

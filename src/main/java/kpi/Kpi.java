@@ -1,6 +1,7 @@
 package kpi;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,7 +37,8 @@ public class Kpi {
 		this.conn = connection;
 
 		distancesFile = new FileWriter(Util.mkFileName(simParams, timestamp, simParams.getDistancesBase()), true);
-		accelerationsFile = new FileWriter(Util.mkFileName(simParams, timestamp, simParams.getAccelerationsBase()), true);
+		accelerationsFile = new FileWriter(Util.mkFileName(simParams, timestamp, simParams.getAccelerationsBase()),
+				true);
 		speedsFile = new FileWriter(Util.mkFileName(simParams, timestamp, simParams.getSpeedsBase()), true);
 	}
 
@@ -47,7 +49,7 @@ public class Kpi {
 		speeds.put(vehicleID, new ArrayList<>());
 	}
 
-	public void removeBus(String busID) {
+	public void removeBus(String busID) throws IOException {
 		writeDistanceGraph(busID);
 		writeAccelGraph(busID);
 		writeSpeedGraph(busID);
@@ -103,52 +105,37 @@ public class Kpi {
 		}
 	}
 
-	private void writeDistanceGraph(String busID) {
-		try {
-			double busMaxSpeed = activeBuses.get(busID);
-			for (Map.Entry<String, List<Double[]>> dist : distances.get(busID).entrySet()) {
-				distancesFile.append("\n\n");
-				distancesFile.append("\"bus max speed " + String.format("%.1f", busMaxSpeed) + "\"\n");
-				for (Double[] dataPoint : dist.getValue()) {
-					distancesFile.append(dataPoint[0] + " " + dataPoint[1] + "\n");
-				}
+	private void writeDistanceGraph(String busID) throws IOException {
+		double busMaxSpeed = activeBuses.get(busID);
+		for (Map.Entry<String, List<Double[]>> dist : distances.get(busID).entrySet()) {
+			distancesFile.append("\n\n");
+			distancesFile.append("\"bus max speed " + String.format("%.1f", busMaxSpeed) + "\"\n");
+			for (Double[] dataPoint : dist.getValue()) {
+				distancesFile.append(dataPoint[0] + " " + dataPoint[1] + "\n");
 			}
-
-			distancesFile.flush();
-
-		} catch (Exception e) {
-			System.out.println(e);
 		}
+
+		distancesFile.flush();
 	}
 
-	private void writeAccelGraph(String busID) {
-		try {
-			accelerationsFile.append("\n\n");
-			accelerationsFile.append("\"acceleration " + busID + "\"\n");
-			for (Double[] dataPoint : accelerations.get(busID)) {
-				accelerationsFile.append(dataPoint[0] + " " + dataPoint[1] + "\n");
-			}
-
-			accelerationsFile.flush();
-
-		} catch (Exception e) {
-			System.out.println(e);
+	private void writeAccelGraph(String busID) throws IOException {
+		accelerationsFile.append("\n\n");
+		accelerationsFile.append("\"acceleration " + busID + "\"\n");
+		for (Double[] dataPoint : accelerations.get(busID)) {
+			accelerationsFile.append(dataPoint[0] + " " + dataPoint[1] + "\n");
 		}
+
+		accelerationsFile.flush();
 	}
 
-	private void writeSpeedGraph(String busID) {
-		try {
-			speedsFile.append("\n\n");
-			speedsFile.append("\"speed " + busID + "\"\n");
-			for (Double[] dataPoint : speeds.get(busID)) {
-				speedsFile.append(dataPoint[0] + " " + dataPoint[1] + "\n");
-			}
-
-			speedsFile.flush();
-
-		} catch (Exception e) {
-			System.out.println(e);
+	private void writeSpeedGraph(String busID) throws IOException {
+		speedsFile.append("\n\n");
+		speedsFile.append("\"speed " + busID + "\"\n");
+		for (Double[] dataPoint : speeds.get(busID)) {
+			speedsFile.append(dataPoint[0] + " " + dataPoint[1] + "\n");
 		}
+
+		speedsFile.flush();
 	}
 
 	// The number of simulation steps where the bus speed of the given bus was 0

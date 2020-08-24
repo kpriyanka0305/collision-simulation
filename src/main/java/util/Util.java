@@ -2,6 +2,7 @@ package util;
 
 import math.geom2d.line.LineSegment2D;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,7 +33,11 @@ public class Util {
 		String pattern = "yyyy-MM-dd-HH-mm-ss";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		String dateStr = simpleDateFormat.format(timestamp);
+		
+		// Create directories if necessary
+		String directory = simParams.getOutDir() + "/" + dateStr + "/";
+		new File(directory).mkdirs();
 
-		return simParams.getOutDir() + "/" + baseFileName + dateStr + extension;
+		return  directory + baseFileName + extension;
 	}
 }
