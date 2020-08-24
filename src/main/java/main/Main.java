@@ -45,8 +45,14 @@ public class Main implements Observer {
 
 		Stopwatch totalTime = new Stopwatch();
 
-//		monteCarloSimulation(timestamp);
-		crispSimulation(timestamp);
+		UncertaintyType simulationType = UncertaintyType.Crisp;
+//		UncertaintyType simulationType = UncertaintyType.MonteCarlo;
+		switch (simulationType) {
+		case Crisp:
+			crispSimulation(timestamp);
+		case MonteCarlo:
+			monteCarloSimulation(timestamp);
+		}
 
 		totalTime.stop();
 		totalTime.printTime("total time");
