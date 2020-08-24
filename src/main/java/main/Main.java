@@ -47,8 +47,9 @@ public class Main implements Observer {
 		Random r = new Random();
 		long seed = r.nextLong();
 
-		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, UncertaintyType.Crisp, seed);
+//		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, UncertaintyType.Crisp, seed);
 //		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.Headless, UncertaintyType.MonteCarlo, seed);
+		SimulationProperties simParams = new SimulationProperties("output/" + "parameters2020-08-24-15-47-06.txt");
 
 		switch (simParams.getUncertaintyType()) {
 		case Crisp: {
