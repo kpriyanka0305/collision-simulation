@@ -62,7 +62,7 @@ public class Main implements Observer {
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
 		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI,
 				SimulationParameters.BUS_MAX_SPEED_MEAN, SimulationParameters.BIKE_MAX_SPEED_MEAN, false,
-				SimulationParameters.REACTION_TIME_MEAN);
+				SimulationParameters.REACTION_TIME_MEAN, 0l);
 		SimulationStatistics statistics = new SimulationStatistics();
 		statistics.setCurrentSimParameters(simParameters);
 		Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
@@ -87,7 +87,7 @@ public class Main implements Observer {
 					SimulationParameters.REACTION_TIME_SIGMA);
 			boolean defectiveITS = makeRandomBoolean(r, SimulationParameters.DEFECTIVE_ITS_PROBABILITY);
 			SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed,
-					bikeMaxSpeed, defectiveITS, reactionTime);
+					bikeMaxSpeed, defectiveITS, reactionTime, seed);
 			statistics.setCurrentSimParameters(simParameters);
 			Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
 			m.runSimulation();

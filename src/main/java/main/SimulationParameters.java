@@ -12,6 +12,9 @@ public class SimulationParameters {
 
 	static final String CONFIG_FILE = "data/stationsplein/stationsplein.sumocfg";
 
+	// We store the random seed to be able to reproduce runs
+	long randomSeed;
+
 	// The center of the junction that the warning system should control.
 	// We don't want to use sumo's position of the junction, because that is not
 	// always in the center. Better to specify it manually. Get the coordinates by
@@ -62,12 +65,13 @@ public class SimulationParameters {
 		return stepDelay;
 	}
 
-	public SimulationParameters(UserInterfaceType uiType, double busMaxSpeed, double bikeMaxSpeed,
-			boolean defectiveITS, double reactionTime) {
+	public SimulationParameters(UserInterfaceType uiType, double busMaxSpeed, double bikeMaxSpeed, boolean defectiveITS,
+			double reactionTime, long seed) {
 		this.busMaxSpeed = busMaxSpeed;
 		this.bikeMaxSpeed = bikeMaxSpeed;
 		this.defectiveITS = defectiveITS;
 		this.reactionTime = reactionTime;
+		this.randomSeed = seed;
 
 		switch (uiType) {
 		case Headless:
