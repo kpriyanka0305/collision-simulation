@@ -48,49 +48,38 @@ public class Main implements Observer {
 		long seed = r.nextLong();
 
 //		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, UncertaintyType.Crisp, seed);
-		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.Headless, UncertaintyType.MonteCarlo, seed);
+		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.Headless,
+				UncertaintyType.MonteCarlo, seed);
 //		SimulationProperties simParams = new SimulationProperties("output/" + "2020-08-24-16-22-33" + "/parameters.properties");
+
+		SimulationStatistics statistics = new SimulationStatistics(simParams);
 
 		switch (simParams.getUncertaintyType()) {
 		case Crisp: {
-			crispSimulation(timestamp, simParams);
+			RandomVariables randomVars = new RandomVariables(simParams);
+			statistics.setCurrentRandomVars(randomVars);
+			Main m = new Main(timestamp, simParams, randomVars, statistics);
+			m.runSimulation();
 			break;
 		}
 		case MonteCarlo: {
-			monteCarloSimulation(timestamp, simParams);
+			for (int i = 0; i < simParams.getNumMonteCarloRuns(); i++) {
+				Stopwatch singleRun = new Stopwatch();
+
+				RandomVariables randomVars = new RandomVariables(simParams);
+				statistics.setCurrentRandomVars(randomVars);
+				Main m = new Main(timestamp, simParams, randomVars, statistics);
+				m.runSimulation();
+
+				singleRun.stop();
+				singleRun.printTime("lap time " + i);
+			}
 			break;
 		}
 		}
 
 		totalTime.stop();
 		totalTime.printTime("total time");
-	}
-
-	private static void crispSimulation(Date timestamp, SimulationProperties simParams) throws Exception {
-		SimulationStatistics statistics = new SimulationStatistics(simParams);
-
-		RandomVariables randomVars = new RandomVariables(simParams);
-		statistics.setCurrentRandomVars(randomVars);
-		Main m = new Main(timestamp, simParams, randomVars, statistics);
-		m.runSimulation();
-
-		statistics.writeStatistics(timestamp);
-	}
-
-	private static void monteCarloSimulation(Date timestamp, SimulationProperties simParams) throws Exception {
-		SimulationStatistics statistics = new SimulationStatistics(simParams);
-
-		for (int i = 0; i < simParams.getNumMonteCarloRuns(); i++) {
-			Stopwatch singleRun = new Stopwatch();
-
-			RandomVariables randomVars = new RandomVariables(simParams);
-			statistics.setCurrentRandomVars(randomVars);
-			Main m = new Main(timestamp, simParams, randomVars, statistics);
-			m.runSimulation();
-
-			singleRun.stop();
-			singleRun.printTime("lap time " + i);
-		}
 
 		statistics.writeStatistics(timestamp);
 	}
