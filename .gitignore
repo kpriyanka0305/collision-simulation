@@ -3,3 +3,4 @@ target/
 output/*.txt
 output/*.csv
 output/*.pdf
+git.properties
