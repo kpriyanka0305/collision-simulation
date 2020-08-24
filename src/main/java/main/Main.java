@@ -38,9 +38,6 @@ public class Main implements Observer {
 	}
 
 	public static void main(String[] args) throws Exception {
-		System.out.println(Version.version);
-		System.out.println(Version.revision);
-
 		String sumocfg = SimulationParameters.CONFIG_FILE;
 		if (args.length > 0) {
 			sumocfg = args[0];
