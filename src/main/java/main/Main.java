@@ -1,7 +1,6 @@
 package main;
 
 import java.util.Date;
-import java.util.Optional;
 import java.util.Random;
 
 import agent.SimWarningService;
@@ -26,10 +25,10 @@ public class Main implements Observer {
 	private Kpi kpi;
 	private SimulationParameters simParams;
 	private RandomVariables randomVars;
-	private Optional<SimulationStatistics> statistics = Optional.empty();
+	private SimulationStatistics statistics;
 
 	public Main(Date timestamp, SimulationParameters simParams, RandomVariables randomVars,
-			Optional<SimulationStatistics> statistics) throws Exception {
+			SimulationStatistics statistics) throws Exception {
 		this.simParams = simParams;
 		this.randomVars = randomVars;
 		this.conn = SumoConnect(simParams.getSumoConfigFileName(), simParams);
@@ -63,7 +62,7 @@ public class Main implements Observer {
 		RandomVariables randomVars = new RandomVariables(simParams);
 		SimulationStatistics statistics = new SimulationStatistics(simParams);
 		statistics.setCurrentRandomVars(randomVars);
-		Main m = new Main(timestamp, simParams, randomVars, Optional.of(statistics));
+		Main m = new Main(timestamp, simParams, randomVars, statistics);
 		m.runSimulation();
 		statistics.writeStatistics(timestamp);
 	}
@@ -80,7 +79,7 @@ public class Main implements Observer {
 			Stopwatch singleRun = new Stopwatch();
 			statistics.setCurrentRandomVars(randomVars);
 
-			Main m = new Main(timestamp, simParams, randomVars, Optional.of(statistics));
+			Main m = new Main(timestamp, simParams, randomVars, statistics);
 			m.runSimulation();
 
 			singleRun.stop();
@@ -90,7 +89,7 @@ public class Main implements Observer {
 	}
 
 	private void runSimulation() throws Exception {
-		statistics.ifPresent(s -> s.setCurrentReactionTime(randomVars.reactionTime));
+		statistics.setCurrentReactionTime(randomVars.reactionTime);
 		agent.Simulation sim = new SimWarningService(conn, kpi, simParams, randomVars);
 //		agent.Simulation sim = new SimChaos(conn, kpi);
 		// getMinExpectedNumber returns present and future vehicles. If that
@@ -136,13 +135,13 @@ public class Main implements Observer {
 								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
 								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
 								kpi.addBus(vehicleID, randomVars.busMaxSpeed);
-								statistics.ifPresent(s -> s.setCurrentBusMaxSpeed(randomVars.busMaxSpeed));
+								statistics.setCurrentBusMaxSpeed(randomVars.busMaxSpeed);
 							} else if (vehicleID.startsWith(simParams.getBikePrefix())) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.bikeMaxSpeed));
 								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
 								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
 								kpi.addBike(vehicleID, randomVars.bikeMaxSpeed);
-								statistics.ifPresent(s -> s.setCurrentBikeMaxSpeed(randomVars.bikeMaxSpeed));
+								statistics.setCurrentBikeMaxSpeed(randomVars.bikeMaxSpeed);
 							}
 						}
 					}
@@ -152,7 +151,7 @@ public class Main implements Observer {
 						for (String vehicleID : ssl) {
 							if (vehicleID.startsWith(simParams.getBusPrefix())) {
 								// must be called before kpi.removeBus
-								statistics.ifPresent(s -> s.busArrived(kpi, vehicleID));
+								statistics.busArrived(kpi, vehicleID);
 								kpi.removeBus(vehicleID);
 							} else if (vehicleID.startsWith(simParams.getBikePrefix())) {
 								kpi.removeBike(vehicleID);
