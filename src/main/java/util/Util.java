@@ -5,7 +5,7 @@ import math.geom2d.line.LineSegment2D;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import main.SimulationParameters;
+import main.SimulationProperties;
 import math.geom2d.*;
 
 public class Util {
@@ -24,11 +24,11 @@ public class Util {
 		return new LineSegment2D(busStart, busEnd);
 	}
 
-	public static String mkFileName(SimulationParameters simParams, Date timestamp, String baseFileName) {
+	public static String mkFileName(SimulationProperties simParams, Date timestamp, String baseFileName) {
 		return mkFileName(simParams, timestamp, baseFileName, ".txt");
 	}
 
-	public static String mkFileName(SimulationParameters simParams, Date timestamp, String baseFileName, String extension) {
+	public static String mkFileName(SimulationProperties simParams, Date timestamp, String baseFileName, String extension) {
 		String pattern = "yyyy-MM-dd-HH-mm-ss";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		String dateStr = simpleDateFormat.format(timestamp);

@@ -11,7 +11,7 @@ import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
 import main.RandomVariables;
-import main.SimulationParameters;
+import main.SimulationProperties;
 
 public class SimWarningService extends Simulation {
 	private SumoTraciConnection conn;
@@ -21,10 +21,10 @@ public class SimWarningService extends Simulation {
 
 	private Kpi kpis;
 	private Controller controller;
-	private final SimulationParameters simParams;
+	private final SimulationProperties simParams;
 	private final RandomVariables randomVars;
 
-	public SimWarningService(SumoTraciConnection conn, Kpi kpis, SimulationParameters simParams,
+	public SimWarningService(SumoTraciConnection conn, Kpi kpis, SimulationProperties simParams,
 			RandomVariables randomVars) throws Exception {
 		this.conn = conn;
 		this.kpis = kpis;

@@ -2,7 +2,7 @@ package main;
 
 import java.util.Random;
 
-public class SimulationParameters {
+public class SimulationProperties {
 	private final static String OUT_DIR = "output";
 
 	public String getOutDir() {
@@ -160,7 +160,7 @@ public class SimulationParameters {
 		return stepDelay;
 	}
 
-	public SimulationParameters(UserInterfaceType uiType, long seed) {
+	public SimulationProperties(UserInterfaceType uiType, long seed) {
 		this.seed = seed;
 		this.random = new Random(seed);
 

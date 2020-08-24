@@ -14,7 +14,7 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 import main.RandomVariables;
-import main.SimulationParameters;
+import main.SimulationProperties;
 import util.IntegerHistogram;
 import util.Util;
 
@@ -26,9 +26,9 @@ public class SimulationStatistics {
 	private double currentBusMaxSpeed = 0;
 	private double currentReactionTime = 0;
 	private RandomVariables randomVars = null;
-	private final SimulationParameters simParams;
+	private final SimulationProperties simParams;
 
-	public SimulationStatistics(SimulationParameters simParams) {
+	public SimulationStatistics(SimulationProperties simParams) {
 		this.simParams = simParams;
 	}
 

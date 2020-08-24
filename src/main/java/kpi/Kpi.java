@@ -16,7 +16,7 @@ import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.util.SumoCommand;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
-import main.SimulationParameters;
+import main.SimulationProperties;
 import math.geom2d.line.LineSegment2D;
 import util.Util;
 
@@ -32,7 +32,7 @@ public class Kpi {
 	private final FileWriter accelerationsFile;
 	private final FileWriter speedsFile;
 
-	public Kpi(SimulationParameters simParams, SumoTraciConnection connection, Date timestamp) throws Exception {
+	public Kpi(SimulationProperties simParams, SumoTraciConnection connection, Date timestamp) throws Exception {
 		this.conn = connection;
 
 		distancesFile = new FileWriter(Util.mkFileName(simParams, timestamp, simParams.getDistancesBase()), true);

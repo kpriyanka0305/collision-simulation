@@ -10,7 +10,7 @@ import de.tudresden.ws.container.SumoColor;
 import de.tudresden.ws.container.SumoGeometry;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
-import main.SimulationParameters;
+import main.SimulationProperties;
 import math.geom2d.Point2D;
 import math.geom2d.polygon.Polygon2D;
 import math.geom2d.polygon.SimplePolygon2D;
@@ -28,7 +28,7 @@ public class Camera {
 
 	private Polygon2D fieldOfView;
 	
-	private final SimulationParameters simParams;
+	private final SimulationProperties simParams;
 
 	// FOR SUMO DRAWING
 	private SumoGeometry cameraObject = new SumoGeometry();
@@ -42,7 +42,7 @@ public class Camera {
 	// A defective camera does not detect any vehicles
 	private boolean defective;
 
-	public Camera(SimulationParameters simParams, String name, SumoTraciConnection conn, double x, double y, double size, double height, int angle,
+	public Camera(SimulationProperties simParams, String name, SumoTraciConnection conn, double x, double y, double size, double height, int angle,
 			Controller controller, boolean defective) throws Exception {
 		this.simParams = simParams;
 

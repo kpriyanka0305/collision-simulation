@@ -5,17 +5,17 @@ import java.util.Collection;
 import java.util.List;
 
 import main.RandomVariables;
-import main.SimulationParameters;
+import main.SimulationProperties;
 
 public class Controller {
 	private List<RSU> allRSU = new ArrayList<RSU>(); // all *RSU* that are connected to the *Controller*
 	private List<Camera> allCamera = new ArrayList<Camera>(); // all *Camera* that are connected to the *Controller*
 	private List<OBU> allOBU = new ArrayList<OBU>(); // all *OBU* that are connected to the *Controller*
 	
-	private final SimulationParameters simParams;
+	private final SimulationProperties simParams;
 	private final RandomVariables randomVars;
 	
-	public Controller(SimulationParameters simParams, RandomVariables randomVars) {
+	public Controller(SimulationProperties simParams, RandomVariables randomVars) {
 		this.simParams = simParams;
 		this.randomVars = randomVars;
 	}

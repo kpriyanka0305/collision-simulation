@@ -23,11 +23,11 @@ public class Main implements Observer {
 
 	private SumoTraciConnection conn;
 	private Kpi kpi;
-	private SimulationParameters simParams;
+	private SimulationProperties simParams;
 	private RandomVariables randomVars;
 	private SimulationStatistics statistics;
 
-	public Main(Date timestamp, SimulationParameters simParams, RandomVariables randomVars,
+	public Main(Date timestamp, SimulationProperties simParams, RandomVariables randomVars,
 			SimulationStatistics statistics) throws Exception {
 		this.simParams = simParams;
 		this.randomVars = randomVars;
@@ -61,7 +61,7 @@ public class Main implements Observer {
 		Random r = new Random();
 		long seed = r.nextLong();
 
-		SimulationParameters simParams = new SimulationParameters(UserInterfaceType.GUI, seed);
+		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, seed);
 		SimulationStatistics statistics = new SimulationStatistics(simParams);
 
 		RandomVariables randomVars = new RandomVariables(simParams);
@@ -75,7 +75,7 @@ public class Main implements Observer {
 		Random r = new Random();
 		long seed = r.nextLong();
 
-		SimulationParameters simParams = new SimulationParameters(UserInterfaceType.Headless, seed);
+		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.Headless, seed);
 		SimulationStatistics statistics = new SimulationStatistics(simParams);
 
 		for (int i = 0; i < simParams.getNumMonteCarloRuns(); i++) {
@@ -105,7 +105,7 @@ public class Main implements Observer {
 		conn.close();
 	}
 
-	public static SumoTraciConnection SumoConnect(String sumocfg, SimulationParameters simParams) throws Exception {
+	public static SumoTraciConnection SumoConnect(String sumocfg, SimulationProperties simParams) throws Exception {
 		SumoTraciConnection conn = new SumoTraciConnection(simParams.getSumoBin(), sumocfg);
 		conn.addOption("quit-on-end", "true");
 		conn.addOption("step-length", simParams.getStepLength() + "");

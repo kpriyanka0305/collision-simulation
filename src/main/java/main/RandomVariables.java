@@ -9,7 +9,7 @@ public class RandomVariables {
 	public final boolean defectiveITS;
 	public final double reactionTime;
 
-	public RandomVariables(SimulationParameters params) {
+	public RandomVariables(SimulationProperties params) {
 		Random r = params.getRandom();
 		this.busMaxSpeed = makePositiveRandomDouble(r, params.getBusMaxSpeedMean(), params.getBusMaxSpeedSigma());
 		this.bikeMaxSpeed = makePositiveRandomDouble(r, params.getBikeMaxSpeedMean(), params.getBikeMaxSpeedSigma());
