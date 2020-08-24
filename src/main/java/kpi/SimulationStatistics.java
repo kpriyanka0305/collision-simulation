@@ -47,11 +47,11 @@ public class SimulationStatistics {
 	public void busArrived(Kpi kpi, String busID) {
 		long busWaitingTime = kpi.getWaitingTime(busID);
 		busWaitingTimes.add(busWaitingTime);
-		boolean hardBrakingHappened = kpi.anyHardBrakings(busID, SimulationParameters.NEAR_COLLISION_DISTANCE)
+		boolean hardBrakingHappened = kpi.anyHardBrakings(busID, SimulationParameters.getNearCollisionDistance())
 				.isPresent();
 		Optional<Double> minimumDistance = kpi.getMinimumDistance(busID);
 		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed, currentReactionTime,
-				busWaitingTime * SimulationParameters.STEP_LENGTH, hardBrakingHappened,
+				busWaitingTime * SimulationParameters.getStepLength(), hardBrakingHappened,
 				currentSimParameters.defectiveITS, minimumDistance));
 		return;
 	}
@@ -64,7 +64,7 @@ public class SimulationStatistics {
 
 	private void writeSimulationParameters(Date timestamp) {
 		try {
-			String fileName = Util.mkFileName(timestamp, SimulationParameters.PARAMETERS_BASE);
+			String fileName = Util.mkFileName(timestamp, SimulationParameters.getParametersBase());
 			System.out.println("writing parameters file " + fileName);
 			FileOutputStream parametersFile = new FileOutputStream(fileName, false);
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(parametersFile);
@@ -79,9 +79,10 @@ public class SimulationStatistics {
 	public void writeSpeedsHistogramGraph(Date timestamp) {
 		FileWriter waitingTimeFile;
 		try {
-			waitingTimeFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.WAITING_TIME_BASE), true);
+			waitingTimeFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.getWaitingTimeBase()),
+					true);
 			waitingTimeFile.append(
-					busWaitingTimes.prettyPrint(waitTimeSteps -> waitTimeSteps * SimulationParameters.STEP_LENGTH));
+					busWaitingTimes.prettyPrint(waitTimeSteps -> waitTimeSteps * SimulationParameters.getStepLength()));
 			waitingTimeFile.close();
 		} catch (IOException e) {
 			System.err.println("could not write speeds histogram file");
@@ -93,7 +94,7 @@ public class SimulationStatistics {
 		try {
 			Writer writer;
 			runs.sort((s1, s2) -> Double.compare(s1.getBusWaitingTime(), s2.getBusWaitingTime()));
-			writer = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.WAITING_TIME_TABLE_BASE, ".csv"));
+			writer = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.getWaitingTimeTableBase(), ".csv"));
 			StatefulBeanToCsv<SingleRunStatistics> beanToCsv = new StatefulBeanToCsvBuilder<SingleRunStatistics>(writer)
 					.build();
 			beanToCsv.write(runs);

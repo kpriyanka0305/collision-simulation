@@ -91,8 +91,8 @@ public class Camera {
 		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(vehicleID)));
 		double length = (Double) (conn.do_job_get(Vehicle.getLength(vehicleID)));
 		double accel = (Double) (conn.do_job_get(Vehicle.getAccel(vehicleID)));
-		Point2D junctionPosition = new Point2D(SimulationParameters.REFERENCE_POINT_X,
-				SimulationParameters.REFERENCE_POINT_Y);
+		Point2D junctionPosition = new Point2D(SimulationParameters.getReferencePointX(),
+				SimulationParameters.getReferencePointY());
 		// TODO: is this correct?
 		double distanceToJunction = junctionPosition.distance(vehiclePosition) - length / 2;
 		double seconds;

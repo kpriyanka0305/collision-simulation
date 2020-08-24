@@ -52,7 +52,7 @@ public class SimWarningService extends Simulation {
 		for (String v : vehicles) {
 			Map<String, Object> vehData = readData(v);
 			String type = (String) (vehData.get("type"));
-			if (type.contains(SimulationParameters.BUS_PREFIX)) {
+			if (type.contains(SimulationParameters.getBusPrefix())) {
 				if (!allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
 					OBU obu = new OBU(v, conn, controller, simParameters);
 					allOBUs.add(obu);

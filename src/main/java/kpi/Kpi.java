@@ -35,9 +35,9 @@ public class Kpi {
 	public Kpi(SumoTraciConnection connection, Date timestamp) throws Exception {
 		this.conn = connection;
 
-		distancesFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.DISTANCES_BASE), true);
-		accelerationsFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.ACCELERATIONS_BASE), true);
-		speedsFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.SPEEDS_BASE), true);
+		distancesFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.getDistancesBase()), true);
+		accelerationsFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.getAccelerationsBase()), true);
+		speedsFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.getSpeedsBase()), true);
 	}
 
 	public void addBus(String vehicleID, double busMaxSpeed) {

@@ -1,7 +1,6 @@
 package main;
 
 import java.util.Date;
-
 import java.util.Optional;
 import java.util.Random;
 
@@ -38,7 +37,7 @@ public class Main implements Observer {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String sumocfg = SimulationParameters.CONFIG_FILE;
+		String sumocfg = SimulationParameters.getConfigFile();
 		if (args.length > 0) {
 			sumocfg = args[0];
 		}
@@ -58,8 +57,8 @@ public class Main implements Observer {
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
 		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI,
-				SimulationParameters.BUS_MAX_SPEED_MEAN, SimulationParameters.BIKE_MAX_SPEED_MEAN, false,
-				SimulationParameters.REACTION_TIME_MEAN, 0l);
+				SimulationParameters.getBusMaxSpeedMean(), SimulationParameters.getBikeMaxSpeedMean(), false,
+				SimulationParameters.getReactionTimeMean(), 0l);
 		SimulationStatistics statistics = new SimulationStatistics();
 		statistics.setCurrentSimParameters(simParameters);
 		Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
@@ -73,16 +72,16 @@ public class Main implements Observer {
 		System.out.println("seed: " + seed);
 		r.setSeed(seed);
 		SimulationStatistics statistics = new SimulationStatistics();
-		for (int i = 0; i < SimulationParameters.NUM_MONTE_CARLO_RUNS; i++) {
+		for (int i = 0; i < SimulationParameters.getNumMonteCarloRuns(); i++) {
 			Stopwatch singleRun = new Stopwatch();
 
-			double busMaxSpeed = makePositiveRandomDouble(r, SimulationParameters.BUS_MAX_SPEED_MEAN,
-					SimulationParameters.BUS_MAX_SPEED_SIGMA);
-			double bikeMaxSpeed = makePositiveRandomDouble(r, SimulationParameters.BIKE_MAX_SPEED_MEAN,
-					SimulationParameters.BIKE_MAX_SPEED_SIGMA);
-			double reactionTime = makePositiveRandomDouble(r, SimulationParameters.REACTION_TIME_MEAN,
-					SimulationParameters.REACTION_TIME_SIGMA);
-			boolean defectiveITS = makeRandomBoolean(r, SimulationParameters.DEFECTIVE_ITS_PROBABILITY);
+			double busMaxSpeed = makePositiveRandomDouble(r, SimulationParameters.getBusMaxSpeedMean(),
+					SimulationParameters.getBusMaxSpeedSigma());
+			double bikeMaxSpeed = makePositiveRandomDouble(r, SimulationParameters.getBikeMaxSpeedMean(),
+					SimulationParameters.getBikeMaxSpeedSigma());
+			double reactionTime = makePositiveRandomDouble(r, SimulationParameters.getReactionTimeMean(),
+					SimulationParameters.getReactionTimeSigma());
+			boolean defectiveITS = makeRandomBoolean(r, SimulationParameters.getDefectiveItsProbability());
 			SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed,
 					bikeMaxSpeed, defectiveITS, reactionTime, seed);
 			statistics.setCurrentSimParameters(simParameters);
@@ -128,9 +127,9 @@ public class Main implements Observer {
 	public static SumoTraciConnection SumoConnect(String sumocfg, SimulationParameters params) throws Exception {
 		SumoTraciConnection conn = new SumoTraciConnection(params.getSumoBin(), sumocfg);
 		conn.addOption("quit-on-end", "true");
-		conn.addOption("step-length", SimulationParameters.STEP_LENGTH + "");
+		conn.addOption("step-length", SimulationParameters.getStepLength() + "");
 		conn.addOption("start", "true"); // start simulation at startup
-		conn.addOption("log", SimulationParameters.OUT_DIR + "/log.txt");
+		conn.addOption("log", SimulationParameters.getOutDir() + "/log.txt");
 		conn.runServer();
 		// Mandatory when using multiple clients. I'm not sure what this is doing here.
 		conn.setOrder(1);
@@ -153,14 +152,14 @@ public class Main implements Observer {
 					SumoStringList ssl = (SumoStringList) so.object;
 					if (ssl.size() > 0) {
 						for (String vehicleID : ssl) {
-							if (vehicleID.startsWith(SimulationParameters.BUS_PREFIX)) {
+							if (vehicleID.startsWith(SimulationParameters.getBusPrefix())) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.busMaxSpeed));
 								// toggling these two parameters turns a distracted taxi into a observant one
 								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
 								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
 								kpi.addBus(vehicleID, simParameters.busMaxSpeed);
 								statistics.ifPresent(s -> s.setCurrentBusMaxSpeed(simParameters.busMaxSpeed));
-							} else if (vehicleID.startsWith(SimulationParameters.BIKE_PREFIX)) {
+							} else if (vehicleID.startsWith(SimulationParameters.getBikePrefix())) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.bikeMaxSpeed));
 								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
 								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
@@ -173,11 +172,11 @@ public class Main implements Observer {
 					SumoStringList ssl = (SumoStringList) so.object;
 					if (ssl.size() > 0) {
 						for (String vehicleID : ssl) {
-							if (vehicleID.startsWith(SimulationParameters.BUS_PREFIX)) {
+							if (vehicleID.startsWith(SimulationParameters.getBusPrefix())) {
 								// must be called before kpi.removeBus
 								statistics.ifPresent(s -> s.busArrived(kpi, vehicleID));
 								kpi.removeBus(vehicleID);
-							} else if (vehicleID.startsWith(SimulationParameters.BIKE_PREFIX)) {
+							} else if (vehicleID.startsWith(SimulationParameters.getBikePrefix())) {
 								kpi.removeBike(vehicleID);
 							}
 						}
