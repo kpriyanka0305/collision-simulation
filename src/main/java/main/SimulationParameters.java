@@ -1,6 +1,9 @@
 package main;
 
-public class SimulationParameters {
+import java.io.Serializable;
+
+public class SimulationParameters implements Serializable {
+	private static final long serialVersionUID = 4676500355283812043L;
 	public final static String OUT_DIR = "output";
 	public static final String BUS_PREFIX = "taxi";
 	public static final String BIKE_PREFIX = "bicycle";

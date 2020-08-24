@@ -67,7 +67,7 @@ public class Main implements Observer {
 		statistics.setCurrentSimParameters(simParameters);
 		Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
 		m.runSimulation();
-		statistics.writeStatisticsTable(timestamp);
+		statistics.writeStatistics(timestamp);
 	}
 
 	private static void monteCarloSimulation(String sumocfg, Date timestamp) throws Exception {
