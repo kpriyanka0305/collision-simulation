@@ -60,7 +60,6 @@ public class SimulationStatistics {
 	}
 
 	public void writeStatistics(Date timestamp) throws IOException {
-		simParams.store(timestamp);
 		writeSpeedsHistogramGraph(timestamp);
 		writeStatisticsTable(timestamp);
 	}

@@ -45,9 +45,14 @@ public class Main implements Observer {
 		Random r = new Random();
 		long seed = r.nextLong();
 
-		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, UncertaintyType.Crisp, seed);
-//		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.Headless, UncertaintyType.MonteCarlo, seed);
-//		SimulationProperties simParams = new SimulationProperties("output/" + "2020-08-24-16-22-33" + "/parameters.properties");
+//		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, UncertaintyType.Crisp, seed);
+		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.Headless, UncertaintyType.MonteCarlo, seed);
+//		SimulationProperties simParams = new SimulationProperties(
+//				"output/" + "2020-08-24-17-08-35" + "/simulation.properties");
+//		simParams.setUiType(UserInterfaceType.GUI);
+
+		// save simulation properties
+		simParams.store(timestamp);
 
 		SimulationStatistics statistics = new SimulationStatistics(simParams);
 
