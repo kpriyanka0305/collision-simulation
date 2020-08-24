@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import main.RandomVariables;
 import main.SimulationParameters;
 
 public class Controller {
@@ -12,9 +13,11 @@ public class Controller {
 	private List<OBU> allOBU = new ArrayList<OBU>(); // all *OBU* that are connected to the *Controller*
 	
 	private final SimulationParameters simParameters;
+	private final RandomVariables randomVars;
 	
-	public Controller(SimulationParameters simParameters) {
+	public Controller(SimulationParameters simParameters, RandomVariables randomVars) {
 		this.simParameters = simParameters;
+		this.randomVars = randomVars;
 	}
 
 	public void SendAllDataCamera(Collection<VehicleData> vehicleData) throws Exception {
@@ -66,7 +69,7 @@ public class Controller {
 			vehicleSecond = vehicle.getSeconds();
 
 			if (vehicleType.contains(SimulationParameters.getBikePrefix())) {
-				if (vehicleSecond <= simParameters.reactionTime) {
+				if (vehicleSecond <= randomVars.reactionTime) {
 					minorVehicleFlag = true;
 				}
 			} else if (vehicleType.contains(SimulationParameters.getPedestrianPrefix())) {
@@ -74,7 +77,7 @@ public class Controller {
 					minorVehicleFlag = true;
 				}
 			} else if (vehicleType.contains(SimulationParameters.getBusPrefix())) {
-				if (vehicleSecond <= simParameters.reactionTime) {
+				if (vehicleSecond <= randomVars.reactionTime) {
 					busIDList.add(vehicle.getId());
 					majorVehicleFlag = true;
 				}

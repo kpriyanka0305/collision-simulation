@@ -25,11 +25,13 @@ public class Main implements Observer {
 	private SumoTraciConnection conn;
 	private Kpi kpi;
 	private SimulationParameters simParameters;
+	private RandomVariables randomVars;
 	private Optional<SimulationStatistics> statistics = Optional.empty();
 
-	public Main(Date timestamp, String sumocfg, SimulationParameters simParameters,
+	public Main(Date timestamp, String sumocfg, SimulationParameters simParameters, RandomVariables randomVars,
 			Optional<SimulationStatistics> statistics) throws Exception {
 		this.simParameters = simParameters;
+		this.randomVars = randomVars;
 		this.conn = SumoConnect(sumocfg, simParameters);
 		this.kpi = new Kpi(conn, timestamp);
 		this.statistics = statistics;
@@ -56,12 +58,11 @@ public class Main implements Observer {
 	}
 
 	private static void crispSimulation(String sumocfg, Date timestamp) throws Exception {
-		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI,
-				SimulationParameters.getBusMaxSpeedMean(), SimulationParameters.getBikeMaxSpeedMean(), false,
-				SimulationParameters.getReactionTimeMean(), 0l);
+		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI, 0l);
+		RandomVariables randomVars = new RandomVariables(simParameters);
 		SimulationStatistics statistics = new SimulationStatistics();
-		statistics.setCurrentSimParameters(simParameters);
-		Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
+		statistics.setCurrentSimParameters(randomVars);
+		Main m = new Main(timestamp, sumocfg, simParameters, randomVars, Optional.of(statistics));
 		m.runSimulation();
 		statistics.writeStatistics(timestamp);
 	}
@@ -69,23 +70,16 @@ public class Main implements Observer {
 	private static void monteCarloSimulation(String sumocfg, Date timestamp) throws Exception {
 		Random r = new Random();
 		long seed = r.nextLong();
-		System.out.println("seed: " + seed);
-		r.setSeed(seed);
+
+		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, seed);
+		RandomVariables randomVars = new RandomVariables(simParameters);
+
 		SimulationStatistics statistics = new SimulationStatistics();
 		for (int i = 0; i < SimulationParameters.getNumMonteCarloRuns(); i++) {
 			Stopwatch singleRun = new Stopwatch();
+			statistics.setCurrentSimParameters(randomVars);
 
-			double busMaxSpeed = makePositiveRandomDouble(r, SimulationParameters.getBusMaxSpeedMean(),
-					SimulationParameters.getBusMaxSpeedSigma());
-			double bikeMaxSpeed = makePositiveRandomDouble(r, SimulationParameters.getBikeMaxSpeedMean(),
-					SimulationParameters.getBikeMaxSpeedSigma());
-			double reactionTime = makePositiveRandomDouble(r, SimulationParameters.getReactionTimeMean(),
-					SimulationParameters.getReactionTimeSigma());
-			boolean defectiveITS = makeRandomBoolean(r, SimulationParameters.getDefectiveItsProbability());
-			SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, busMaxSpeed,
-					bikeMaxSpeed, defectiveITS, reactionTime, seed);
-			statistics.setCurrentSimParameters(simParameters);
-			Main m = new Main(timestamp, sumocfg, simParameters, Optional.of(statistics));
+			Main m = new Main(timestamp, sumocfg, simParameters, randomVars, Optional.of(statistics));
 			m.runSimulation();
 
 			singleRun.stop();
@@ -94,26 +88,9 @@ public class Main implements Observer {
 		statistics.writeStatistics(timestamp);
 	}
 
-	// returns a non-null positive number of the normal distribution
-	private static double makePositiveRandomDouble(Random r, double mean, double sigma) {
-		double result = -1;
-		do {
-			result = (r.nextGaussian() * sigma) + mean;
-		} while (result < 0.0000001);
-		return result;
-	}
-
-	// returns a boolean that is true with probability p
-	private static boolean makeRandomBoolean(Random r, double p) throws IllegalArgumentException {
-		if (p < 0 || p > 1) {
-			throw new IllegalArgumentException("p must be between 0 and 1");
-		}
-		return r.nextDouble() < p;
-	}
-
 	private void runSimulation() throws Exception {
-		statistics.ifPresent(s -> s.setCurrentReactionTime(simParameters.reactionTime));
-		agent.Simulation sim = new SimWarningService(conn, kpi, simParameters);
+		statistics.ifPresent(s -> s.setCurrentReactionTime(randomVars.reactionTime));
+		agent.Simulation sim = new SimWarningService(conn, kpi, simParameters, randomVars);
 //		agent.Simulation sim = new SimChaos(conn, kpi);
 		// getMinExpectedNumber returns present and future vehicles. If that
 		// number is 0 we are done.
@@ -153,18 +130,18 @@ public class Main implements Observer {
 					if (ssl.size() > 0) {
 						for (String vehicleID : ssl) {
 							if (vehicleID.startsWith(SimulationParameters.getBusPrefix())) {
-								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.busMaxSpeed));
+								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.busMaxSpeed));
 								// toggling these two parameters turns a distracted taxi into a observant one
 								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
 								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
-								kpi.addBus(vehicleID, simParameters.busMaxSpeed);
-								statistics.ifPresent(s -> s.setCurrentBusMaxSpeed(simParameters.busMaxSpeed));
+								kpi.addBus(vehicleID, randomVars.busMaxSpeed);
+								statistics.ifPresent(s -> s.setCurrentBusMaxSpeed(randomVars.busMaxSpeed));
 							} else if (vehicleID.startsWith(SimulationParameters.getBikePrefix())) {
-								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, simParameters.bikeMaxSpeed));
+								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.bikeMaxSpeed));
 								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
 								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
-								kpi.addBike(vehicleID, simParameters.bikeMaxSpeed);
-								statistics.ifPresent(s -> s.setCurrentBikeMaxSpeed(simParameters.bikeMaxSpeed));
+								kpi.addBike(vehicleID, randomVars.bikeMaxSpeed);
+								statistics.ifPresent(s -> s.setCurrentBikeMaxSpeed(randomVars.bikeMaxSpeed));
 							}
 						}
 					}

@@ -1,9 +1,7 @@
 package kpi;
 
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +13,7 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
+import main.RandomVariables;
 import main.SimulationParameters;
 import util.IntegerHistogram;
 import util.Util;
@@ -26,10 +25,10 @@ public class SimulationStatistics {
 	private double currentBikeMaxSpeed = 0;
 	private double currentBusMaxSpeed = 0;
 	private double currentReactionTime = 0;
-	private SimulationParameters currentSimParameters = null;
+	private RandomVariables randomVars = null;
 
-	public void setCurrentSimParameters(SimulationParameters currentSimParameters) {
-		this.currentSimParameters = currentSimParameters;
+	public void setCurrentSimParameters(RandomVariables randomVars) {
+		this.randomVars = randomVars;
 	}
 
 	public void setCurrentBikeMaxSpeed(double currentBikeMaxSpeed) {
@@ -52,7 +51,7 @@ public class SimulationStatistics {
 		Optional<Double> minimumDistance = kpi.getMinimumDistance(busID);
 		runs.add(new SingleRunStatistics(currentBikeMaxSpeed, currentBusMaxSpeed, currentReactionTime,
 				busWaitingTime * SimulationParameters.getStepLength(), hardBrakingHappened,
-				currentSimParameters.defectiveITS, minimumDistance));
+				randomVars.defectiveITS, minimumDistance));
 		return;
 	}
 
@@ -63,17 +62,17 @@ public class SimulationStatistics {
 	}
 
 	private void writeSimulationParameters(Date timestamp) {
-		try {
-			String fileName = Util.mkFileName(timestamp, SimulationParameters.getParametersBase());
-			System.out.println("writing parameters file " + fileName);
-			FileOutputStream parametersFile = new FileOutputStream(fileName, false);
-			ObjectOutputStream objectOutputStream = new ObjectOutputStream(parametersFile);
-			objectOutputStream.writeObject(currentSimParameters);
-			objectOutputStream.close();
-		} catch (IOException e) {
-			System.err.println("could not write parameters file");
-			e.printStackTrace();
-		}
+//		try {
+//			String fileName = Util.mkFileName(timestamp, SimulationParameters.getParametersBase());
+//			System.out.println("writing parameters file " + fileName);
+//			FileOutputStream parametersFile = new FileOutputStream(fileName, false);
+//			ObjectOutputStream objectOutputStream = new ObjectOutputStream(parametersFile);
+//			objectOutputStream.writeObject(currentSimParameters);
+//			objectOutputStream.close();
+//		} catch (IOException e) {
+//			System.err.println("could not write parameters file");
+//			e.printStackTrace();
+//		}
 	}
 
 	public void writeSpeedsHistogramGraph(Date timestamp) {

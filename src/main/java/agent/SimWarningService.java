@@ -10,6 +10,7 @@ import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.ws.container.SumoPosition2D;
 import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
+import main.RandomVariables;
 import main.SimulationParameters;
 
 public class SimWarningService extends Simulation {
@@ -21,11 +22,14 @@ public class SimWarningService extends Simulation {
 	private Kpi kpis;
 	private Controller controller;
 	private final SimulationParameters simParameters;
+	private final RandomVariables randomVars;
 
-	public SimWarningService(SumoTraciConnection conn, Kpi kpis, SimulationParameters simParameters) throws Exception {
+	public SimWarningService(SumoTraciConnection conn, Kpi kpis, SimulationParameters simParameters,
+			RandomVariables randomVars) throws Exception {
 		this.conn = conn;
 		this.kpis = kpis;
 		this.simParameters = simParameters;
+		this.randomVars = randomVars;
 
 		RsusStatus.put("East", false);
 		RsusStatus.put("West", false);
@@ -106,10 +110,10 @@ public class SimWarningService extends Simulation {
 	}
 
 	private void spawnElements() throws Exception {
-		controller = new Controller(simParameters);
+		controller = new Controller(simParameters, randomVars);
 //		allRSUs.add(new RSU("East", 15.5, -10.5, conn, controller, this));
 		allCameras.add(new Camera("CameraOne", conn, /* x */ 99.0, /* y */ -13.0, /* size */ 2.0, /* height */ 0.7,
-				/* angle */ 110, controller, simParameters.defectiveITS));
+				/* angle */ 110, controller, randomVars.defectiveITS));
 	}
 
 	private Map<String, Object> readData(String id) throws Exception {

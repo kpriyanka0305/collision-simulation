@@ -34,7 +34,11 @@ public class SimulationParameters {
 	}
 
 	// We store the random seed to be able to reproduce runs
-	private long randomSeed;
+	private final long seed;
+
+	public long getSeed() {
+		return seed;
+	}
 
 	// The center of the junction that the warning system should control.
 	// We don't want to use sumo's position of the junction, because that is not
@@ -114,12 +118,6 @@ public class SimulationParameters {
 		return NEAR_COLLISION_DISTANCE;
 	}
 
-	// These values change for every run
-	public final double busMaxSpeed;
-	public final double bikeMaxSpeed;
-	public final boolean defectiveITS;
-	public final double reactionTime;
-
 	private final static String DISTANCES_BASE = "distances";
 	private final static String ACCELERATIONS_BASE = "accelerations";
 	private final static String SPEEDS_BASE = "speeds";
@@ -159,13 +157,8 @@ public class SimulationParameters {
 		return stepDelay;
 	}
 
-	public SimulationParameters(UserInterfaceType uiType, double busMaxSpeed, double bikeMaxSpeed, boolean defectiveITS,
-			double reactionTime, long seed) {
-		this.busMaxSpeed = busMaxSpeed;
-		this.bikeMaxSpeed = bikeMaxSpeed;
-		this.defectiveITS = defectiveITS;
-		this.reactionTime = reactionTime;
-		this.randomSeed = seed;
+	public SimulationParameters(UserInterfaceType uiType, long seed) {
+		this.seed = seed;
 
 		switch (uiType) {
 		case Headless:
