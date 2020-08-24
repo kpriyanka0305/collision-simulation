@@ -154,7 +154,8 @@ public class Main implements Observer {
 								// must be called before kpi.removeBus
 								statistics.busArrived(kpi, vehicleID);
 								kpi.removeBus(vehicleID);
-							} else if (vehicleID.startsWith(simParams.getBikePrefix())) {
+							} else if (vehicleID.startsWith(simParams.getBikePrefix())
+									|| vehicleID.startsWith(simParams.getPedestrianPrefix())) {
 								kpi.removeBike(vehicleID);
 							}
 						}
