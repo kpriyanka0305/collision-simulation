@@ -1,126 +1,93 @@
 package main;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.Random;
 
+/* There are two cases we want to handle:
+ * 1. Fresh simulation run, where the seed is randomly chosen and parameters come from the default .properties file.
+ * 2. Reproduced simulation run, where seed and parameters come from the recorded .properties file.
+ */
 public class SimulationProperties {
-	private final static String OUT_DIR = "output";
-
 	public String getOutDir() {
-		return OUT_DIR;
+		return getProperty("outDir");
 	}
 
-	private static final String BUS_PREFIX = "taxi";
-	private static final String BIKE_PREFIX = "bicycle";
-	private static final String PEDESTRIAN_PREFIX = "pedestrian";
-
 	public String getBusPrefix() {
-		return BUS_PREFIX;
+		return getProperty("busPrefix");
 	}
 
 	public String getBikePrefix() {
-		return BIKE_PREFIX;
+		return getProperty("bikePrefix");
 	}
 
 	public String getPedestrianPrefix() {
-		return PEDESTRIAN_PREFIX;
+		return getProperty("pedestrianPrefix");
 	}
-
-	private static final String SUMO_GUI_BIN = "sumo-gui";
-	private static final String SUMO_CLI_BIN = "sumo";
-	private final String sumoBin;
-
-	private static final String CONFIG_FILE = "data/stationsplein/stationsplein.sumocfg";
 
 	public String getSumoConfigFileName() {
-		return CONFIG_FILE;
-	}
-
-	// We store the random seed to be able to reproduce runs
-	private final long seed;
-	private Random random;
-
-	public Random getRandom() {
-		return random;
+		return getProperty("configFile");
 	}
 
 	// The center of the junction that the warning system should control.
 	// We don't want to use sumo's position of the junction, because that is not
 	// always in the center. Better to specify it manually. Get the coordinates by
 	// hovering the mouse over the junction center in netedit.
-	private static final double REFERENCE_POINT_X = 67.83;
-	private static final double REFERENCE_POINT_Y = 24.31;
-
 	public double getReferencePointX() {
-		return REFERENCE_POINT_X;
+		return Double.parseDouble(getProperty("referencePointX"));
 	}
 
 	public double getReferencePointY() {
-		return REFERENCE_POINT_Y;
+		return Double.parseDouble(getProperty("referencePointY"));
 	}
 
 	// simulation step length is in seconds
-	private static final double STEP_LENGTH = 0.1;
-
 	public double getStepLength() {
-		return STEP_LENGTH;
+		return Double.parseDouble(getProperty("stepLength"));
 	}
 
-	private final long GUI_STEP_DELAY = 10;
-	private final long HEADLESS_STEP_DELAY = 0;
-	private final long stepDelay;
-
-	// how often the monte carlo simulation should be run
-	private static final int NUM_MONTE_CARLO_RUNS = 10;
-
+	// how often the Monte Carlo simulation should be run
 	public int getNumMonteCarloRuns() {
-		return NUM_MONTE_CARLO_RUNS;
+		return Integer.parseInt(getProperty("numMonteCarloRuns"));
 	}
-
-	private static final double BUS_MAX_SPEED_SIGMA = 1.5;
-	private static final double BUS_MAX_SPEED_MEAN = 8.3;
 
 	public double getBusMaxSpeedSigma() {
-		return BUS_MAX_SPEED_SIGMA;
+		return Double.parseDouble(getProperty("busSpeedSigma"));
 	}
 
 	public double getBusMaxSpeedMean() {
-		return BUS_MAX_SPEED_MEAN;
+		return Double.parseDouble(getProperty("busSpeedMean"));
 	}
 
-	private static final double BIKE_MAX_SPEED_SIGMA = 1.5;
-	private static final double BIKE_MAX_SPEED_MEAN = 4.7;
-
 	public double getBikeMaxSpeedSigma() {
-		return BIKE_MAX_SPEED_SIGMA;
+		return Double.parseDouble(getProperty("bikeSpeedSigma"));
 	}
 
 	public double getBikeMaxSpeedMean() {
-		return BIKE_MAX_SPEED_MEAN;
+		return Double.parseDouble(getProperty("bikeSpeedMean"));
 	}
 
-	private static final double REACTION_TIME_SIGMA = 0.01;
-	private static final double REACTION_TIME_MEAN = 3.5;
-
 	public double getReactionTimeSigma() {
-		return REACTION_TIME_SIGMA;
+		return Double.parseDouble(getProperty("reactionTimeSigma"));
 	}
 
 	public double getReactionTimeMean() {
-		return REACTION_TIME_MEAN;
+		return Double.parseDouble(getProperty("reactionTimeMean"));
 	}
-
-	private static final double DEFECTIVE_ITS_PROBABILITY = 1.0;
 
 	public double getDefectiveItsProbability() {
-		return DEFECTIVE_ITS_PROBABILITY;
+		return Double.parseDouble(getProperty("defectiveItsProbability"));
 	}
-
-	private static final double NEAR_COLLISION_DISTANCE = 2.0;
 
 	public double getNearCollisionDistance() {
-		return NEAR_COLLISION_DISTANCE;
+		return Double.parseDouble(getProperty("nearCollisionDistance"));
 	}
 
+	// These don't need to change, don't need to be in the properties file, can be
+	// hardcoded
 	private final static String DISTANCES_BASE = "distances";
 	private final static String ACCELERATIONS_BASE = "accelerations";
 	private final static String SPEEDS_BASE = "speeds";
@@ -152,17 +119,82 @@ public class SimulationProperties {
 		return PARAMETERS_BASE;
 	}
 
+	// We store the random seed to be able to reproduce runs
+	private final long seed;
+	private final Random random;
+
+	public Random getRandom() {
+		return random;
+	}
+
+	// TODO: how to handle this?
+	private static final String SUMO_GUI_BIN = "sumo-gui";
+	private static final String SUMO_CLI_BIN = "sumo";
+	private final String sumoBin;
+
 	public String getSumoBin() {
 		return sumoBin;
 	}
+
+	private final long GUI_STEP_DELAY = 10;
+	private final long HEADLESS_STEP_DELAY = 0;
+	private final long stepDelay;
 
 	public long getStepDelay() {
 		return stepDelay;
 	}
 
-	public SimulationProperties(UserInterfaceType uiType, long seed) {
+	private final Properties prop;
+
+	private String getProperty(String propName) {
+		String result = prop.getProperty(propName);
+		if (result == null) {
+			throw new IllegalArgumentException("no such property: " + propName);
+		}
+		return result;
+	}
+
+	/**
+	 * This constructor is for reproduced simulation runs. All properties come from
+	 * the recorded .properties file, and ideally we should see identical behaviour.
+	 * 
+	 * @param propertyFilename The property file to load.
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public SimulationProperties(String propertyFilename) throws FileNotFoundException, IOException {
+		prop = new Properties();
+		prop.load(new FileInputStream(propertyFilename));
+
+		this.seed = Long.parseLong(prop.getProperty("seed"));
+		this.random = new Random(seed);
+
+		this.stepDelay = Integer.parseInt(prop.getProperty("stepDelay"));
+		this.sumoBin = prop.getProperty("sumoBin");
+	}
+
+	/**
+	 * This constructor is for fresh simulation runs. The seed should be randomly
+	 * chosen by the main function.
+	 * 
+	 * @param uiType
+	 * @param seed
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public SimulationProperties(UserInterfaceType uiType, long seed) throws FileNotFoundException, IOException {
+		prop = new Properties();
+		prop.load(new FileInputStream("simulation.properties"));
+
+		// The file git.properties is created by the git maven plugin
+		// https://github.com/git-commit-id/git-commit-id-maven-plugin
+		Properties gitProp = new Properties();
+		gitProp.load(new FileInputStream("git.properties"));
+		prop.setProperty("git.commit.id.full", gitProp.getProperty("git.commit.id.full"));
+
 		this.seed = seed;
 		this.random = new Random(seed);
+		prop.setProperty("seed", "" + seed);
 
 		switch (uiType) {
 		case Headless:
@@ -176,5 +208,9 @@ public class SimulationProperties {
 		default:
 			throw new IllegalArgumentException("Unknown UserInterfaceType");
 		}
+	}
+
+	public void store(String fileName) throws IOException {
+		prop.store(new FileWriter(fileName), "SimulationProperties");
 	}
 }

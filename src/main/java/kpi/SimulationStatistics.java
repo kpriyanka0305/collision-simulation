@@ -1,5 +1,6 @@
 package kpi;
 
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -67,17 +68,13 @@ public class SimulationStatistics {
 	}
 
 	private void writeSimulationParameters(Date timestamp) {
-//		try {
-//			String fileName = Util.mkFileName(timestamp, SimulationParameters.getParametersBase());
-//			System.out.println("writing parameters file " + fileName);
-//			FileOutputStream parametersFile = new FileOutputStream(fileName, false);
-//			ObjectOutputStream objectOutputStream = new ObjectOutputStream(parametersFile);
-//			objectOutputStream.writeObject(currentSimParameters);
-//			objectOutputStream.close();
-//		} catch (IOException e) {
-//			System.err.println("could not write parameters file");
-//			e.printStackTrace();
-//		}
+		try {
+			String fileName = Util.mkFileName(simParams, timestamp, simParams.getParametersBase());
+			simParams.store(fileName);
+		} catch (IOException e) {
+			System.err.println("could not write parameters file");
+			e.printStackTrace();
+		}
 	}
 
 	public void writeSpeedsHistogramGraph(Date timestamp) {
