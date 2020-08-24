@@ -67,21 +67,19 @@ public class SimWarningService extends Simulation {
 			} else if (type.contains("bicycle-distracted")) {
 				// We don't want this to happen for now
 				throw new UnsupportedOperationException("support for distracted bicycles not implemented");
-				/*
-				double distanceToJunction = (Double) (vehData.get("distanceToJunction"));
-				double speed = (Double) (vehData.get("speed"));
-				boolean eastRsu = (Boolean) (RsusStatus.get("East"));
-				String roadId = (String) (vehData.get("roadId"));
-				if (eastRsu && roadId.contains("i")) {
-					if (distanceToJunction > rsuDistance && distanceToJunction < rsuDistance + cyclistRange) {
-						conn.do_job_set(Vehicle.setSpeed(v, 0.0));
-					}
-				} else {
-					if (speed == 0) {
-						conn.do_job_set(Vehicle.setSpeed(v, simParameters.bikeMaxSpeed));
-					}
-				}
-				*/
+//				double distanceToJunction = (Double) (vehData.get("distanceToJunction"));
+//				double speed = (Double) (vehData.get("speed"));
+//				boolean eastRsu = (Boolean) (RsusStatus.get("East"));
+//				String roadId = (String) (vehData.get("roadId"));
+//				if (eastRsu && roadId.contains("i")) {
+//					if (distanceToJunction > rsuDistance && distanceToJunction < rsuDistance + cyclistRange) {
+//						conn.do_job_set(Vehicle.setSpeed(v, 0.0));
+//					}
+//				} else {
+//					if (speed == 0) {
+//						conn.do_job_set(Vehicle.setSpeed(v, simParameters.bikeMaxSpeed));
+//					}
+//				}
 			}
 		}
 
