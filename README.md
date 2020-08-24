@@ -45,8 +45,11 @@ Compile collision-simulation
       $ mvn compile
       $ mvn exec:java -Dexec.mainClass=main.Main
 
-- Alternatively, generate eclipse project from mvn
-
-      $ mvn eclipse:eclipse
-
-- Open in eclipse, and run from eclipse
+- To use from within eclipse
+  - First install the M2Eclipse plugin https://www.eclipse.org/m2e/index.html
+  - Then import the project pom.xml
+  - Create a maven run configuration with Goals: compile exec:java
+  - Parameters exec.mainClass = main.Main
+  - To make this the active run configuration, you have to change an option in Eclipse:
+  - Window -> Preferences -> Run/Debug -> Launching -> Launch Operations. You
+    can choose to always run the previous application.
