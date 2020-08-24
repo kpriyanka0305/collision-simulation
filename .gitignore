@@ -2,3 +2,4 @@ target/
 .settings/
 output/2020-*/
 git.properties
+output/log.txt
