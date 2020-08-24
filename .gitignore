@@ -1,6 +1,4 @@
 target/
 .settings/
-output/*.txt
-output/*.csv
-output/*.pdf
+output/2020-*/
 git.properties
