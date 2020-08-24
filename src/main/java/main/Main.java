@@ -55,7 +55,7 @@ public class Main implements Observer {
 
 		switch (simParams.getUncertaintyType()) {
 		case Crisp: {
-			RandomVariables randomVars = new RandomVariables(simParams);
+			RandomVariables randomVars = new RandomVariables(simParams, simParams.getUncertaintyType());
 			statistics.setCurrentRandomVars(randomVars);
 			Main m = new Main(timestamp, simParams, randomVars, statistics);
 			m.runSimulation();
@@ -65,7 +65,7 @@ public class Main implements Observer {
 			for (int i = 0; i < simParams.getNumMonteCarloRuns(); i++) {
 				Stopwatch singleRun = new Stopwatch();
 
-				RandomVariables randomVars = new RandomVariables(simParams);
+				RandomVariables randomVars = new RandomVariables(simParams, simParams.getUncertaintyType());
 				statistics.setCurrentRandomVars(randomVars);
 				Main m = new Main(timestamp, simParams, randomVars, statistics);
 				m.runSimulation();

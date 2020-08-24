@@ -9,12 +9,27 @@ public class RandomVariables {
 	public final boolean defectiveITS;
 	public final double reactionTime;
 
-	public RandomVariables(SimulationProperties params) {
-		Random r = params.getRandom();
-		this.busMaxSpeed = makePositiveRandomDouble(r, params.getBusMaxSpeedMean(), params.getBusMaxSpeedSigma());
-		this.bikeMaxSpeed = makePositiveRandomDouble(r, params.getBikeMaxSpeedMean(), params.getBikeMaxSpeedSigma());
-		this.reactionTime = makePositiveRandomDouble(r, params.getReactionTimeMean(), params.getReactionTimeSigma());
-		this.defectiveITS = makeRandomBoolean(r, params.getDefectiveItsProbability());
+	public RandomVariables(SimulationProperties params, UncertaintyType uncertaintyType) {
+		switch (uncertaintyType) {
+		case MonteCarlo:
+			Random r = params.getRandom();
+			this.busMaxSpeed = makePositiveRandomDouble(r, params.getBusMaxSpeedMean(), params.getBusMaxSpeedSigma());
+			this.bikeMaxSpeed = makePositiveRandomDouble(r, params.getBikeMaxSpeedMean(),
+					params.getBikeMaxSpeedSigma());
+			this.reactionTime = makePositiveRandomDouble(r, params.getReactionTimeMean(),
+					params.getReactionTimeSigma());
+			this.defectiveITS = makeRandomBoolean(r, params.getDefectiveItsProbability());
+			break;
+		case Crisp:
+			this.busMaxSpeed = params.getBusMaxSpeedMean();
+			this.bikeMaxSpeed = params.getBikeMaxSpeedMean();
+			this.reactionTime = params.getReactionTimeMean();
+			this.defectiveITS = params.getDefectiveItsProbability() > 0.5;
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown UncertaintyType " + uncertaintyType);
+		}
+
 	}
 
 	// returns a non-null positive number of the normal distribution
