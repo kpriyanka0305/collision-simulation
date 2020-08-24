@@ -49,8 +49,10 @@ public class Main implements Observer {
 		switch (simulationType) {
 		case Crisp:
 			crispSimulation(timestamp);
+			break;
 		case MonteCarlo:
 			monteCarloSimulation(timestamp);
+			break;
 		}
 
 		totalTime.stop();
