@@ -61,14 +61,9 @@ public class SimulationStatistics {
 	}
 
 	public void writeStatistics(Date timestamp) throws IOException {
-		writeSimulationParameters(timestamp);
+		simParams.store(timestamp);
 		writeSpeedsHistogramGraph(timestamp);
 		writeStatisticsTable(timestamp);
-	}
-
-	private void writeSimulationParameters(Date timestamp) throws IOException {
-		String fileName = Util.mkFileName(simParams, timestamp, simParams.getParametersBase());
-		simParams.store(fileName);
 	}
 
 	public void writeSpeedsHistogramGraph(Date timestamp) throws IOException {

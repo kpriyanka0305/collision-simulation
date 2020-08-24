@@ -4,8 +4,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
+
+import util.Util;
 
 /* There are two cases we want to handle:
  * 1. Fresh simulation run, where the seed is randomly chosen and parameters come from the default .properties file.
@@ -93,7 +96,7 @@ public class SimulationProperties {
 	private final static String SPEEDS_BASE = "speeds";
 	private final static String WAITING_TIME_BASE = "waitingTime";
 	private final static String WAITING_TIME_TABLE_BASE = "waitingTimeTable";
-	private final static String PARAMETERS_BASE = "parameters";
+	private final static String PARAMETERS_BASE = "simulation";
 
 	public String getDistancesBase() {
 		return DISTANCES_BASE;
@@ -223,7 +226,8 @@ public class SimulationProperties {
 		prop.setProperty("stepDelay", "" + stepDelay);
 	}
 
-	public void store(String fileName) throws IOException {
+	public void store(Date timestamp) throws IOException {
+		String fileName = Util.mkFileName(this, timestamp, this.getParametersBase(), ".properties");
 		prop.store(new FileWriter(fileName), "SimulationProperties");
 	}
 }
