@@ -35,16 +35,16 @@ public class SimulationParameters implements Serializable {
 	// how often the monte carlo simulation should be run
 	public static final int NUM_MONTE_CARLO_RUNS = 50;
 
-	static final double BUS_MAX_SPEED_SIGMA = 0.01;
+	static final double BUS_MAX_SPEED_SIGMA = 1.5;
 	static final double BUS_MAX_SPEED_MEAN = 8.3;
 
-	static final double BIKE_MAX_SPEED_SIGMA = 0.01;
+	static final double BIKE_MAX_SPEED_SIGMA = 1.5;
 	static final double BIKE_MAX_SPEED_MEAN = 4.7;
-	
-	static final double REACTION_TIME_SIGMA = 1.5;
+
+	static final double REACTION_TIME_SIGMA = 0.01;
 	static final double REACTION_TIME_MEAN = 3.5;
 
-	public static final double DEFECTIVE_ITS_PROBABILITY = 0.0;
+	public static final double DEFECTIVE_ITS_PROBABILITY = 1.0;
 
 	public static final double NEAR_COLLISION_DISTANCE = 2.0;
 
