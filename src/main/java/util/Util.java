@@ -33,6 +33,6 @@ public class Util {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		String dateStr = simpleDateFormat.format(timestamp);
 
-		return SimulationParameters.OUT_DIR + baseFileName + dateStr + extension;
+		return SimulationParameters.OUT_DIR + "/" + baseFileName + dateStr + extension;
 	}
 }

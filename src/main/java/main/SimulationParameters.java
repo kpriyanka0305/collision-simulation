@@ -47,11 +47,12 @@ public class SimulationParameters {
 	public final boolean defectiveITS;
 	public final double reactionTime;
 
-	public final static String DISTANCES_BASE = "/distances";
-	public final static String ACCELERATIONS_BASE = "/accelerations";
-	public final static String SPEEDS_BASE = "/speeds";
-	public final static String WAITING_TIME_BASE = "/waitingTime";
-	public final static String WAITING_TIME_TABLE_BASE = "/waitingTimeTable";
+	public final static String DISTANCES_BASE = "distances";
+	public final static String ACCELERATIONS_BASE = "accelerations";
+	public final static String SPEEDS_BASE = "speeds";
+	public final static String WAITING_TIME_BASE = "waitingTime";
+	public final static String WAITING_TIME_TABLE_BASE = "waitingTimeTable";
+	public static final String PARAMETERS_BASE = "parameters";
 
 	public String getSumoBin() {
 		return sumoBin;
