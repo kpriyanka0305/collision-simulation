@@ -127,17 +127,16 @@ public class SimulationProperties {
 		return random;
 	}
 
-	// TODO: how to handle this?
 	private static final String SUMO_GUI_BIN = "sumo-gui";
 	private static final String SUMO_CLI_BIN = "sumo";
-	private final String sumoBin;
+	// not final, we might want to change this after loading from file
+	private String sumoBin;
 
 	public String getSumoBin() {
 		return sumoBin;
 	}
 
 	private final long GUI_STEP_DELAY = 10;
-	private final long HEADLESS_STEP_DELAY = 0;
 	private final long stepDelay;
 
 	public long getStepDelay() {
@@ -154,9 +153,15 @@ public class SimulationProperties {
 		return result;
 	}
 
+	private final UncertaintyType uncertaintyType;
+
+	public UncertaintyType getUncertaintyType() {
+		return uncertaintyType;
+	}
+
 	/**
 	 * This constructor is for reproduced simulation runs. All properties come from
-	 * the recorded .properties file, and ideally we should see identical behaviour.
+	 * the recorded .properties file, and ideally we should see identical behavior.
 	 * 
 	 * @param propertyFilename The property file to load.
 	 * @throws FileNotFoundException
@@ -166,11 +171,12 @@ public class SimulationProperties {
 		prop = new Properties();
 		prop.load(new FileInputStream(propertyFilename));
 
-		this.seed = Long.parseLong(prop.getProperty("seed"));
+		this.seed = Long.parseLong(getProperty("seed"));
 		this.random = new Random(seed);
 
-		this.stepDelay = Integer.parseInt(prop.getProperty("stepDelay"));
-		this.sumoBin = prop.getProperty("sumoBin");
+		this.uncertaintyType = UncertaintyType.valueOf(getProperty("uncertaintyType"));
+		this.stepDelay = Integer.parseInt(getProperty("stepDelay"));
+		this.sumoBin = getProperty("sumoBin");
 	}
 
 	/**
@@ -182,7 +188,10 @@ public class SimulationProperties {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public SimulationProperties(UserInterfaceType uiType, long seed) throws FileNotFoundException, IOException {
+	public SimulationProperties(UserInterfaceType uiType, UncertaintyType uncertaintyType, long seed)
+			throws FileNotFoundException, IOException {
+		this.uncertaintyType = uncertaintyType;
+
 		prop = new Properties();
 		prop.load(new FileInputStream("simulation.properties"));
 
@@ -199,7 +208,7 @@ public class SimulationProperties {
 		switch (uiType) {
 		case Headless:
 			sumoBin = SUMO_CLI_BIN;
-			stepDelay = HEADLESS_STEP_DELAY;
+			stepDelay = 0;
 			break;
 		case GUI:
 			sumoBin = SUMO_GUI_BIN;
@@ -208,6 +217,10 @@ public class SimulationProperties {
 		default:
 			throw new IllegalArgumentException("Unknown UserInterfaceType");
 		}
+
+		prop.setProperty("uncertaintyType", "" + uncertaintyType);
+		prop.setProperty("sumoBin", sumoBin);
+		prop.setProperty("stepDelay", "" + stepDelay);
 	}
 
 	public void store(String fileName) throws IOException {

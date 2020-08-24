@@ -44,40 +44,39 @@ public class Main implements Observer {
 
 		Stopwatch totalTime = new Stopwatch();
 
-//		UncertaintyType simulationType = UncertaintyType.Crisp;
-		UncertaintyType simulationType = UncertaintyType.MonteCarlo;
-		switch (simulationType) {
-		case Crisp:
-			crispSimulation(timestamp);
+		Random r = new Random();
+		long seed = r.nextLong();
+
+		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, UncertaintyType.Crisp, seed);
+//		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.Headless, UncertaintyType.MonteCarlo, seed);
+
+		switch (simParams.getUncertaintyType()) {
+		case Crisp: {
+			crispSimulation(timestamp, simParams);
 			break;
-		case MonteCarlo:
-			monteCarloSimulation(timestamp);
+		}
+		case MonteCarlo: {
+			monteCarloSimulation(timestamp, simParams);
 			break;
+		}
 		}
 
 		totalTime.stop();
 		totalTime.printTime("total time");
 	}
 
-	private static void crispSimulation(Date timestamp) throws Exception {
-		Random r = new Random();
-		long seed = r.nextLong();
-
-		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, seed);
+	private static void crispSimulation(Date timestamp, SimulationProperties simParams) throws Exception {
 		SimulationStatistics statistics = new SimulationStatistics(simParams);
 
 		RandomVariables randomVars = new RandomVariables(simParams);
 		statistics.setCurrentRandomVars(randomVars);
 		Main m = new Main(timestamp, simParams, randomVars, statistics);
 		m.runSimulation();
+
 		statistics.writeStatistics(timestamp);
 	}
 
-	private static void monteCarloSimulation(Date timestamp) throws Exception {
-		Random r = new Random();
-		long seed = r.nextLong();
-
-		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.Headless, seed);
+	private static void monteCarloSimulation(Date timestamp, SimulationProperties simParams) throws Exception {
 		SimulationStatistics statistics = new SimulationStatistics(simParams);
 
 		for (int i = 0; i < simParams.getNumMonteCarloRuns(); i++) {
@@ -91,6 +90,7 @@ public class Main implements Observer {
 			singleRun.stop();
 			singleRun.printTime("lap time " + i);
 		}
+
 		statistics.writeStatistics(timestamp);
 	}
 
