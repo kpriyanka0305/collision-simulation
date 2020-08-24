@@ -11,10 +11,10 @@ public class Controller {
 	private List<RSU> allRSU = new ArrayList<RSU>(); // all *RSU* that are connected to the *Controller*
 	private List<Camera> allCamera = new ArrayList<Camera>(); // all *Camera* that are connected to the *Controller*
 	private List<OBU> allOBU = new ArrayList<OBU>(); // all *OBU* that are connected to the *Controller*
-	
+
 	private final SimulationProperties simParams;
 	private final RandomVariables randomVars;
-	
+
 	public Controller(SimulationProperties simParams, RandomVariables randomVars) {
 		this.simParams = simParams;
 		this.randomVars = randomVars;
@@ -68,11 +68,8 @@ public class Controller {
 			vehicleType = vehicle.getType();
 			vehicleSecond = vehicle.getSeconds();
 
-			if (vehicleType.contains(simParams.getBikePrefix())) {
-				if (vehicleSecond <= randomVars.reactionTime) {
-					minorVehicleFlag = true;
-				}
-			} else if (vehicleType.contains(simParams.getPedestrianPrefix())) {
+			if (vehicleType.contains(simParams.getBikePrefix())
+					|| vehicleType.contains(simParams.getPedestrianPrefix())) {
 				if (vehicleSecond <= randomVars.reactionTime) {
 					minorVehicleFlag = true;
 				}

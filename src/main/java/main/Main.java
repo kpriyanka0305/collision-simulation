@@ -131,13 +131,8 @@ public class Main implements Observer {
 								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
 								kpi.addBus(vehicleID, randomVars.busMaxSpeed);
 								statistics.setCurrentBusMaxSpeed(randomVars.busMaxSpeed);
-							} else if (vehicleID.startsWith(simParams.getBikePrefix())) {
-								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.bikeMaxSpeed));
-								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
-								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
-								kpi.addBike(vehicleID, randomVars.bikeMaxSpeed);
-								statistics.setCurrentBikeMaxSpeed(randomVars.bikeMaxSpeed);
-							} else if (vehicleID.startsWith(simParams.getPedestrianPrefix())) {
+							} else if (vehicleID.startsWith(simParams.getBikePrefix())
+									|| vehicleID.startsWith(simParams.getPedestrianPrefix())) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.bikeMaxSpeed));
 								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
 								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
