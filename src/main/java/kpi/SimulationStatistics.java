@@ -21,7 +21,7 @@ import util.Util;
 public class SimulationStatistics {
 	private IntegerHistogram busWaitingTimes = new IntegerHistogram();
 	private List<SingleRunStatistics> runs = new ArrayList<>();
-	// TODO: these are also in SimulationParameters, no need to duplicate here
+	// TODO: these are also in RandomVariables, no need to duplicate here
 	private double currentBikeMaxSpeed = 0;
 	private double currentBusMaxSpeed = 0;
 	private double currentReactionTime = 0;
