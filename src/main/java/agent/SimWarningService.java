@@ -58,7 +58,7 @@ public class SimWarningService extends Simulation {
 			String type = (String) (vehData.get("type"));
 			if (type.contains(simParams.getBusPrefix())) {
 				if (!allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
-					OBU obu = new OBU(v, conn, controller, simParams);
+					OBU obu = new OBU(v, conn, controller);
 					allOBUs.add(obu);
 				}
 				// TODO: this clause is still specific to the Neckerspoel scenario. Need to

@@ -32,7 +32,7 @@ public class Kpi {
 	private final FileWriter accelerationsFile;
 	private final FileWriter speedsFile;
 
-	public Kpi(SumoTraciConnection connection, Date timestamp, SimulationParameters simParams) throws Exception {
+	public Kpi(SimulationParameters simParams, SumoTraciConnection connection, Date timestamp) throws Exception {
 		this.conn = connection;
 
 		distancesFile = new FileWriter(Util.mkFileName(simParams, timestamp, simParams.getDistancesBase()), true);

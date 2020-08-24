@@ -3,7 +3,6 @@ package agent;
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.ws.container.SumoColor;
 import it.polito.appeal.traci.SumoTraciConnection;
-import main.SimulationParameters;
 
 public class OBU {
 	// Location of the OBUs
@@ -11,7 +10,7 @@ public class OBU {
 	private String type;
 	private SumoTraciConnection conn;
 
-	public OBU(String name, SumoTraciConnection conn, Controller controller, SimulationParameters simParameters)
+	public OBU(String name, SumoTraciConnection conn, Controller controller)
 			throws Exception {
 		this.name = name;
 		this.conn = conn;

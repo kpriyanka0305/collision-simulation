@@ -24,16 +24,16 @@ public class Main implements Observer {
 
 	private SumoTraciConnection conn;
 	private Kpi kpi;
-	private SimulationParameters simParameters;
+	private SimulationParameters simParams;
 	private RandomVariables randomVars;
 	private Optional<SimulationStatistics> statistics = Optional.empty();
 
-	public Main(Date timestamp, SimulationParameters simParameters, RandomVariables randomVars,
+	public Main(Date timestamp, SimulationParameters simParams, RandomVariables randomVars,
 			Optional<SimulationStatistics> statistics) throws Exception {
-		this.simParameters = simParameters;
+		this.simParams = simParams;
 		this.randomVars = randomVars;
-		this.conn = SumoConnect(simParameters.getSumoConfigFileName(), simParameters);
-		this.kpi = new Kpi(conn, timestamp, simParameters);
+		this.conn = SumoConnect(simParams.getSumoConfigFileName(), simParams);
+		this.kpi = new Kpi(simParams, conn, timestamp);
 		this.statistics = statistics;
 		subscribe();
 	}
@@ -53,11 +53,11 @@ public class Main implements Observer {
 	}
 
 	private static void crispSimulation(Date timestamp) throws Exception {
-		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.GUI, 0l);
-		RandomVariables randomVars = new RandomVariables(simParameters);
-		SimulationStatistics statistics = new SimulationStatistics(simParameters);
+		SimulationParameters simParams = new SimulationParameters(UserInterfaceType.GUI, 0l);
+		RandomVariables randomVars = new RandomVariables(simParams);
+		SimulationStatistics statistics = new SimulationStatistics(simParams);
 		statistics.setCurrentRandomVars(randomVars);
-		Main m = new Main(timestamp, simParameters, randomVars, Optional.of(statistics));
+		Main m = new Main(timestamp, simParams, randomVars, Optional.of(statistics));
 		m.runSimulation();
 		statistics.writeStatistics(timestamp);
 	}
@@ -66,15 +66,15 @@ public class Main implements Observer {
 		Random r = new Random();
 		long seed = r.nextLong();
 
-		SimulationParameters simParameters = new SimulationParameters(UserInterfaceType.Headless, seed);
-		RandomVariables randomVars = new RandomVariables(simParameters);
+		SimulationParameters simParams = new SimulationParameters(UserInterfaceType.Headless, seed);
+		RandomVariables randomVars = new RandomVariables(simParams);
 
-		SimulationStatistics statistics = new SimulationStatistics(simParameters);
-		for (int i = 0; i < simParameters.getNumMonteCarloRuns(); i++) {
+		SimulationStatistics statistics = new SimulationStatistics(simParams);
+		for (int i = 0; i < simParams.getNumMonteCarloRuns(); i++) {
 			Stopwatch singleRun = new Stopwatch();
 			statistics.setCurrentRandomVars(randomVars);
 
-			Main m = new Main(timestamp, simParameters, randomVars, Optional.of(statistics));
+			Main m = new Main(timestamp, simParams, randomVars, Optional.of(statistics));
 			m.runSimulation();
 
 			singleRun.stop();
@@ -85,13 +85,13 @@ public class Main implements Observer {
 
 	private void runSimulation() throws Exception {
 		statistics.ifPresent(s -> s.setCurrentReactionTime(randomVars.reactionTime));
-		agent.Simulation sim = new SimWarningService(conn, kpi, simParameters, randomVars);
+		agent.Simulation sim = new SimWarningService(conn, kpi, simParams, randomVars);
 //		agent.Simulation sim = new SimChaos(conn, kpi);
 		// getMinExpectedNumber returns present and future vehicles. If that
 		// number is 0 we are done.
 		while ((int) (conn.do_job_get(Simulation.getMinExpectedNumber())) > 0) {
 			sim.step();
-			Thread.sleep(simParameters.getStepDelay());
+			Thread.sleep(simParams.getStepDelay());
 		}
 		conn.close();
 	}
@@ -124,14 +124,14 @@ public class Main implements Observer {
 					SumoStringList ssl = (SumoStringList) so.object;
 					if (ssl.size() > 0) {
 						for (String vehicleID : ssl) {
-							if (vehicleID.startsWith(simParameters.getBusPrefix())) {
+							if (vehicleID.startsWith(simParams.getBusPrefix())) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.busMaxSpeed));
 								// toggling these two parameters turns a distracted taxi into a observant one
 								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
 								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
 								kpi.addBus(vehicleID, randomVars.busMaxSpeed);
 								statistics.ifPresent(s -> s.setCurrentBusMaxSpeed(randomVars.busMaxSpeed));
-							} else if (vehicleID.startsWith(simParameters.getBikePrefix())) {
+							} else if (vehicleID.startsWith(simParams.getBikePrefix())) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.bikeMaxSpeed));
 								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
 								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
@@ -144,11 +144,11 @@ public class Main implements Observer {
 					SumoStringList ssl = (SumoStringList) so.object;
 					if (ssl.size() > 0) {
 						for (String vehicleID : ssl) {
-							if (vehicleID.startsWith(simParameters.getBusPrefix())) {
+							if (vehicleID.startsWith(simParams.getBusPrefix())) {
 								// must be called before kpi.removeBus
 								statistics.ifPresent(s -> s.busArrived(kpi, vehicleID));
 								kpi.removeBus(vehicleID);
-							} else if (vehicleID.startsWith(simParameters.getBikePrefix())) {
+							} else if (vehicleID.startsWith(simParams.getBikePrefix())) {
 								kpi.removeBike(vehicleID);
 							}
 						}
