@@ -1,5 +1,7 @@
 # To be called like this:
-#    $ gnuplot -c collision-monte-carlo.plt distances2020-05-29-15-18-53.txt
+#    $ gnuplot -c collision-monte-carlo.plt 2020-08-24-16-22-33/distances.txt
+# Or this
+#    $ ls 2020-*/distances.txt | sort -r | head -n 1 | map gnuplot -c collision-monte-carlo.plt
 set terminal pdfcairo
 set output 'collision.pdf'
 
