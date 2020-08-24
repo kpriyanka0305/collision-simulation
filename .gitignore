@@ -3,3 +3,4 @@ target/
 output/*.txt
 output/*.csv
 output/*.pdf
+src/main/java/main/Version.java
