@@ -21,14 +21,14 @@ public class SimWarningService extends Simulation {
 
 	private Kpi kpis;
 	private Controller controller;
-	private final SimulationParameters simParameters;
+	private final SimulationParameters simParams;
 	private final RandomVariables randomVars;
 
-	public SimWarningService(SumoTraciConnection conn, Kpi kpis, SimulationParameters simParameters,
+	public SimWarningService(SumoTraciConnection conn, Kpi kpis, SimulationParameters simParams,
 			RandomVariables randomVars) throws Exception {
 		this.conn = conn;
 		this.kpis = kpis;
-		this.simParameters = simParameters;
+		this.simParams = simParams;
 		this.randomVars = randomVars;
 
 		RsusStatus.put("East", false);
@@ -56,9 +56,9 @@ public class SimWarningService extends Simulation {
 		for (String v : vehicles) {
 			Map<String, Object> vehData = readData(v);
 			String type = (String) (vehData.get("type"));
-			if (type.contains(SimulationParameters.getBusPrefix())) {
+			if (type.contains(simParams.getBusPrefix())) {
 				if (!allOBUs.stream().anyMatch((obu) -> obu.getName().equals(v))) {
-					OBU obu = new OBU(v, conn, controller, simParameters);
+					OBU obu = new OBU(v, conn, controller, simParams);
 					allOBUs.add(obu);
 				}
 				// TODO: this clause is still specific to the Neckerspoel scenario. Need to
@@ -108,9 +108,9 @@ public class SimWarningService extends Simulation {
 	}
 
 	private void spawnElements() throws Exception {
-		controller = new Controller(simParameters, randomVars);
+		controller = new Controller(simParams, randomVars);
 //		allRSUs.add(new RSU("East", 15.5, -10.5, conn, controller, this));
-		allCameras.add(new Camera("CameraOne", conn, /* x */ 99.0, /* y */ -13.0, /* size */ 2.0, /* height */ 0.7,
+		allCameras.add(new Camera(simParams, "CameraOne", conn, /* x */ 99.0, /* y */ -13.0, /* size */ 2.0, /* height */ 0.7,
 				/* angle */ 110, controller, randomVars.defectiveITS));
 	}
 

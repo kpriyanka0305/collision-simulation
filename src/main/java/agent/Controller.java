@@ -12,11 +12,11 @@ public class Controller {
 	private List<Camera> allCamera = new ArrayList<Camera>(); // all *Camera* that are connected to the *Controller*
 	private List<OBU> allOBU = new ArrayList<OBU>(); // all *OBU* that are connected to the *Controller*
 	
-	private final SimulationParameters simParameters;
+	private final SimulationParameters simParams;
 	private final RandomVariables randomVars;
 	
-	public Controller(SimulationParameters simParameters, RandomVariables randomVars) {
-		this.simParameters = simParameters;
+	public Controller(SimulationParameters simParams, RandomVariables randomVars) {
+		this.simParams = simParams;
 		this.randomVars = randomVars;
 	}
 
@@ -68,15 +68,15 @@ public class Controller {
 			vehicleType = vehicle.getType();
 			vehicleSecond = vehicle.getSeconds();
 
-			if (vehicleType.contains(SimulationParameters.getBikePrefix())) {
+			if (vehicleType.contains(simParams.getBikePrefix())) {
 				if (vehicleSecond <= randomVars.reactionTime) {
 					minorVehicleFlag = true;
 				}
-			} else if (vehicleType.contains(SimulationParameters.getPedestrianPrefix())) {
+			} else if (vehicleType.contains(simParams.getPedestrianPrefix())) {
 				if (vehicleSecond <= 10.0) {
 					minorVehicleFlag = true;
 				}
-			} else if (vehicleType.contains(SimulationParameters.getBusPrefix())) {
+			} else if (vehicleType.contains(simParams.getBusPrefix())) {
 				if (vehicleSecond <= randomVars.reactionTime) {
 					busIDList.add(vehicle.getId());
 					majorVehicleFlag = true;

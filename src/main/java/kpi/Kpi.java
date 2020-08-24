@@ -32,12 +32,12 @@ public class Kpi {
 	private final FileWriter accelerationsFile;
 	private final FileWriter speedsFile;
 
-	public Kpi(SumoTraciConnection connection, Date timestamp) throws Exception {
+	public Kpi(SumoTraciConnection connection, Date timestamp, SimulationParameters simParams) throws Exception {
 		this.conn = connection;
 
-		distancesFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.getDistancesBase()), true);
-		accelerationsFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.getAccelerationsBase()), true);
-		speedsFile = new FileWriter(Util.mkFileName(timestamp, SimulationParameters.getSpeedsBase()), true);
+		distancesFile = new FileWriter(Util.mkFileName(simParams, timestamp, simParams.getDistancesBase()), true);
+		accelerationsFile = new FileWriter(Util.mkFileName(simParams, timestamp, simParams.getAccelerationsBase()), true);
+		speedsFile = new FileWriter(Util.mkFileName(simParams, timestamp, simParams.getSpeedsBase()), true);
 	}
 
 	public void addBus(String vehicleID, double busMaxSpeed) {

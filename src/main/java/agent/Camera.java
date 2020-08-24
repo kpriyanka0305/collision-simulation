@@ -27,6 +27,8 @@ public class Camera {
 	private int b = 197;
 
 	private Polygon2D fieldOfView;
+	
+	private final SimulationParameters simParams;
 
 	// FOR SUMO DRAWING
 	private SumoGeometry cameraObject = new SumoGeometry();
@@ -40,8 +42,10 @@ public class Camera {
 	// A defective camera does not detect any vehicles
 	private boolean defective;
 
-	public Camera(String name, SumoTraciConnection conn, double x, double y, double size, double height, int angle,
+	public Camera(SimulationParameters simParams, String name, SumoTraciConnection conn, double x, double y, double size, double height, int angle,
 			Controller controller, boolean defective) throws Exception {
+		this.simParams = simParams;
+
 		// BASE
 		this.name = name;
 		this.conn = conn;
@@ -91,8 +95,8 @@ public class Camera {
 		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(vehicleID)));
 		double length = (Double) (conn.do_job_get(Vehicle.getLength(vehicleID)));
 		double accel = (Double) (conn.do_job_get(Vehicle.getAccel(vehicleID)));
-		Point2D junctionPosition = new Point2D(SimulationParameters.getReferencePointX(),
-				SimulationParameters.getReferencePointY());
+		Point2D junctionPosition = new Point2D(simParams.getReferencePointX(),
+				simParams.getReferencePointY());
 		// TODO: is this correct?
 		double distanceToJunction = junctionPosition.distance(vehiclePosition) - length / 2;
 		double seconds;

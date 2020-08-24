@@ -24,15 +24,15 @@ public class Util {
 		return new LineSegment2D(busStart, busEnd);
 	}
 
-	public static String mkFileName(Date timestamp, String baseFileName) {
-		return mkFileName(timestamp, baseFileName, ".txt");
+	public static String mkFileName(SimulationParameters simParams, Date timestamp, String baseFileName) {
+		return mkFileName(simParams, timestamp, baseFileName, ".txt");
 	}
 
-	public static String mkFileName(Date timestamp, String baseFileName, String extension) {
+	public static String mkFileName(SimulationParameters simParams, Date timestamp, String baseFileName, String extension) {
 		String pattern = "yyyy-MM-dd-HH-mm-ss";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		String dateStr = simpleDateFormat.format(timestamp);
 
-		return SimulationParameters.getOutDir() + "/" + baseFileName + dateStr + extension;
+		return simParams.getOutDir() + "/" + baseFileName + dateStr + extension;
 	}
 }
