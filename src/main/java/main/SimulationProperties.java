@@ -140,7 +140,7 @@ public class SimulationProperties {
 	}
 
 	private final long GUI_STEP_DELAY = 10;
-	private final long stepDelay;
+	private long stepDelay;
 
 	public long getStepDelay() {
 		return stepDelay;
@@ -208,6 +208,14 @@ public class SimulationProperties {
 		this.random = new Random(seed);
 		prop.setProperty("seed", "" + seed);
 
+		setUiType(uiType);
+
+		prop.setProperty("uncertaintyType", "" + uncertaintyType);
+		prop.setProperty("sumoBin", sumoBin);
+		prop.setProperty("stepDelay", "" + stepDelay);
+	}
+
+	void setUiType(UserInterfaceType uiType) {
 		switch (uiType) {
 		case Headless:
 			sumoBin = SUMO_CLI_BIN;
@@ -220,10 +228,6 @@ public class SimulationProperties {
 		default:
 			throw new IllegalArgumentException("Unknown UserInterfaceType");
 		}
-
-		prop.setProperty("uncertaintyType", "" + uncertaintyType);
-		prop.setProperty("sumoBin", sumoBin);
-		prop.setProperty("stepDelay", "" + stepDelay);
 	}
 
 	public void store(Date timestamp) throws IOException {
