@@ -81,10 +81,6 @@ public class SimulationProperties {
 		return Double.parseDouble(getProperty("reactionTimeMean"));
 	}
 
-	public double getReactionDistance() {
-		return Double.parseDouble(getProperty("reactionDistance"));
-	}
-
 	public double getDefectiveItsProbability() {
 		return Double.parseDouble(getProperty("defectiveItsProbability"));
 	}
