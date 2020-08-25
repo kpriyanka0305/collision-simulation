@@ -43,8 +43,8 @@ public class Camera {
 	// A defective camera does not detect any vehicles
 	private boolean defective;
 
-	public Camera(SimulationProperties simParams, String name, SumoTraciConnection conn, double x, double y, double size, double height, int angle,
-			Controller controller, boolean defective) throws Exception {
+	public Camera(SimulationProperties simParams, String name, SumoTraciConnection conn, double x, double y,
+			double size, double height, int angle, Controller controller, boolean defective) throws Exception {
 		this.simParams = simParams;
 
 		// BASE
@@ -97,8 +97,7 @@ public class Camera {
 		double speed = (Double) (conn.do_job_get(Vehicle.getSpeed(vehicleID)));
 		double length = (Double) (conn.do_job_get(Vehicle.getLength(vehicleID)));
 		double accel = (Double) (conn.do_job_get(Vehicle.getAccel(vehicleID)));
-		Point2D junctionPosition = new Point2D(simParams.getReferencePointX(),
-				simParams.getReferencePointY());
+		Point2D junctionPosition = new Point2D(simParams.getReferencePointX(), simParams.getReferencePointY());
 		// TODO: is this correct?
 		double distanceToJunction = junctionPosition.distance(vehiclePosition) - length / 2;
 		double seconds;
