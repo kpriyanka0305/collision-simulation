@@ -48,7 +48,7 @@ public class Main implements Observer {
 //		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.GUI, UncertaintyType.Crisp, seed);
 		SimulationProperties simParams = new SimulationProperties(UserInterfaceType.Headless, UncertaintyType.MonteCarlo, seed);
 //		SimulationProperties simParams = new SimulationProperties(
-//				"output/" + "2020-08-24-17-08-35" + "/simulation.properties");
+//				"output/" + "2020-08-25-09-30-39" + "/simulation.properties");
 //		simParams.setUiType(UserInterfaceType.GUI);
 
 		// save simulation properties
