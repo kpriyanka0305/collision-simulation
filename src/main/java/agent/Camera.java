@@ -27,12 +27,13 @@ public class Camera {
 	private int b = 197;
 
 	private Polygon2D fieldOfView;
-	
+
 	private final SimulationProperties simParams;
 
 	// FOR SUMO DRAWING
 	private SumoGeometry cameraObject = new SumoGeometry();
 	private SumoGeometry fovObject = new SumoGeometry();
+	private SumoGeometry referencePointObject = new SumoGeometry();
 
 	// CONNECTION OF COURSE
 	private SumoTraciConnection conn;
@@ -64,6 +65,7 @@ public class Camera {
 
 		drawCamera();
 		drawFOV();
+		drawReferencePoint();
 
 		// CONNECT TO THE CONTROLLER
 		controller.CameraConnect(this);
@@ -155,5 +157,19 @@ public class Camera {
 		} else {
 			conn.do_job_set(Polygon.add(name + "FOV", fovObject, new SumoColor(r, g, b, 64), true, "FOV", -2));
 		}
+	}
+
+	private void drawReferencePoint() throws Exception {
+		double x = simParams.getReferencePointX();
+		double y = simParams.getReferencePointY();
+		double size = 0.5;
+
+		referencePointObject.add(new SumoPosition2D(x + size / 2, y + size / 2));
+		referencePointObject.add(new SumoPosition2D(x - size / 2, y + size / 2));
+		referencePointObject.add(new SumoPosition2D(x - size / 2, y - size / 2));
+		referencePointObject.add(new SumoPosition2D(x + size / 2, y - size / 2));
+
+		conn.do_job_set(
+				Polygon.add("reference point", referencePointObject, new SumoColor(255, 255, 0, 255), true, "reference point", 20));
 	}
 }
