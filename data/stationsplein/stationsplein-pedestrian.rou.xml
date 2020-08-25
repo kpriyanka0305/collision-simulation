@@ -7,7 +7,6 @@
   <route id="bicycleRoute" edges="StationswegEtoStationspleinSE StationspleinSEtoSW StationspleinSWtoStationswegW" />
   <route id="pedestrianRoute" edges="StationspleinNWtoSW StationspleinSWtoStationspleinPedestrianS" />
 
-  <vehicle depart="1" id="pedestrian0" route="pedestrianRoute" type="pedestrian" />
-  <!--<vehicle depart="11" id="bicycle0" route="bicycleRoute" type="bicycle" />-->
-  <vehicle depart="21" id="taxi0" route="taxiRoute" type="taxi" />
+  <vehicle depart="1" id="pedestrian0" route="pedestrianRoute" type="pedestrian" departLane="0" />
+  <vehicle depart="21" id="taxi0" route="taxiRoute" type="taxi" departLane="1" arrivalLane="1" />
 </routes>
