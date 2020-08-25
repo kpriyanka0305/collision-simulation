@@ -153,11 +153,8 @@ public class Camera {
 		fieldOfView = new SimplePolygon2D(new Point2D(xSmallOne, ySmallOne), new Point2D(xSmallTwo, ySmallTwo),
 				new Point2D(xBigOne, yBigOne), new Point2D(xBigTwo, yBigTwo));
 
-		if (defective) {
-			conn.do_job_set(Polygon.add(name + "FOV", fovObject, new SumoColor(255, g, b, 64), true, "FOV", -2));
-		} else {
-			conn.do_job_set(Polygon.add(name + "FOV", fovObject, new SumoColor(r, g, b, 64), true, "FOV", -2));
-		}
+		SumoColor fovColor = defective ? new SumoColor(255, g, b, 64) : new SumoColor(r, g, b, 64);
+		conn.do_job_set(Polygon.add(name + "FOV", fovObject, fovColor, true, "FOV", -2));
 	}
 
 	private void drawReferencePoint() throws Exception {
