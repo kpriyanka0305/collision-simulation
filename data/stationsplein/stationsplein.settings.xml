@@ -1,5 +1,10 @@
 <viewsettings>
   <!--<viewport y="0" x="250" zoom="100" />-->
   <!--<delay value="300"/>-->
+
+  <!-- This sets the drawing mode of vehicles to "simple shapes", which allows setting vType guiShape -->
+  <scheme name="custom_1">
+    <vehicles vehicleQuality="2" />
+  </scheme>
 </viewsettings>
 
