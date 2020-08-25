@@ -74,7 +74,8 @@ public class SimulationStatistics {
 	public void writeStatisticsTable(Date timestamp) throws IOException {
 		try {
 			Writer writer;
-			runs.sort((s1, s2) -> Double.compare(s1.getBusWaitingTime(), s2.getBusWaitingTime()));
+			// without sorting it's better for debugging, easier to identify a weird run.
+//			runs.sort((s1, s2) -> Double.compare(s1.getBusWaitingTime(), s2.getBusWaitingTime()));
 			writer = new FileWriter(Util.mkFileName(simParams, timestamp, simParams.getWaitingTimeTableBase(), ".csv"));
 			StatefulBeanToCsv<SingleRunStatistics> beanToCsv = new StatefulBeanToCsvBuilder<SingleRunStatistics>(writer)
 					.build();
