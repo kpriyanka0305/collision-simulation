@@ -40,7 +40,6 @@ public class OBU {
 	}
 
 	private void goDefaultColor() throws Exception {
-		System.out.println("go default color " + name);
 		conn.do_job_set(Vehicle.setColor(name, new SumoColor(255, 255, 0, 255)));
 		// all checks off
 		conn.do_job_set(Vehicle.setSpeedMode(name, 0));
