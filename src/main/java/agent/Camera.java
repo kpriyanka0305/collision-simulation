@@ -164,7 +164,8 @@ public class Camera {
 		int numPoints = 8; // octagon
 
 		for (int i = 0; i < numPoints; i++) {
-			referencePointObject.add(new SumoPosition2D(x + r * Math.cos(2 * Math.PI * i / numPoints), y + r * Math.sin(2 * Math.PI * i / numPoints)));
+			referencePointObject.add(new SumoPosition2D(x + r * Math.cos(2 * Math.PI * i / numPoints),
+					y + r * Math.sin(2 * Math.PI * i / numPoints)));
 		}
 
 		conn.do_job_set(Polygon.add("reference point", referencePointObject, new SumoColor(255, 0, 0, 128), true,
