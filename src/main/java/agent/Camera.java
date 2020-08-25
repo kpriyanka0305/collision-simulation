@@ -66,7 +66,8 @@ public class Camera {
 
 		drawCamera();
 		drawFOV();
-		drawReferencePoint();
+		// useful for debugging, not so much for simulation
+//		drawReferencePoint();
 
 		// CONNECT TO THE CONTROLLER
 		controller.CameraConnect(this);
