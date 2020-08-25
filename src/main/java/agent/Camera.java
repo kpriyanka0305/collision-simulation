@@ -67,7 +67,7 @@ public class Camera {
 		drawCamera();
 		drawFOV();
 		// useful for debugging, not so much for simulation
-//		drawReferencePoint();
+		drawReferencePoint();
 
 		// CONNECT TO THE CONTROLLER
 		controller.CameraConnect(this);
@@ -163,7 +163,7 @@ public class Camera {
 	private void drawReferencePoint() throws Exception {
 		double x = simParams.getReferencePointX();
 		double y = simParams.getReferencePointY();
-		double r = 1.0;
+		double r = 0.5;
 		int numPoints = 8; // octagon
 
 		for (int i = 0; i < numPoints; i++) {
