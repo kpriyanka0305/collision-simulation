@@ -93,6 +93,10 @@ public class SimulationProperties {
 		return Double.parseDouble(getProperty("nearCollisionDistance"));
 	}
 
+	public long getGuiStepDelay() {
+		return Long.parseLong(getProperty("guiStepDelay"));
+	}
+
 	// These don't need to change, don't need to be in the properties file, can be
 	// hardcoded
 	private final static String DISTANCES_BASE = "distances";
@@ -143,7 +147,6 @@ public class SimulationProperties {
 		return sumoBin;
 	}
 
-	private final long GUI_STEP_DELAY = 10;
 	private long stepDelay;
 
 	public long getStepDelay() {
@@ -227,7 +230,7 @@ public class SimulationProperties {
 			break;
 		case GUI:
 			sumoBin = SUMO_GUI_BIN;
-			stepDelay = GUI_STEP_DELAY;
+			stepDelay = getGuiStepDelay();
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown UserInterfaceType");
