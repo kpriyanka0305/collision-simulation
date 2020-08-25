@@ -48,4 +48,10 @@ public class RandomVariables {
 		}
 		return r.nextDouble() < p;
 	}
+
+	@Override
+	public String toString() {
+		return "RandomVariables [busMaxSpeed=" + busMaxSpeed + ", bikeMaxSpeed=" + bikeMaxSpeed + ", defectiveITS="
+				+ defectiveITS + ", reactionTime=" + reactionTime + "]";
+	}
 }

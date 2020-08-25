@@ -71,6 +71,7 @@ public class Main implements Observer {
 				Stopwatch singleRun = new Stopwatch();
 
 				RandomVariables randomVars = new RandomVariables(simParams, simParams.getUncertaintyType());
+				System.out.println(randomVars);
 				statistics.setCurrentRandomVars(randomVars);
 				Main m = new Main(timestamp, simParams, randomVars, statistics);
 				m.runSimulation();
