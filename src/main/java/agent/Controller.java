@@ -47,11 +47,13 @@ public class Controller {
 
 			if (vehicleType.contains(simParams.getBikePrefix())
 					|| vehicleType.contains(simParams.getPedestrianPrefix())) {
-				if (vehicleSecond <= randomVars.reactionTime) {
+				if (vehicleSecond <= randomVars.reactionTime
+						|| vehicleJunctionDistance <= simParams.getReactionDistance()) {
 					minorVehicleFlag = true;
 				}
 			} else if (vehicleType.contains(simParams.getBusPrefix())) {
-				if (vehicleSecond <= randomVars.reactionTime) {
+				if (vehicleSecond <= randomVars.reactionTime
+						|| vehicleJunctionDistance <= simParams.getReactionDistance()) {
 					busIDList.add(vehicle.getId());
 					majorVehicleFlag = true;
 				}

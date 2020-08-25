@@ -160,7 +160,7 @@ public class Camera {
 	private void drawReferencePoint() throws Exception {
 		double x = simParams.getReferencePointX();
 		double y = simParams.getReferencePointY();
-		double r = 0.5;
+		double r = simParams.getReactionDistance();
 		int numPoints = 8; // octagon
 
 		for (int i = 0; i < numPoints; i++) {
