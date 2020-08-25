@@ -26,6 +26,9 @@ public class Controller {
 			for (RSU rsu : allRSU) {
 				rsu.ClearRSU("East");
 			}
+			for (OBU obu : allOBU) {
+				obu.UnwarnOBU();
+			}
 		} else {
 			warningRSU(vehicleData);
 			warningOBU(vehicleData);
