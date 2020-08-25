@@ -8,7 +8,6 @@ import main.RandomVariables;
 import main.SimulationProperties;
 
 public class Controller {
-	private List<RSU> allRSU = new ArrayList<RSU>(); // all *RSU* that are connected to the *Controller*
 	private List<Camera> allCamera = new ArrayList<Camera>(); // all *Camera* that are connected to the *Controller*
 	private List<OBU> allOBU = new ArrayList<OBU>(); // all *OBU* that are connected to the *Controller*
 
@@ -23,38 +22,11 @@ public class Controller {
 	public void SendAllDataCamera(Collection<VehicleData> vehicleData) throws Exception {
 		// Warning RSU
 		if (vehicleData.isEmpty()) {
-			for (RSU rsu : allRSU) {
-				rsu.ClearRSU("East");
-			}
 			for (OBU obu : allOBU) {
 				obu.UnwarnOBU();
 			}
 		} else {
-			warningRSU(vehicleData);
 			warningOBU(vehicleData);
-		}
-	}
-
-	private void warningRSU(Collection<VehicleData> vehicleData) throws Exception {
-		boolean majorVehicleFlag = false;
-		double defDistance = 32;
-
-		for (VehicleData vehicle : vehicleData) {
-			Double distance = vehicle.getDistance();
-			String vehType = vehicle.getType();
-			if (vehType.contains("bus")) {
-				majorVehicleFlag = true;
-				if (distance < defDistance) {
-					for (RSU rsu : allRSU) {
-						rsu.WarnRSU("East");
-					}
-				}
-			}
-		}
-		if (majorVehicleFlag == false) {
-			for (RSU rsu : allRSU) {
-				rsu.ClearRSU("East");
-			}
 		}
 	}
 
@@ -109,10 +81,6 @@ public class Controller {
 		addOBU(obu);
 	}
 
-	public void RSUConnect(RSU RSUAgent) {
-		addRSU(RSUAgent); // Adding the *RSU* that is spawned in the default context
-	}
-
 	public void CameraConnect(Camera CameraAgent) {
 		addCamera(CameraAgent); // Adding the *Camera* that is spawned in the default context
 	}
@@ -123,10 +91,6 @@ public class Controller {
 
 	private void addOBU(OBU element) {
 		allOBU.add(element);
-	}
-
-	private void addRSU(RSU element) {
-		allRSU.add(element);
 	}
 
 	private void addCamera(Camera element) {
