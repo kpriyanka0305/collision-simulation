@@ -162,14 +162,14 @@ public class Camera {
 	private void drawReferencePoint() throws Exception {
 		double x = simParams.getReferencePointX();
 		double y = simParams.getReferencePointY();
-		double size = simParams.getReactionDistance() * 2;
+		double r = simParams.getReactionDistance();
+		int numPoints = 8; // octagon
 
-		referencePointObject.add(new SumoPosition2D(x + size / 2, y + size / 2));
-		referencePointObject.add(new SumoPosition2D(x - size / 2, y + size / 2));
-		referencePointObject.add(new SumoPosition2D(x - size / 2, y - size / 2));
-		referencePointObject.add(new SumoPosition2D(x + size / 2, y - size / 2));
+		for (int i = 0; i < numPoints; i++) {
+			referencePointObject.add(new SumoPosition2D(x + r * Math.cos(2 * Math.PI * i / numPoints), y + r * Math.sin(2 * Math.PI * i / numPoints)));
+		}
 
-		conn.do_job_set(
-				Polygon.add("reference point", referencePointObject, new SumoColor(255, 0, 0, 128), true, "reference point", 20));
+		conn.do_job_set(Polygon.add("reference point", referencePointObject, new SumoColor(255, 0, 0, 128), true,
+				"reference point", 20));
 	}
 }
