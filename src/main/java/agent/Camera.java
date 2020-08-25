@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import de.tudresden.sumo.cmd.Poi;
 import de.tudresden.sumo.cmd.Polygon;
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.ws.container.SumoColor;
@@ -161,7 +162,7 @@ public class Camera {
 	private void drawReferencePoint() throws Exception {
 		double x = simParams.getReferencePointX();
 		double y = simParams.getReferencePointY();
-		double size = 0.5;
+		double size = simParams.getReactionDistance() * 2;
 
 		referencePointObject.add(new SumoPosition2D(x + size / 2, y + size / 2));
 		referencePointObject.add(new SumoPosition2D(x - size / 2, y + size / 2));
@@ -169,6 +170,6 @@ public class Camera {
 		referencePointObject.add(new SumoPosition2D(x + size / 2, y - size / 2));
 
 		conn.do_job_set(
-				Polygon.add("reference point", referencePointObject, new SumoColor(255, 255, 0, 255), true, "reference point", 20));
+				Polygon.add("reference point", referencePointObject, new SumoColor(255, 0, 0, 128), true, "reference point", 20));
 	}
 }
