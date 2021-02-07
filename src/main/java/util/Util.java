@@ -29,15 +29,16 @@ public class Util {
 		return mkFileName(simParams, timestamp, baseFileName, ".txt");
 	}
 
-	public static String mkFileName(SimulationProperties simParams, Date timestamp, String baseFileName, String extension) {
+	public static String mkFileName(SimulationProperties simParams, Date timestamp, String baseFileName,
+			String extension) {
 		String pattern = "yyyy-MM-dd-HH-mm-ss";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		String dateStr = simpleDateFormat.format(timestamp);
-		
+
 		// Create directories if necessary
 		String directory = simParams.getOutDir() + "/" + dateStr + "/";
 		new File(directory).mkdirs();
 
-		return  directory + baseFileName + extension;
+		return directory + baseFileName + extension;
 	}
 }
