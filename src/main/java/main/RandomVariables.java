@@ -8,6 +8,7 @@ public class RandomVariables {
 	public final double bikeMaxSpeed;
 	public final boolean defectiveITS;
 	public final double reactionTime;
+	public final boolean vruIsReckless;
 
 	public RandomVariables(SimulationProperties params, UncertaintyType uncertaintyType) {
 		switch (uncertaintyType) {
@@ -19,12 +20,14 @@ public class RandomVariables {
 			this.reactionTime = makePositiveRandomDouble(r, params.getReactionTimeMean(),
 					params.getReactionTimeSigma());
 			this.defectiveITS = makeRandomBoolean(r, params.getDefectiveItsProbability());
+			this.vruIsReckless = makeRandomBoolean(r, params.getVruRecklessProbability());
 			break;
 		case Crisp:
 			this.busMaxSpeed = params.getBusMaxSpeedMean();
 			this.bikeMaxSpeed = params.getBikeMaxSpeedMean();
 			this.reactionTime = params.getReactionTimeMean();
 			this.defectiveITS = params.getDefectiveItsProbability() > 0.5;
+			this.vruIsReckless = params.getVruRecklessProbability() > 0.5;
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown UncertaintyType " + uncertaintyType);

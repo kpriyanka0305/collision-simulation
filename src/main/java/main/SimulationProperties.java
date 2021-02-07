@@ -89,6 +89,10 @@ public class SimulationProperties {
 		return Double.parseDouble(getProperty("defectiveItsProbability"));
 	}
 
+	public double getVruRecklessProbability() {
+		return Double.parseDouble(getProperty("vruRecklessProbability"));
+	}
+
 	public double getNearCollisionDistance() {
 		return Double.parseDouble(getProperty("nearCollisionDistance"));
 	}

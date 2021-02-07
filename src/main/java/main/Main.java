@@ -133,13 +133,13 @@ public class Main implements Observer {
 						for (String vehicleID : ssl) {
 							if (vehicleID.startsWith(simParams.getBusPrefix())) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.busMaxSpeed));
-								Util.roadUserBehaviourReckless(conn, vehicleID);
+								Util.roadUserBehaviourReckless(conn, vehicleID, true);
 								kpi.addBus(vehicleID, randomVars.busMaxSpeed);
 								statistics.setCurrentBusMaxSpeed(randomVars.busMaxSpeed);
 							} else if (vehicleID.startsWith(simParams.getBikePrefix())
 									|| vehicleID.startsWith(simParams.getPedestrianPrefix())) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.bikeMaxSpeed));
-								Util.roadUserBehaviourReckless(conn, vehicleID);
+								Util.roadUserBehaviourReckless(conn, vehicleID, randomVars.vruIsReckless);
 								kpi.addBike(vehicleID, randomVars.bikeMaxSpeed);
 								statistics.setCurrentBikeMaxSpeed(randomVars.bikeMaxSpeed);
 							}

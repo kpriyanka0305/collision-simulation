@@ -44,17 +44,19 @@ public class Util {
 		return directory + baseFileName + extension;
 	}
 
-	public static void roadUserBehaviourReckless(SumoTraciConnection conn, String name) throws Exception {
-		// all checks off
-		conn.do_job_set(Vehicle.setSpeedMode(name, 0));
-		// unsafe distance
-		conn.do_job_set(Vehicle.setMinGap(name, 0));
-	}
-
-	public static void roadUserBehaviourDisciplined(SumoTraciConnection conn, String name) throws Exception {
-		// all checks on
-		conn.do_job_set(Vehicle.setSpeedMode(name, 31));
-		// some safe distance
-		conn.do_job_set(Vehicle.setMinGap(name, 2.5));
+	public static void roadUserBehaviourReckless(SumoTraciConnection conn, String name, boolean isReckless)
+			throws Exception {
+		if (isReckless) {
+			// all checks off
+			conn.do_job_set(Vehicle.setSpeedMode(name, 0));
+			// unsafe distance
+			conn.do_job_set(Vehicle.setMinGap(name, 0));
+		} else // road user is disciplined
+		{
+			// all checks on
+			conn.do_job_set(Vehicle.setSpeedMode(name, 31));
+			// some safe distance
+			conn.do_job_set(Vehicle.setMinGap(name, 2.5));
+		}
 	}
 }

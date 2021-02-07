@@ -34,11 +34,11 @@ public class OBU {
 
 	private void goRed() throws Exception {
 		conn.do_job_set(Vehicle.setColor(name, new SumoColor(255, 0, 0, 255)));
-		Util.roadUserBehaviourDisciplined(conn, name);
+		Util.roadUserBehaviourReckless(conn, name, false);
 	}
 
 	private void goDefaultColor() throws Exception {
 		conn.do_job_set(Vehicle.setColor(name, new SumoColor(255, 255, 0, 255)));
-		Util.roadUserBehaviourReckless(conn, name);
+		Util.roadUserBehaviourReckless(conn, name, true);
 	}
 }
