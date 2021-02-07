@@ -55,6 +55,6 @@ public class RandomVariables {
 	@Override
 	public String toString() {
 		return "RandomVariables [busMaxSpeed=" + busMaxSpeed + ", bikeMaxSpeed=" + bikeMaxSpeed + ", defectiveITS="
-				+ defectiveITS + ", reactionTime=" + reactionTime + "]";
+				+ defectiveITS + ", reactionTime=" + reactionTime + ", vruIsReckless=" + vruIsReckless + "]";
 	}
 }
