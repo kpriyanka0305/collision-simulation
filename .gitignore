@@ -1,5 +1,6 @@
 target/
 .settings/
 output/2020-*/
+output/2021-*/
 git.properties
 output/log.txt
