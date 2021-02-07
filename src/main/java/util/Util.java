@@ -6,6 +6,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import de.tudresden.sumo.cmd.Vehicle;
+import it.polito.appeal.traci.SumoTraciConnection;
 import main.SimulationProperties;
 import math.geom2d.*;
 
@@ -40,5 +42,19 @@ public class Util {
 		new File(directory).mkdirs();
 
 		return directory + baseFileName + extension;
+	}
+
+	public static void roadUserBehaviourReckless(SumoTraciConnection conn, String name) throws Exception {
+		// all checks off
+		conn.do_job_set(Vehicle.setSpeedMode(name, 0));
+		// unsafe distance
+		conn.do_job_set(Vehicle.setMinGap(name, 0));
+	}
+
+	public static void roadUserBehaviourDisciplined(SumoTraciConnection conn, String name) throws Exception {
+		// all checks on
+		conn.do_job_set(Vehicle.setSpeedMode(name, 31));
+		// some safe distance
+		conn.do_job_set(Vehicle.setMinGap(name, 2.5));
 	}
 }

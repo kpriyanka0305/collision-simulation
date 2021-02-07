@@ -18,6 +18,7 @@ import it.polito.appeal.traci.SumoTraciConnection;
 import kpi.Kpi;
 import kpi.SimulationStatistics;
 import util.Stopwatch;
+import util.Util;
 
 public class Main implements Observer {
 
@@ -132,16 +133,13 @@ public class Main implements Observer {
 						for (String vehicleID : ssl) {
 							if (vehicleID.startsWith(simParams.getBusPrefix())) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.busMaxSpeed));
-								// toggling these two parameters turns a distracted taxi into a observant one
-								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
-								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
+								Util.roadUserBehaviourReckless(conn, vehicleID);
 								kpi.addBus(vehicleID, randomVars.busMaxSpeed);
 								statistics.setCurrentBusMaxSpeed(randomVars.busMaxSpeed);
 							} else if (vehicleID.startsWith(simParams.getBikePrefix())
 									|| vehicleID.startsWith(simParams.getPedestrianPrefix())) {
 								conn.do_job_set(Vehicle.setMaxSpeed(vehicleID, randomVars.bikeMaxSpeed));
-								conn.do_job_set(Vehicle.setSpeedMode(vehicleID, 0));
-								conn.do_job_set(Vehicle.setMinGap(vehicleID, 0));
+								Util.roadUserBehaviourReckless(conn, vehicleID);
 								kpi.addBike(vehicleID, randomVars.bikeMaxSpeed);
 								statistics.setCurrentBikeMaxSpeed(randomVars.bikeMaxSpeed);
 							}

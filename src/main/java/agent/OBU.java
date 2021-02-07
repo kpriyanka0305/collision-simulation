@@ -3,6 +3,7 @@ package agent;
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.ws.container.SumoColor;
 import it.polito.appeal.traci.SumoTraciConnection;
+import util.Util;
 
 public class OBU {
 	// Location of the OBUs
@@ -33,17 +34,11 @@ public class OBU {
 
 	private void goRed() throws Exception {
 		conn.do_job_set(Vehicle.setColor(name, new SumoColor(255, 0, 0, 255)));
-		// all checks on
-		conn.do_job_set(Vehicle.setSpeedMode(name, 31));
-		// some safe distance
-		conn.do_job_set(Vehicle.setMinGap(name, 2.5));
+		Util.roadUserBehaviourDisciplined(conn, name);
 	}
 
 	private void goDefaultColor() throws Exception {
 		conn.do_job_set(Vehicle.setColor(name, new SumoColor(255, 255, 0, 255)));
-		// all checks off
-		conn.do_job_set(Vehicle.setSpeedMode(name, 0));
-		// unsafe distance
-		conn.do_job_set(Vehicle.setMinGap(name, 0));
+		Util.roadUserBehaviourReckless(conn, name);
 	}
 }
